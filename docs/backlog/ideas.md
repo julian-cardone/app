@@ -15,9 +15,6 @@
 - pr templates
 - clean doc taxonomy
 
-step 0: read me, like you suggested
-✅ Step 1 — ADR: GitHub as system of record (project management)
 ✅ Step 2 — Standards doc: Project Management Conventions
 ✅ Step 3 — Add lightweight supporting docs (optional but helpful)
 ✅ Step 4 — Then move into Git workflow (you’re right here)
-
