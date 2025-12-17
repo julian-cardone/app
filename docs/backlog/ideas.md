@@ -18,3 +18,7 @@
 ✅ Step 2 — Standards doc: Project Management Conventions
 ✅ Step 3 — Add lightweight supporting docs (optional but helpful)
 ✅ Step 4 — Then move into Git workflow (you’re right here)
+
+Ideas -> ai integration for reviews, questions, prs, code, gen, et….
+
+doc type -> overview? 

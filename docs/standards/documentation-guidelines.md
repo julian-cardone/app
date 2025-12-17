@@ -126,6 +126,16 @@ _Why it Exists_
 - Create a new document when the change introduces a new concept, decision, or responsibility.
 - Avoid duplicating information across multiple documents.
 
+## Documentation Tone
+
+Documentation should be factual, neutral, and durable.
+
+- Avoid opinionated language.
+- Avoid first-person or personal language (e.g., "we", "I").
+- Avoid speculative phrasing (e.g., "likely", "probably", "eventually").
+- Avoid assumptions about future scale, usage, or requirements.
+- Use clear, declarative language that describes current intent or constraints.
+
 ## Document Lifecycle and Deletion
 
 Documentation should be kept accurate and useful. Outdated documentation should not be hoarded.
