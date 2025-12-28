@@ -1,22 +1,12 @@
 # Documentation Overview
 
-This directory contains all the documentation for the project. Organized for discoverability, maintainability, and scalability, with intentional segmentation to discourage redundancy.
+This directory contains all the documentation for the project. It is organized for discoverability, maintainability, and scalability, with intentional segmentation to discourage redundancy.
 
 This document explains how the documentation is structured. This document is meant to orient, not explain specifics.
 
 ## Documentation Structure
 
 Documentation is grouped into the following categories:
-
-### Architecture
-
-Describes the current structure of the system at a high level.
-
-- Focuses on _what exists_ and _how major components relate_.
-- Authoritative.
-- Does not capture decision rationale.
-
-Use this directory to understand the shape of the system.
 
 ### Architecture Decision Records
 
@@ -28,15 +18,26 @@ Records significant, long-lived decisions that constrain future work.
 
 Use this directory to understand _why_ the system and processes are the way they are.
 
-### Standards
+### Architecture
 
-Defines rules, conventions, and expectations contributors are expected to follow.
+Describes the current structure of the system at a high level.
 
-- Includes _coding standards_, _workflows_, and _documentation guidelines_.
-- Updated in-place as practices evolve
+- Focuses on _what exists_ and _how major components relate_.
 - Authoritative.
+- Does not capture decision rationale.
+- Represents _current state_ - No future designs are here.
 
-Use this directory to understand _how work should be done_.
+Use this directory to understand the current shape of the system.
+
+### Backlog
+
+Captures ideas, experiments, and known issues that are not yet formalized.
+
+- Not authoritative.
+- Deleted when no longer relevant.
+- Serves as a scratchpad for future work.
+
+Use this directory to record ideas without committing to them.
 
 ### Design
 
@@ -44,6 +45,7 @@ Explores how features or changes may be implemented.
 
 - Not authoritative.
 - Often short-lived.
+- This is where future design plans live.
 
 Use this directory for _thinking and exploration_, not binding decisions.
 
@@ -58,15 +60,15 @@ Documents operational and procedural knowledge.
 
 Use this directory when performing or maintaining operational work.
 
-### Backlog
+### Standards
 
-Captures ideas, experiments, and known issues that are not yet formalized.
+Defines rules, conventions, and expectations contributors are expected to follow.
 
-- Not authoritative.
-- Deleted when no longer relevant.
-- Serves as a scratchpad for future work.
+- Includes _coding standards_, _workflows_, and _documentation guidelines_.
+- Updated in-place as practices evolve.
+- Authoritative.
 
-Use this directory to record ideas without committing to them.
+Use this directory to understand _how work should be done_.
 
 ### Technologies
 
@@ -85,15 +87,17 @@ Before creating a new document:
 2. Choose the appropriate directory based on that intent.
 3. Follow the documentation metadata standards defined in [standards/documentation-guidelines.md](./standards/documentation-guidelines.md).
 
+**IMPORTANT:**
 **Avoid duplicating information across multiple documents.**
+If information already exists, reference it instead of restating it.
 
 ## Authority and Precedence
 
 When documentation appears to conflict, use the following precedence:
 
-- Architecture Decision Records (ADRs)
-- Standards
-- Architecture documentation
-- Runbooks
+1. Architecture Decision Records (ADRs).
+2. Standards.
+3. Architecture documentation.
+4. Runbooks.
 
 Design and backlog documents are non-authoritative and should not be treated as sources of truth.
