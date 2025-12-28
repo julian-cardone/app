@@ -15,10 +15,33 @@
 - pr templates
 - clean doc taxonomy
 
-✅ Step 2 — Standards doc: Project Management Conventions
-✅ Step 3 — Add lightweight supporting docs (optional but helpful)
-✅ Step 4 — Then move into Git workflow (you’re right here)
-
 Ideas -> ai integration for reviews, questions, prs, code, gen, et….
+doc type -> overview?
+purpose and scope to the docs?
+for later review: durable, not opionated, no overlap (segmented).
+tagging for indexing
+headers matching file names mathcing meta data names?
 
-doc type -> overview? 
+
+
+
+to do before system design:
+the two adrs and adr template.
+docs/README.md
+docs/standards/decision-making.md
+docs/standards/documentation-guidelines.md
+docs/standards/documentation-maintenance.md
+docs/standards/ownership-and-responsibility.md
+docs/standards/work-lifecycle.md
+docs/standards/project-management.md
+docs/technologies/overview.md
+docs/standards/commit messages
+
+So far, I’ve completed: - ADRs for documentation structure and GitHub project management - ADR template - Documentation guidelines - Technologies overview (descriptive, not prescriptive) - docs\ readme
+
+Create 3–5 real issues
+Give each:
+1 type:*
+1–2 scope:*
+Move them through the board as you work
+Notice friction
