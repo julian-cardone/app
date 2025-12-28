@@ -1,7 +1,7 @@
 ---
 title: Documentation Guidelines
 doc_type: standard
-status: draft
+status: accepted
 owners: ["@julian-cardone"]
 tags: [documentation, standards]
 ---
@@ -118,13 +118,14 @@ _Why it Exists_
 - All documents must include a metadata header.
 - Required fields must not be omitted.
 - Optional fields should only be included when meaningful.
-- Metadata should be updated only when the document meaning changes.
+- Metadata should be updated only when the semantic meaning or authority of the document changes.
 
 ## Creating vs Updating Documentation
 
 - Update an existing document when the change refines or extends the same concept.
 - Create a new document when the change introduces a new concept, decision, or responsibility.
 - Avoid duplicating information across multiple documents.
+- When in doubt, prefer updating an existing document and linking to related material rather than creating near-duplicates.
 
 ## Documentation Tone
 

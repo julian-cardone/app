@@ -22,14 +22,15 @@ for later review: durable, not opionated, no overlap (segmented).
 tagging for indexing
 headers matching file names mathcing meta data names?
 
-
+Keep up with ai and techs!! Dont let the project fall behind. Ai ide + workflow. Ai assisted development. 
+Restaurant gpt in papp, aicompatability based on restaurant data. Link beli and resy and other stuff to find commonalities. Part of algo. 
 
 
 to do before system design:
-the two adrs and adr template.
-docs/README.md
-docs/standards/decision-making.md
+DONE: the two adrs and adr template.
+DONE: docs/README.md
 docs/standards/documentation-guidelines.md
+docs/standards/decision-making.md
 docs/standards/documentation-maintenance.md
 docs/standards/ownership-and-responsibility.md
 docs/standards/work-lifecycle.md
