@@ -1,7 +1,7 @@
 ---
 title: Documentation Guidelines
 doc_type: standard
-status: accepted
+status: draft
 owners: ["@julian-cardone"]
 tags: [documentation, standards]
 ---

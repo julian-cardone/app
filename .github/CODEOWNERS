@@ -1,0 +1,10 @@
+# Default: all changes require review from the repository owner.
+
+- @julian-cardone
+
+# Guardrails (AI must not modify; human review required regardless).
+
+.github/ @julian-cardone
+docs/standards/ @julian-cardone
+docs/runbooks/ @julian-cardone
+docs/technologies/ @julian-cardone

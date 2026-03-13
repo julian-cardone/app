@@ -1,14 +1,30 @@
 # Documentation Overview
 
-This directory contains all the documentation for the project. It is organized for discoverability, maintainability, and scalability, with intentional segmentation to discourage redundancy.
+This directory contains all the documentation for the project. It is structured for discoverability, maintainability, and scalability, with intentional segmentation to discourage redundancy.
 
-This document explains how the documentation is structured. This document is meant to orient, not explain specifics.
+This document explains how the documentation is organized. This document is meant to orient, not explain implementation specifics.
+
+## Start Here (Human or Machine)
+
+Before proposing changes, writing code, or creating design artifacts:
+
+1. Read this document.
+2. Review relevant Standards.
+3. Review relevant Architecture Decision Records (ADRs).
+4. Confirm whether the work requires:
+   - A Design document
+   - An ADR
+   - A Backlog entry
+
+**IMPORTANT:** Do not introduce new structure, technologies, or conventions without verifying against existing documentation.
+
+If uncertain, pause and consult with a senior person.
 
 ## Documentation Structure
 
 Documentation is grouped into the following categories:
 
-### Architecture Decision Records
+### Architecture Decision Records (`adrs/`)
 
 Records significant, long-lived decisions that constrain future work.
 
@@ -18,7 +34,7 @@ Records significant, long-lived decisions that constrain future work.
 
 Use this directory to understand _why_ the system and processes are the way they are.
 
-### Architecture
+### Architecture (`architecture/`)
 
 Describes the current structure of the system at a high level.
 
@@ -29,7 +45,7 @@ Describes the current structure of the system at a high level.
 
 Use this directory to understand the current shape of the system.
 
-### Backlog
+### Backlog (`backlog/`)
 
 Captures ideas, experiments, and known issues that are not yet formalized.
 
@@ -39,7 +55,7 @@ Captures ideas, experiments, and known issues that are not yet formalized.
 
 Use this directory to record ideas without committing to them.
 
-### Design
+### Design (`design/`)
 
 Explores how features or changes may be implemented.
 
@@ -49,7 +65,7 @@ Explores how features or changes may be implemented.
 
 Use this directory for _thinking and exploration_, not binding decisions.
 
-### Runbooks
+### Runbooks (`runbooks/`)
 
 Documents operational and procedural knowledge.
 
@@ -60,7 +76,7 @@ Documents operational and procedural knowledge.
 
 Use this directory when performing or maintaining operational work.
 
-### Standards
+### Standards (`standards/`)
 
 Defines rules, conventions, and expectations contributors are expected to follow.
 
@@ -70,7 +86,7 @@ Defines rules, conventions, and expectations contributors are expected to follow
 
 Use this directory to understand _how work should be done_.
 
-### Technologies
+### Technologies (`technologies/`)
 
 Lists languages, frameworks, tools, and third-party services used by the project.
 
@@ -101,3 +117,13 @@ When documentation appears to conflict, use the following precedence:
 4. Runbooks.
 
 Design and backlog documents are non-authoritative and should not be treated as sources of truth.
+
+## Single Source of Truth Rule
+
+Do not duplicate information across documents.
+If information exists elsewhere:
+
+- Reference it.
+- Do not restate it.
+
+Redundancy creates drift. Drift creates confusion.

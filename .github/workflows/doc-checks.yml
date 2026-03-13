@@ -1,0 +1,157 @@
+name: Doc Checks
+
+on:
+  workflow_call:
+  pull_request:
+    paths:
+      - "docs/**"
+      - ".github/workflows/**"
+      - ".github/PULL_REQUEST_TEMPLATE*"
+      - ".github/copilot-instructions*"
+      - ".github/CODEOWNERS"
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - ".github/workflows/**"
+      - ".github/PULL_REQUEST_TEMPLATE*"
+      - ".github/copilot-instructions*"
+      - ".github/CODEOWNERS"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-doc-structure:
+    name: Validate docs structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate markdown files under docs/
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "Checking docs directory exists..."
+          test -d docs
+
+          echo "Checking markdown files were found..."
+          mapfile -t files < <(find docs -type f -name "*.md" | sort)
+
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No markdown files found under docs/"
+            exit 1
+          fi
+
+          echo "Validating each markdown file..."
+          for file in "${files[@]}"; do
+            echo "Checking $file"
+
+            # Must not be empty
+            if [ ! -s "$file" ]; then
+              echo "ERROR: File is empty: $file"
+              exit 1
+            fi
+
+            # First line must begin frontmatter
+            first_line="$(head -n 1 "$file")"
+            if [ "$first_line" != "---" ]; then
+              echo "ERROR: Missing opening frontmatter delimiter in $file"
+              exit 1
+            fi
+
+            # Must contain closing frontmatter delimiter within first 20 lines
+            closing_count="$(head -n 20 "$file" | grep -c '^---$' || true)"
+            if [ "$closing_count" -lt 2 ]; then
+              echo "ERROR: Missing closing frontmatter delimiter near top of $file"
+              exit 1
+            fi
+
+            # Required metadata fields
+            grep -q '^title:' "$file" || { echo "ERROR: Missing title in $file"; exit 1; }
+            grep -q '^doc_type:' "$file" || { echo "ERROR: Missing doc_type in $file"; exit 1; }
+            grep -q '^status:' "$file" || { echo "ERROR: Missing status in $file"; exit 1; }
+            grep -q '^owners:' "$file" || { echo "ERROR: Missing owners in $file"; exit 1; }
+            grep -q '^tags:' "$file" || { echo "ERROR: Missing tags in $file"; exit 1; }
+          done
+
+          echo "All markdown files passed basic structure checks."
+
+  validate-adr-sequence:
+    name: Validate ADR numbering
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check ADR numbering is unique and ordered
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ ! -d docs/adrs ]; then
+            echo "docs/adrs does not exist. Skipping ADR numbering check."
+            exit 0
+          fi
+
+          mapfile -t adrs < <(find docs/adrs -maxdepth 1 -type f -name '[0-9][0-9][0-9][0-9]-*.md' | sort)
+
+          if [ "${#adrs[@]}" -eq 0 ]; then
+            echo "No numbered ADRs found. Skipping ADR numbering check."
+            exit 0
+          fi
+
+          prev=0
+          for adr in "${adrs[@]}"; do
+            base="$(basename "$adr")"
+            num="${base%%-*}"
+
+            # numeric parse without leading-zero issues
+            current=$((10#$num))
+
+            if [ "$current" -le "$prev" ]; then
+              echo "ERROR: ADR numbering is not strictly increasing at $base"
+              exit 1
+            fi
+
+            prev="$current"
+          done
+
+          echo "ADR numbering looks good."
+
+  validate-standard-doc-names:
+    name: Validate key standards docs exist
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check required standards docs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          required_files=(
+            "docs/standards/ai-workflow.md"
+            "docs/standards/ai-permissions-and-gates.md"
+            "docs/standards/documentation-guidelines.md"
+            "docs/standards/documentation-maintenance.md"
+            "docs/standards/git-workflow.md"
+            "docs/standards/pull-requests.md"
+            "docs/standards/commit-messages.md"
+            "docs/standards/ownership-and-responsibility.md"
+          )
+
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "ERROR: Required standards doc is missing: $file"
+              exit 1
+            fi
+          done
+
+          echo "All required standards docs exist."

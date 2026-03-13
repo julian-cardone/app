@@ -1,53 +1,108 @@
 ---
-title: Decision-Making Process
+title: Decision Making
 doc_type: standard
 status: draft
 owners: ["@julian-cardone"]
-tags: []
+tags: [architecture, decisions, adr, design, governance]
 ---
 
-# Decision-Making Process
+# Decision Making
 
-The contributors of this project will be faced with many impactful decisions. As such, a standardized decision-making process will facilitate consistently seamless decision-making. This document outlines how important architectural decisions are finalized and maintained via ADRs (Architectural Design Records) to ensure clarity and durability.
+This document defines when architectural documentation artifacts must be created or updated.
 
-## Types of Decisions
+The goal is to ensure that decisions are documented at the appropriate level of formality.
 
-Every decision can be captured by one of these three categories:
+Not all changes require the same level of documentation.
 
-- Exploratory Decisions
-- Opertional Decisions
-- Architectural Decisions
+## Decision Levels
 
-### Exploratory Decisions
+Changes fall into three levels of significance:
 
-These are decisions that ...
+1. **Implementation Changes**
+2. **Design Changes**
+3. **Architectural Decisions**
 
-These are considered low-impact decisions. They can be change freely without any formal process, as they are very easy to unwind.
+Each level requires a different documentation artifact.
 
-## Operational Decisions
+## Implementation Changes
 
-These are decisions that affect operational of procedural processes.
+Implementation changes modify code or documentation without changing system structure or architectural decisions.
 
-These are considered medium-impact decisions. They can be changed through a formal process, and may require updating documentation. Contributors will have to adjust to the new process.
+Examples include:
+
+- Bug fixes
+- Refactoring
+- Documentation improvements
+- Minor implementation details
+
+No new architectural documentation is required.
+
+Existing documentation should only be updated if it becomes inaccurate.
+
+## Design Changes
+
+Design changes introduce or modify how a feature will be implemented but do not alter core architectural decisions.
+
+When a change requires exploration, tradeoffs, or implementation planning, a **design document** must be created.
+
+Design documents are used to:
+
+- Explore possible approaches
+- Document implementation plans
+- Evaluate tradeoffs before implementation
+
+Design documents are exploratory and may evolve as the solution becomes clearer.
 
 ## Architectural Decisions
 
-These are decisions that affect foundational axoims and core processes.
+Architectural decisions introduce or modify fundamental constraints on the system.
 
-These are considered high-impact decisions, as their affects can be seen on a systemic level. These decisions require a formal decision-making process through ADRs, as they will introduce constraints that will be difficult to unwind.
+When a change alters system structure, long-term technical direction, or core system behavior, an **Architecture Decision Record (ADR)** must be created.
 
-## When an ADR Is Required
+Architectural decisions typically have one or more of the following characteristics:
 
-An ADR is the formal document that finalizes an architectural decision. A decision requires a formal ADR if it meets at least one the following criteria:
+- The decision would be difficult to reverse later.
+- The decision affects multiple components of the system.
+- The decision establishes a long-term constraint on future work.
+- The decision may require justification for future contributors.
 
-- 
+Examples include:
 
-## When an ADR Is Not Required
+- Introducing a new infrastructure component
+- Changing system boundaries
+- Selecting or replacing major technologies
+- Establishing long-term architectural patterns
 
-## Decision Lifecycle
+ADRs document the rationale behind decisions that affect future work.
 
-## Reviewing and Accepting Decisions
+## Updating Architecture Documentation
 
-## Changing or Reversing Decisions
+Architecture documentation describes the current structure of the system.
 
-## Relationship to Other Documentation
+Architecture documents must be updated when:
+
+- System components change
+- Component relationships change
+- System boundaries change
+- Deployment or infrastructure structure changes
+
+Architecture documentation reflects the **current state of the system**, not proposals or exploration.
+
+## ADR Modification Rules
+
+Accepted ADRs must never be edited.
+
+If a previous decision changes, a new ADR must be created that **supersedes** the earlier decision.
+
+The historical record of decisions must be preserved.
+
+## Summary
+
+Use the following guidance when documenting changes:
+
+| Change Type                            | Required Documentation                             |
+| -------------------------------------- | -------------------------------------------------- |
+| Implementation change                  | Update documentation only if it becomes inaccurate |
+| Design exploration or feature planning | Create or update a design document                 |
+| Architectural decision or constraint   | Draft a new ADR                                    |
+| System structure changes               | Update architecture documentation                  |
