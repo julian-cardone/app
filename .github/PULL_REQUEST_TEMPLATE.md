@@ -41,7 +41,8 @@ If AI assistance was used:
 
 - [ ] Documentation updated if required
 
-If the change affects architecture, design, system behavior, workflows, or operational processes, the relevant documentation has been updated in this pull request.
+If the change affects architecture, design, system behavior, workflows, or operational processes,
+the relevant documentation has been updated in this pull request.
 
 ---
 
@@ -49,7 +50,8 @@ If the change affects architecture, design, system behavior, workflows, or opera
 
 - [ ] ADR created if required
 
-If the change introduces or alters a significant architectural decision, the ADR process has been followed.
+If the change introduces or alters a significant architectural decision, the ADR process has been
+followed.
 
 ---
 

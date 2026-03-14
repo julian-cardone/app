@@ -26,7 +26,8 @@ Each level requires a different documentation artifact.
 
 ## Implementation Changes
 
-Implementation changes modify code or documentation without changing system structure or architectural decisions.
+Implementation changes modify code or documentation without changing system structure or
+architectural decisions.
 
 Examples include:
 
@@ -41,9 +42,11 @@ Existing documentation should only be updated if it becomes inaccurate.
 
 ## Design Changes
 
-Design changes introduce or modify how a feature will be implemented but do not alter core architectural decisions.
+Design changes introduce or modify how a feature will be implemented but do not alter core
+architectural decisions.
 
-When a change requires exploration, tradeoffs, or implementation planning, a **design document** must be created.
+When a change requires exploration, tradeoffs, or implementation planning, a **design document**
+must be created.
 
 Design documents are used to:
 
@@ -57,7 +60,8 @@ Design documents are exploratory and may evolve as the solution becomes clearer.
 
 Architectural decisions introduce or modify fundamental constraints on the system.
 
-When a change alters system structure, long-term technical direction, or core system behavior, an **Architecture Decision Record (ADR)** must be created.
+When a change alters system structure, long-term technical direction, or core system behavior, an
+**Architecture Decision Record (ADR)** must be created.
 
 Architectural decisions typically have one or more of the following characteristics:
 
@@ -86,7 +90,8 @@ Architecture documents must be updated when:
 - System boundaries change
 - Deployment or infrastructure structure changes
 
-Architecture documentation reflects the **current state of the system**, not proposals or exploration.
+Architecture documentation reflects the **current state of the system**, not proposals or
+exploration.
 
 ## ADR Modification Rules
 

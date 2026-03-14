@@ -12,7 +12,8 @@ This document explains the standards for creating documentation.
 
 ## Documentation Metadata File Headers
 
-Each document should have a file header containing metadata. Attaching metadata to a file will help with machine-assisted workflows, allowing for searchability, parsing, and indexing.
+Each document should have a file header containing metadata. Attaching metadata to a file will help
+with machine-assisted workflows, allowing for searchability, parsing, and indexing.
 
 ### Canonical Metadata Header Template
 
@@ -125,7 +126,8 @@ _Why it Exists_
 - Update an existing document when the change refines or extends the same concept.
 - Create a new document when the change introduces a new concept, decision, or responsibility.
 - Avoid duplicating information across multiple documents.
-- When in doubt, prefer updating an existing document and linking to related material rather than creating near-duplicates.
+- When in doubt, prefer updating an existing document and linking to related material rather than
+  creating near-duplicates.
 
 ## Documentation Tone
 
@@ -141,9 +143,12 @@ Documentation should be factual, neutral, and durable.
 
 Documentation should be kept accurate and useful. Outdated documentation should not be hoarded.
 
-- Architecture Decision Records (ADRs) must never be deleted. If an ADR is no longer valid, its status should be updated to `deprecated` or `superseded`.
-- Standards and architecture documents should generally be updated in place rather than deprecated or deleted.
+- Architecture Decision Records (ADRs) must never be deleted. If an ADR is no longer valid, its
+  status should be updated to `deprecated` or `superseded`.
+- Standards and architecture documents should generally be updated in place rather than deprecated
+  or deleted.
 - Runbooks may be deleted if the operational process they describe no longer exists.
 - Backlog documents should be deleted when ideas or experiments are no longer relevant.
 
-When in doubt, prefer deleting documentation that no longer reflects reality rather than keeping outdated information.
+When in doubt, prefer deleting documentation that no longer reflects reality rather than keeping
+outdated information.

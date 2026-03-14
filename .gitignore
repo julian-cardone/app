@@ -1,0 +1,58 @@
+# -----------------------------
+# Node / tooling
+# -----------------------------
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json.old
+
+# -----------------------------
+# macOS
+# -----------------------------
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear on external disks
+.Spotlight-V100
+.Trashes
+
+# -----------------------------
+# Editor / IDE
+# -----------------------------
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# -----------------------------
+# Logs
+# -----------------------------
+
+*.log
+
+# -----------------------------
+# Temporary files
+# -----------------------------
+
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# -----------------------------
+# Build / cache directories
+# -----------------------------
+
+dist/
+build/
+.cache/

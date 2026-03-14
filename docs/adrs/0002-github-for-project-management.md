@@ -10,13 +10,19 @@ tags: [project-management, github]
 
 ## Context
 
-A lightweight project management solution is required for the current use case. The chosen technology should support task management, issue statuses, and should integrate well with the current technologies. We currently have a small team, and do not require a complicated project management tool. The solution should also have low overhead costs.
+A lightweight project management solution is required for the current use case. The chosen
+technology should support task management, issue statuses, and should integrate well with the
+current technologies. We currently have a small team, and do not require a complicated project
+management tool. The solution should also have low overhead costs.
 
-GitHub was selected as a suitable option for the current use case. Jira was considered, but not chosen because it introduces additional workflow and process structure which is unnecessary given current team size and requirements.
+GitHub was selected as a suitable option for the current use case. Jira was considered, but not
+chosen because it introduces additional workflow and process structure which is unnecessary given
+current team size and requirements.
 
 ## Decision
 
-GitHub is the authoritative system of record for project state, including issues and status tracking.
+GitHub is the authoritative system of record for project state, including issues and status
+tracking.
 
 ## Consequences
 

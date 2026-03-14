@@ -45,11 +45,13 @@ Focus on what was implemented rather than repeating the issue description.
 
 The pull request must confirm whether documentation was updated.
 
-If the change affects architecture, design, system behavior, workflows, or operational processes, the relevant documentation must be updated in the same pull request.
+If the change affects architecture, design, system behavior, workflows, or operational processes,
+the relevant documentation must be updated in the same pull request.
 
 ### Decision Records
 
-If the change introduces or alters a significant architectural decision, the appropriate Architecture Decision Record (ADR) process must be followed.
+If the change introduces or alters a significant architectural decision, the appropriate
+Architecture Decision Record (ADR) process must be followed.
 
 ## Pull Request Scope
 

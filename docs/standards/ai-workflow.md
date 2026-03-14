@@ -10,7 +10,8 @@ tags: [ai, workflow, governance]
 
 This document defines how AI tools participate in the repository's development workflow.
 
-AI contributors assist with development tasks but operate within the same governance framework as human contributors.
+AI contributors assist with development tasks but operate within the same governance framework as
+human contributors.
 
 All AI-generated changes must follow the repository standards and development workflow.
 

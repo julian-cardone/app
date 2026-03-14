@@ -1,11 +1,13 @@
 # AI Contributor Instructions
 
-This repository uses a structured documentation system and AI-assisted workflow.  
-AI tools may assist with development, but all changes remain the responsibility of the human contributor submitting them.
+This repository uses a structured documentation system and AI-assisted workflow. AI tools may assist
+with development, but all changes remain the responsibility of the human contributor submitting
+them.
 
 ## Repository Orientation
 
-Most work in this repository currently occurs in the `docs/` directory and supporting repository configuration.
+Most work in this repository currently occurs in the `docs/` directory and supporting repository
+configuration.
 
 AI contributors should prioritize:
 
@@ -17,7 +19,8 @@ Before generating changes, review relevant standards in:
 
 docs/standards/
 
-These documents define repository workflow, documentation conventions, and contribution expectations.
+These documents define repository workflow, documentation conventions, and contribution
+expectations.
 
 ## Documentation Structure
 
@@ -70,7 +73,8 @@ AI-assisted contributions should:
 - avoid unnecessary duplication
 - preserve existing document structure
 
-If a change affects architecture, workflow, or system behavior, related documentation should be updated.
+If a change affects architecture, workflow, or system behavior, related documentation should be
+updated.
 
 ## Architecture Decisions
 
@@ -92,7 +96,8 @@ AI contributors must not modify these areas unless explicitly instructed by a hu
 - docs/runbooks/
 - docs/technologies/
 
-Changes to these locations should generally be authored or explicitly approved by a human contributor.
+Changes to these locations should generally be authored or explicitly approved by a human
+contributor.
 
 ## Workflow Constraints
 
@@ -109,4 +114,5 @@ AI tools must not approve or merge pull requests.
 
 The application technology stack has not yet been selected.
 
-AI contributors should avoid introducing assumptions about specific languages, frameworks, or infrastructure unless explicitly requested.
+AI contributors should avoid introducing assumptions about specific languages, frameworks, or
+infrastructure unless explicitly requested.

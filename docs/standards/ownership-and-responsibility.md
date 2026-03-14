@@ -8,17 +8,22 @@ tags: [ownership, responsibility, standards]
 
 # Ownership and Responsibility
 
-This document defines ownership expectations for the repository and its documentation. Its purpose is to make decision-making, review, and maintenance responsibilities clear, even when work is assisted by AI tools.
+This document defines ownership expectations for the repository and its documentation. Its purpose
+is to make decision-making, review, and maintenance responsibilities clear, even when work is
+assisted by AI tools.
 
 ## Principles
 
 Ownership exists to create accountability, not bureaucracy.
 
-The owner of a document, workflow, or area is responsible for its accuracy, maintenance, and review quality. AI tools may help produce or update content, but responsibility always remains with a human owner.
+The owner of a document, workflow, or area is responsible for its accuracy, maintenance, and review
+quality. AI tools may help produce or update content, but responsibility always remains with a human
+owner.
 
 ## Repository Ownership
 
-The repository owner is responsible for the overall structure, standards, and quality gates of the project.
+The repository owner is responsible for the overall structure, standards, and quality gates of the
+project.
 
 Repository ownership includes:
 
@@ -29,7 +34,8 @@ Repository ownership includes:
 
 ## Document Ownership
 
-Every standards, architecture, design, ADR, runbook, or backlog document should include one or more owners in its metadata header.
+Every standards, architecture, design, ADR, runbook, or backlog document should include one or more
+owners in its metadata header.
 
 Document owners are responsible for:
 
@@ -40,7 +46,8 @@ Document owners are responsible for:
 
 ## Code and Automation Ownership
 
-When application code, scripts, workflows, or automation are added, each area should have a clearly understood owner.
+When application code, scripts, workflows, or automation are added, each area should have a clearly
+understood owner.
 
 Owners are responsible for:
 
@@ -53,7 +60,8 @@ Owners are responsible for:
 
 AI-generated content does not own itself and does not approve itself.
 
-When AI is used to create or modify code, workflows, or documentation, the human submitting the change is responsible for:
+When AI is used to create or modify code, workflows, or documentation, the human submitting the
+change is responsible for:
 
 - reviewing the full output
 - validating correctness
@@ -63,7 +71,8 @@ When AI is used to create or modify code, workflows, or documentation, the human
 
 ## Review Responsibility
 
-Reviewers are responsible for validating that a change is appropriate for the repository, not just that it “looks reasonable.”
+Reviewers are responsible for validating that a change is appropriate for the repository, not just
+that it “looks reasonable.”
 
 Review responsibility includes:
 
@@ -83,7 +92,8 @@ This may happen when:
 - a new workflow or subsystem is introduced
 - repository responsibilities are redistributed
 
-Ownership changes should be reflected in document metadata and, where applicable, in repository review rules such as CODEOWNERS.
+Ownership changes should be reflected in document metadata and, where applicable, in repository
+review rules such as CODEOWNERS.
 
 ## Minimum Rule
 

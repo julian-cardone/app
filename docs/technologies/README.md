@@ -8,7 +8,8 @@ tags: [technology, stack, tooling]
 
 # Technologies
 
-This directory documents the technologies used within the repository and their roles in the development workflow.
+This directory documents the technologies used within the repository and their roles in the
+development workflow.
 
 Technology documents describe:
 
@@ -18,7 +19,8 @@ Technology documents describe:
 
 Technology documents are descriptive.
 
-Repository rules, constraints, and workflow requirements are defined separately in the standards under `docs/standards`.
+Repository rules, constraints, and workflow requirements are defined separately in the standards
+under `docs/standards`.
 
 ## Technology Categories
 
@@ -75,7 +77,8 @@ Typical responsibilities include:
 - refactoring assistance
 - architectural or design draft generation
 
-Claude Code is used when tasks require coordinated changes across multiple files or deeper repository understanding.
+Claude Code is used when tasks require coordinated changes across multiple files or deeper
+repository understanding.
 
 ---
 
@@ -127,11 +130,13 @@ It helps maintain readability and ensures documentation follows established conv
 
 ## yamllint
 
-`yamllint` validates YAML files and helps ensure configuration files such as GitHub workflows remain syntactically correct and consistent.
+`yamllint` validates YAML files and helps ensure configuration files such as GitHub workflows remain
+syntactically correct and consistent.
 
 ## Custom Validation Scripts
 
-Custom validation scripts are used to enforce repository-specific rules that general linting tools cannot fully capture.
+Custom validation scripts are used to enforce repository-specific rules that general linting tools
+cannot fully capture.
 
 These checks may validate:
 

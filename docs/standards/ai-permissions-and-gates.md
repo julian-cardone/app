@@ -8,11 +8,14 @@ tags: [ai, governance, permissions]
 
 # AI Permissions and Gates
 
-This document defines the technical controls that constrain AI-assisted contributions within the repository.
+This document defines the technical controls that constrain AI-assisted contributions within the
+repository.
 
-These controls ensure that repository governance, workflow rules, and operational procedures cannot be modified unintentionally.
+These controls ensure that repository governance, workflow rules, and operational procedures cannot
+be modified unintentionally.
 
-AI tools operate within the same pull request workflow as human contributors. Enforcement mechanisms ensure that repository standards are respected.
+AI tools operate within the same pull request workflow as human contributors. Enforcement mechanisms
+ensure that repository standards are respected.
 
 ## Contribution Model
 
@@ -83,7 +86,8 @@ Automated review tools may provide feedback, but human approval remains required
 
 ## Governance Protection
 
-The combination of branch protection, CODEOWNERS, and automated checks forms the governance boundary of the repository.
+The combination of branch protection, CODEOWNERS, and automated checks forms the governance boundary
+of the repository.
 
 These mechanisms ensure that:
 

@@ -10,15 +10,18 @@ tags: [adr, ai, ci, workflow]
 
 ## Context
 
-The repository is being established with a documentation-first workflow prior to the introduction of application code.
+The repository is being established with a documentation-first workflow prior to the introduction of
+application code.
 
-Development activity currently focuses on documentation, repository governance, and workflow definition within:
+Development activity currently focuses on documentation, repository governance, and workflow
+definition within:
 
 - `docs/`
 - `.github/`
 - repository configuration files
 
-An AI-assisted development workflow and continuous integration system are required to support this process.
+An AI-assisted development workflow and continuous integration system are required to support this
+process.
 
 The tooling must support:
 
@@ -31,11 +34,14 @@ The tooling must support:
 
 Several alternative approaches were considered.
 
-Using a single AI development tool would simplify the toolchain but would reduce flexibility between lightweight editor assistance and broader agentic workflows.
+Using a single AI development tool would simplify the toolchain but would reduce flexibility between
+lightweight editor assistance and broader agentic workflows.
 
-Deferring CI tooling decisions until application code exists would leave documentation and repository standards without automated validation.
+Deferring CI tooling decisions until application code exists would leave documentation and
+repository standards without automated validation.
 
-Introducing multiple automated review tools or AI agents at this stage would increase workflow complexity before repository conventions are established.
+Introducing multiple automated review tools or AI agents at this stage would increase workflow
+complexity before repository conventions are established.
 
 A small set of complementary tools was therefore required.
 

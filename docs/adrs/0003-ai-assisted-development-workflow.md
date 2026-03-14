@@ -10,9 +10,14 @@ tags: [ai, development-workflow, governance]
 
 ## Context
 
-Software development increasingly incorporates AI-assisted tools that support code generation, documentation updates, and code review. These tools can accelerate development but also introduce risks such as inconsistent changes, undocumented architectural drift, or modification of governance rules.
+Software development increasingly incorporates AI-assisted tools that support code generation,
+documentation updates, and code review. These tools can accelerate development but also introduce
+risks such as inconsistent changes, undocumented architectural drift, or modification of governance
+rules.
 
-The repository is structured around explicit documentation standards, architectural decision records, and a controlled Git workflow. AI tooling must operate within these constraints to maintain repository consistency and traceability.
+The repository is structured around explicit documentation standards, architectural decision
+records, and a controlled Git workflow. AI tooling must operate within these constraints to maintain
+repository consistency and traceability.
 
 A development approach is required that enables AI-assisted contributions while ensuring:
 
@@ -27,13 +32,17 @@ Alternative approaches considered included:
 - Allowing unrestricted AI-generated changes across the repository.
 - Allowing AI-generated commits without mandatory review.
 
-Manual development does not leverage modern productivity tooling. Unrestricted AI changes risk repository inconsistency and governance drift. Unreviewed AI commits remove human oversight from architectural and documentation changes.
+Manual development does not leverage modern productivity tooling. Unrestricted AI changes risk
+repository inconsistency and governance drift. Unreviewed AI commits remove human oversight from
+architectural and documentation changes.
 
-A controlled AI-assisted workflow provides the benefits of automation while maintaining repository integrity.
+A controlled AI-assisted workflow provides the benefits of automation while maintaining repository
+integrity.
 
 ## Decision
 
-The repository adopts an AI-assisted development workflow integrated with the GitHub platform and governed by repository standards.
+The repository adopts an AI-assisted development workflow integrated with the GitHub platform and
+governed by repository standards.
 
 AI tools may assist with development tasks such as:
 
@@ -41,9 +50,11 @@ AI tools may assist with development tasks such as:
 - updating architecture or design documentation
 - drafting architectural decision records
 
-All AI-generated changes must be proposed through pull requests and are subject to the same review requirements as human contributions.
+All AI-generated changes must be proposed through pull requests and are subject to the same review
+requirements as human contributions.
 
-Repository governance and operational standards are protected and must not be modified by AI contributors. Restricted areas include:
+Repository governance and operational standards are protected and must not be modified by AI
+contributors. Restricted areas include:
 
 - `.github/`
 - `docs/standards/`
@@ -57,7 +68,8 @@ AI contributors may propose modifications to other repository areas, including:
 - design documentation
 - ADR drafts
 
-All changes must follow the repository workflow defined in the standards, including issue-based work initiation, pull request review, and compliance with the Definition of Done.
+All changes must follow the repository workflow defined in the standards, including issue-based work
+initiation, pull request review, and compliance with the Definition of Done.
 
 ## Consequences
 
@@ -88,4 +100,5 @@ These operational details are defined in repository standards and configuration 
 
 ## Notes (Optional)
 
-The AI-assisted workflow relies on structured documentation and repository standards to provide machine-readable context for AI contributors. These standards are defined under `docs/standards/`.
+The AI-assisted workflow relies on structured documentation and repository standards to provide
+machine-readable context for AI contributors. These standards are defined under `docs/standards/`.
