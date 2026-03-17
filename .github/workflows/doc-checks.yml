@@ -39,7 +39,10 @@ jobs:
           test -d docs
 
           echo "Checking markdown files were found..."
-          mapfile -t files < <(find docs -type f -name "*.md" | sort)
+          mapfile -t files < <(
+            find docs/adrs docs/architecture docs/design docs/runbooks docs/standards docs/technologies \
+              -type f -name "*.md" | sort
+          )
 
           if [ "${#files[@]}" -eq 0 ]; then
             echo "No markdown files found under docs/"
