@@ -44,3 +44,7 @@ Proc docs very through review
 more standardization for the mds - line breaks, sectioning, etc...
 
 cannot merge branches unless checks are good
+
+specific tuninng - define the frontmatter
+
+diff actions for diff branches

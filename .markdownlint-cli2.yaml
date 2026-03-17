@@ -19,5 +19,5 @@ globs:
 ignores:
   - "**/node_modules/**"
   - ".git"
-  - "**/ideas.md"
-  - ".github"
+  - "**/backlog/**"
+  - ".github/**"
