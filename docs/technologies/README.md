@@ -28,11 +28,11 @@ Technologies are grouped according to their role in the development system.
 
 ---
 
-# Platform
+## Platform
 
 Platforms that host the repository and provide collaboration infrastructure.
 
-## GitHub
+### GitHub
 
 GitHub provides the primary collaboration platform for the repository.
 
@@ -48,11 +48,11 @@ GitHub acts as the central coordination system for development activity.
 
 ---
 
-# Development Assistance
+## Development Assistance
 
 Tools that assist contributors during development.
 
-## GitHub Copilot
+### GitHub Copilot
 
 GitHub Copilot provides inline assistance within the editor environment.
 
@@ -65,7 +65,7 @@ Typical uses include:
 
 Copilot is intended for lightweight assistance during normal development.
 
-## Claude Code
+### Claude Code
 
 Claude Code provides agentic assistance for broader development tasks.
 
@@ -82,11 +82,11 @@ repository understanding.
 
 ---
 
-# Automated Review
+## Automated Review
 
 Tools that provide automated feedback during pull request review.
 
-## GitHub Copilot Code Review
+### GitHub Copilot Code Review
 
 Copilot Code Review analyzes pull requests and provides automated feedback related to:
 
@@ -99,11 +99,11 @@ Automated feedback supplements human review but does not replace it.
 
 ---
 
-# Automation and Continuous Integration
+## Automation and Continuous Integration
 
 Systems that execute automated workflows in response to repository events.
 
-## GitHub Actions
+### GitHub Actions
 
 GitHub Actions provides the automation and continuous integration platform for the repository.
 
@@ -118,22 +118,22 @@ Automation ensures repository consistency and helps detect issues early.
 
 ---
 
-# Repository Validation Tools
+## Repository Validation Tools
 
 Tools used within CI workflows to validate documentation and configuration files.
 
-## markdownlint-cli2
+### markdownlint-cli2
 
 `markdownlint-cli2` enforces Markdown formatting consistency across repository documentation.
 
 It helps maintain readability and ensures documentation follows established conventions.
 
-## yamllint
+### yamllint
 
 `yamllint` validates YAML files and helps ensure configuration files such as GitHub workflows remain
 syntactically correct and consistent.
 
-## Custom Validation Scripts
+### Custom Validation Scripts
 
 Custom validation scripts are used to enforce repository-specific rules that general linting tools
 cannot fully capture.

@@ -38,3 +38,9 @@ add docs/standards/document-formatting-and-linting.md file
 https://chatgpt.com/g/g-p-6936e34ce2508191a765c6416fd024b9-app/c/69b36bfb-f688-832c-8343-b4b05d1cda37
 we want to test this linter - also test the github actions with the pr, especially when one is wrong
 npm run lint:md
+
+Proc docs very through review
+
+more standardization for the mds - line breaks, sectioning, etc...
+
+cannot merge branches unless checks are good

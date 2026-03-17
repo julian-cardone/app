@@ -6,7 +6,7 @@ owners: ["@julian-cardone"]
 tags: [standards]
 ---
 
-# ADR Template
+## ADR Template
 
 Architecture Decision Records (ADRs) document **significant, long-lived decisions** that constrain
 future work.

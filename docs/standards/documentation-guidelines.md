@@ -35,12 +35,12 @@ tags: [<keyword>, <keyword>]
 
 A short, descriptive, human-readable name.
 
-_Rules_
+Rules:
 
 - Use Title Case.
 - Match the H1.
 
-_Why it Exists_
+Why it Exists:
 
 - Primary Display Name for Humans.
 - Index key for search and AI tooling.
@@ -49,11 +49,11 @@ _Why it Exists_
 
 The semantic category of the document.
 
-_Allowed Values_
+Allowed Values:
 
 `adr` | `architecture` | `design` | `standard` | `runbook` | `backlog` | `technology`
 
-_Why it Exists_
+Why it Exists:
 
 - Allow machines to reason about intent.
 - Prevents mixing decisions, rules, and exploration.
@@ -63,14 +63,14 @@ _Why it Exists_
 
 The lifecycle state of the document.
 
-_Recommended Values_
+Recommended Values:
 
 - `draft` – still evolving.
 - `accepted` – authoritative.
 - `deprecated` – no longer valid, kept for history.
 - `superseded` – replaced by another doc.
 
-_Why it Exists_
+Why it Exists:
 
 - Prevents stale docs from being treated as truth.
 - Critical for AI-assisted reasoning later.
@@ -79,12 +79,12 @@ _Why it Exists_
 
 People responsible for accuracy, not authorship.
 
-_Rules_
+Rules:
 
 - GitHub handles only.
 - Can be a single person or a small list.
 
-_Why it Exists_
+Why it Exists:
 
 - Answers “who should fix this if it’s wrong?”.
 - Enables automated ownership checks later.
@@ -93,14 +93,14 @@ _Why it Exists_
 
 Lightweight keywords for cross-cutting concerns.
 
-_Rules_
+Rules:
 
 - Lowercase.
 - Short.
 - No spaces (use hyphens if needed).
 - 6 tags max to avoid over-classification.
 
-_Examples_
+Examples:
 
 - `documentation`
 - `workflow`
@@ -108,7 +108,7 @@ _Examples_
 - `ai-readiness`
 - `security`
 
-_Why it Exists_
+Why it Exists:
 
 - Improves discovery without rigid taxonomy.
 - Helps AI cluster related docs.

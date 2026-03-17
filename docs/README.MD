@@ -1,8 +1,10 @@
 # Documentation Overview
 
-This directory contains all the documentation for the project. It is structured for discoverability, maintainability, and scalability, with intentional segmentation to discourage redundancy.
+This directory contains all the documentation for the project. It is structured for discoverability,
+maintainability, and scalability, with intentional segmentation to discourage redundancy.
 
-This document explains how the documentation is organized. This document is meant to orient, not explain implementation specifics.
+This document explains how the documentation is organized. This document is meant to orient, not
+explain implementation specifics.
 
 ## Start Here (Human or Machine)
 
@@ -16,7 +18,8 @@ Before proposing changes, writing code, or creating design artifacts:
    - An ADR
    - A Backlog entry
 
-**IMPORTANT:** Do not introduce new structure, technologies, or conventions without verifying against existing documentation.
+**IMPORTANT:** Do not introduce new structure, technologies, or conventions without verifying
+against existing documentation.
 
 If uncertain, pause and consult with a senior person.
 
