@@ -29,10 +29,6 @@ documentation for everything. reasons why and guides.
 
 dependency: node as a tooling runtime
 
-left off at adding vs code settings for rpettier formatter - test this add
-docs/standards/document-formatting-and-linting.md file
-https://chatgpt.com/g/g-p-6936e34ce2508191a765c6416fd024b9-app/c/69b36bfb-f688-832c-8343-b4b05d1cda37
-we want to test this linter - also test the github actions with the pr, especially when one is wrong
 npm run lint:md
 
 Proc docs very through review
@@ -44,3 +40,6 @@ cannot merge branches unless checks are good
 specific tuninng - define the frontmatter
 
 diff actions for diff branches
+
+do yaml lint eventually
+
