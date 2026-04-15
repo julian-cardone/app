@@ -1,49 +1,45 @@
 # CLAUDE.md
 
-This file is the primary instruction file for Claude Code. Read this file in full before taking any
-action in this repository.
+Documentation-first repo. All governance lives in `docs/`. No application code exists yet.
 
 ---
 
-## What This Repository Is
+## Core Rules
 
-This repository follows a documentation-first approach. Standards, processes, and tooling
-conventions are defined in `docs/` and govern all development activity. All contributions — human or
-AI-generated — must conform to these conventions.
-
----
-
-## Required Reading
-
-Read the following documents before starting any task:
-
-1. `docs/agents/capabilities.md` — what you are permitted to do
-2. `docs/agents/constraints.md` — what you are not permitted to do
-3. `docs/agents/ownership.md` — who owns what and what that means for modifications
-4. `docs/agents/pr-format.md` — how to structure pull requests
-5. `docs/standards/documentation.md` — how all documents must be written and structured
-6. `docs/process/doc-governance.md` — when to create, update, or delete documents
-7. `docs/process/git-workflow.md` — branching, PR, and commit rules
-8. `docs/process/ci-pipeline.md` — what CI enforces and what must pass before merging
-9. `docs/process/done-criteria.md` — what constitutes a completed task
-10. `docs/technologies/stack.md` — what tools are in use and why
-
-For architectural context, read `docs/adrs/` in numerical order.
+- All changes go through a pull request and require human approval before merging. Never push
+  directly to `main`, approve, or merge pull requests.
+- Branches: `issue-<id>-<slug>` (e.g., `issue-12-add-auth-design`).
+- Verify: `npm run lint:md` (hook runs this automatically after edits).
+- All docs are writable. New ADRs in `docs/adrs/` only when explicitly instructed; never edit an
+  accepted ADR — create a new one to supersede it.
+- After changes to CI workflows, tooling config, branching/PR conventions, or architecture: check
+  whether any related docs need updating.
 
 ---
 
-## Protected Paths
+## Compaction
 
-The following must not be modified without explicit human instruction:
+When compacting, preserve: current branch name, list of modified files, and lint status.
 
-- `docs/standards/` — documentation and coding standards
-- `docs/agents/` — agent capabilities and constraints
-- `docs/adrs/` — architectural decision records
-- `.github/` — CI workflows, branch protection, and GitHub configuration
-- `.github/CODEOWNERS` — review routing and ownership rules
-- `.vale.ini` and `.vale/styles/` — prose linting rules and style definitions
-- `.markdownlint-cli2.yaml` — Markdown structure linting rules
-- `.prettierrc.json` — formatting rules
-- `CLAUDE.md` — this file
+---
 
-If a task requires changes to any of the above, stop and request clarification before proceeding.
+## Reference Docs
+
+Read these only when the task calls for it — do not load all of them upfront.
+
+| When                                        | Read                                                                                                     |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| GitHub CLI scope or agent action edge cases | `docs/agents/capabilities.md`, `docs/agents/constraints.md`                                              |
+| Ownership or review routing                 | `docs/agents/ownership.md`                                                                               |
+| Creating or editing a doc                   | `docs/standards/documentation.md`, `docs/process/doc-governance.md`                                      |
+| Drafting a new ADR                          | `docs/adrs/_template.md`, `docs/process/doc-governance.md`                                               |
+| Writing a commit message                    | `docs/process/commit-messages.md`                                                                        |
+| Starting work / branching                   | `docs/process/git-workflow.md`                                                                           |
+| Creating a GitHub issue                     | `docs/process/project-management.md`                                                                     |
+| Opening a PR                                | `docs/agents/pr-format.md`, `docs/process/done-criteria.md`                                              |
+| PR includes doc changes                     | run `/check-doc` on each modified doc first                                                              |
+| CI or tooling questions                     | `docs/process/ci-pipeline.md`, `docs/technologies/stack.md`                                              |
+| Architectural context                       | `docs/adrs/` in numerical order                                                                          |
+| Writing application code                    | `docs/standards/coding.md`, `docs/standards/folder-structure.md`, `docs/standards/naming-conventions.md` |
+| Security-sensitive work                     | `docs/standards/security.md`                                                                             |
+| Writing tests                               | `docs/standards/testing.md`                                                                              |

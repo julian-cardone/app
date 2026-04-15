@@ -1,9 +1,10 @@
 ---
 title: Git Workflow
-doc_type: standard
-status: draft
+doc_type: process
+status: accepted
 owners: ["@julian-cardone"]
-tags: [git, workflow, branching, pull-requests]
+last_reviewed: 2026-04-15
+tags: [git, workflow, process]
 ---
 
 # Git Workflow

@@ -1,9 +1,10 @@
 ---
 title: Ownership and Responsibility
-doc_type: standard
-status: draft
+doc_type: agent
+status: accepted
 owners: ["@julian-cardone"]
-tags: [ownership, responsibility, standards]
+last_reviewed: 2026-04-15
+tags: [governance, standards, ai-agent]
 ---
 
 # Ownership and Responsibility

@@ -40,8 +40,7 @@ jobs:
 
           echo "Checking markdown files were found..."
           mapfile -t files < <(
-            find docs/adrs docs/architecture docs/design docs/runbooks docs/standards docs/technologies \
-              -type f -name "*.md" | sort
+            find docs/ -type f -name "*.md" | sort
           )
 
           if [ "${#files[@]}" -eq 0 ]; then
@@ -140,14 +139,20 @@ jobs:
           set -euo pipefail
 
           required_files=(
-            "docs/standards/ai-workflow.md"
-            "docs/standards/ai-permissions-and-gates.md"
-            "docs/standards/documentation-guidelines.md"
-            "docs/standards/documentation-maintenance.md"
-            "docs/standards/git-workflow.md"
-            "docs/standards/pull-requests.md"
-            "docs/standards/commit-messages.md"
-            "docs/standards/ownership-and-responsibility.md"
+            "docs/standards/documentation.md"
+            "docs/standards/coding.md"
+            "docs/standards/testing.md"
+            "docs/standards/folder-structure.md"
+            "docs/standards/naming-conventions.md"
+            "docs/standards/security.md"
+            "docs/process/git-workflow.md"
+            "docs/process/commit-messages.md"
+            "docs/process/ci-pipeline.md"
+            "docs/process/done-criteria.md"
+            "docs/process/project-management.md"
+            "docs/agents/capabilities.md"
+            "docs/agents/constraints.md"
+            "docs/agents/ownership.md"
           )
 
           for file in "${required_files[@]}"; do

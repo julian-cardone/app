@@ -1,10 +1,15 @@
 # Default: all changes require review from the repository owner.
 
-- @julian-cardone
+* @julian-cardone
 
 # Guardrails (AI must not modify; human review required regardless).
 
 .github/ @julian-cardone
+CLAUDE.md @julian-cardone
+.vale.ini @julian-cardone
+.markdownlint-cli2.yaml @julian-cardone
+.prettierrc.json @julian-cardone
 docs/standards/ @julian-cardone
-docs/runbooks/ @julian-cardone
+docs/agents/ @julian-cardone
+docs/adrs/ @julian-cardone
 docs/technologies/ @julian-cardone

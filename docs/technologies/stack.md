@@ -3,10 +3,10 @@ title: Technology Stack
 doc_type: technology
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-03-28
+last_reviewed: 2026-04-15
 related:
   [
-    "docs/adrs/0003-ai-assisted-development-workflow.md",
+    "docs/adrs/0003-ai-assisted-development.md",
     "docs/adrs/0004-repository-tooling-stack.md",
     "docs/process/ci-pipeline.md",
     "docs/agents/capabilities.md",
@@ -40,13 +40,17 @@ behavior is governed by the constraints and capabilities defined in `docs/agents
 
 ### GitHub Copilot
 
-GitHub Copilot provides inline code completions and chat assistance within VS Code. It is also used
-for automated pull request feedback via Copilot Code Review. Copilot reads
-`.github/copilot-instructions.md` for repository-specific instructions.
+GitHub Copilot provides inline code completions and chat assistance within VS Code. The Autofixes
+feature applies suggested corrections directly in the editor. Copilot Code Review provides automated
+pull request feedback in CI. Copilot reads `.github/copilot-instructions.md` for repository-specific
+instructions.
 
-Copilot `@workspace` is used alongside Claude Code for codebase Q&A and document retrieval. This
-combination is the approved pattern for querying the repository — asking questions about code,
-documentation, or architecture without initiating an agentic task.
+### Codebase Q&A
+
+Copilot `@workspace` combined with Claude Code is the approved pattern for querying the repository —
+asking questions about code, documentation, or architecture without initiating an agentic task.
+`@workspace` provides RAG-based retrieval across the codebase; Claude Code reasons over the results.
+Use this pattern when the goal is understanding, not making changes.
 
 ---
 
@@ -113,15 +117,16 @@ hierarchy, block spacing, and other structural rules. Configuration lives in
 
 ### Vale
 
-Vale enforces prose quality in documentation. It validates tone, word choice, and style consistency
-against the rules defined in `.vale.ini` and the style packages in `.vale/styles/`. Vale is
-configured to skip YAML frontmatter blocks.
+Vale is configured as a prose quality enforcement tool. The base configuration in `.vale.ini` skips
+YAML frontmatter blocks. Vale requires style packages to be installed in `.vale/styles/` before it
+will enforce prose rules — style setup is project-specific. No styles are currently active; Vale
+enforcement will be enabled when style packages are selected and configured.
 
 ### markdown-link-check
 
 `markdown-link-check` validates that all hyperlinks in Markdown files resolve correctly. It runs in
-CI and will fail a pull request if any link is broken. This is the primary guard against
-documentation link rot.
+CI on changes to `docs/` and `README.md`, and will fail a pull request if any link is broken. This
+is the primary guard against documentation link rot.
 
 ---
 

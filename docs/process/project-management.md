@@ -1,9 +1,10 @@
 ---
 title: Project Management
-doc_type: standard
-status: draft
+doc_type: process
+status: accepted
 owners: ["@julian-cardone"]
-tags: [workflow, issues, project-board, governance]
+last_reviewed: 2026-04-15
+tags: [workflow, governance, process]
 ---
 
 # Project Management

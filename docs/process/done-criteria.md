@@ -1,9 +1,10 @@
 ---
 title: Definition of Done
-doc_type: standard
-status: draft
+doc_type: process
+status: accepted
 owners: ["@julian-cardone"]
-tags: [workflow, quality, review]
+last_reviewed: 2026-04-15
+tags: [workflow, governance, process]
 ---
 
 # Definition of Done
@@ -38,7 +39,8 @@ Pull requests that modify or introduce documentation must satisfy the following 
 
 ## Architecture and Design Changes
 
-Pull requests that modify architecture or design documentation must satisfy the following requirements.
+Pull requests that modify architecture or design documentation must satisfy the following
+requirements.
 
 - Architecture documentation reflects the current system structure.
 - Design documents accurately describe the intended implementation.
@@ -53,4 +55,5 @@ When a change introduces a significant architectural decision:
 
 ## Completion
 
-A pull request may be merged only after all applicable requirements in this document have been satisfied.
+A pull request may be merged only after all applicable requirements in this document have been
+satisfied.

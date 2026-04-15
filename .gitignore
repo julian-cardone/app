@@ -27,6 +27,13 @@ Icon
 .Trashes
 
 # -----------------------------
+# Claude Code
+# -----------------------------
+
+CLAUDE.local.md
+.claude/settings.local.json
+
+# -----------------------------
 # Editor / IDE
 # -----------------------------
 

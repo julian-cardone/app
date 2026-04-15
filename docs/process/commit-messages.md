@@ -1,9 +1,10 @@
 ---
 title: Commit Messages
-doc_type: standard
-status: draft
+doc_type: process
+status: accepted
 owners: ["@julian-cardone"]
-tags: [git, commits, workflow]
+last_reviewed: 2026-04-15
+tags: [git, workflow, process]
 ---
 
 # Commit Messages
