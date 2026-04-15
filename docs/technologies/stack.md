@@ -1,148 +1,133 @@
 ---
-title: Technologies
+title: Technology Stack
 doc_type: technology
-status: draft
+status: accepted
 owners: ["@julian-cardone"]
-tags: [technology, stack, tooling]
+last_reviewed: 2026-03-28
+related:
+  [
+    "docs/adrs/0003-ai-assisted-development-workflow.md",
+    "docs/adrs/0004-repository-tooling-stack.md",
+    "docs/process/ci-pipeline.md",
+    "docs/agents/capabilities.md",
+  ]
+tags: [tooling, ai-agent, ci-cd]
 ---
 
-# Technologies
+# Technology Stack
 
-This directory documents the technologies used within the repository and their roles in the
-development workflow.
+This document defines the approved tooling stack for this repository. It covers the purpose of each
+tool and the rationale for its inclusion. It is the authoritative reference for what tools are in
+use and why.
 
-Technology documents describe:
-
-- the purpose of each tool or platform
-- how the tool integrates with the development process
-- operational considerations relevant to contributors
-
-Technology documents are descriptive.
-
-Repository rules, constraints, and workflow requirements are defined separately in the standards
-under `docs/standards`.
-
-## Technology Categories
-
-Technologies are grouped according to their role in the development system.
-
----
-
-## Platform
-
-Platforms that host the repository and provide collaboration infrastructure.
-
-### GitHub
-
-GitHub provides the primary collaboration platform for the repository.
-
-Responsibilities include:
-
-- source control hosting
-- issue tracking
-- pull request workflows
-- project boards
-- repository governance features such as branch protection and CODEOWNERS
-
-GitHub acts as the central coordination system for development activity.
+For the architectural decisions that led to this stack, see
+[ADR-0004: Repository Tooling Stack](../adrs/0004-repository-tooling-stack.md). For how these tools
+are configured in CI, see [CI Pipeline](../process/ci-pipeline.md). For how agents interact with
+these tools, see [Agent Capabilities](../agents/capabilities.md).
 
 ---
 
-## Development Assistance
-
-Tools that assist contributors during development.
-
-### GitHub Copilot
-
-GitHub Copilot provides inline assistance within the editor environment.
-
-Typical uses include:
-
-- code suggestions
-- boilerplate generation
-- small refactors
-- drafting documentation
-
-Copilot is intended for lightweight assistance during normal development.
+## AI-Assisted Development
 
 ### Claude Code
 
-Claude Code provides agentic assistance for broader development tasks.
+Claude Code is the primary AI agent for this repository. It is used for agentic development tasks
+including multi-file edits, documentation drafting, and codebase reasoning. It operates via the
+terminal and as a VS Code extension.
 
-Typical responsibilities include:
+Claude Code reads `CLAUDE.md` at the repository root as its primary instruction file. All agent
+behavior is governed by the constraints and capabilities defined in `docs/agents/`.
 
-- repository exploration
-- multi-file edits
-- documentation updates
-- refactoring assistance
-- architectural or design draft generation
+### GitHub Copilot
 
-Claude Code is used when tasks require coordinated changes across multiple files or deeper
-repository understanding.
+GitHub Copilot provides inline code completions and chat assistance within VS Code. It is also used
+for automated pull request feedback via Copilot Code Review. Copilot reads
+`.github/copilot-instructions.md` for repository-specific instructions.
 
----
-
-## Automated Review
-
-Tools that provide automated feedback during pull request review.
-
-### GitHub Copilot Code Review
-
-Copilot Code Review analyzes pull requests and provides automated feedback related to:
-
-- code quality
-- potential errors
-- maintainability concerns
-- suggested improvements
-
-Automated feedback supplements human review but does not replace it.
+Copilot `@workspace` is used alongside Claude Code for codebase Q&A and document retrieval. This
+combination is the approved pattern for querying the repository — asking questions about code,
+documentation, or architecture without initiating an agentic task.
 
 ---
 
-## Automation and Continuous Integration
+## Version Control and Project Management
 
-Systems that execute automated workflows in response to repository events.
+### GitHub
+
+GitHub is the authoritative platform for version control, pull request review, and project
+management. It is the single system of record for all repository changes and project state.
+
+The decision to use GitHub for project management is documented in
+[ADR-0002: GitHub for Project Management](../adrs/0002-github-for-project-management.md).
+
+### Dependabot
+
+Dependabot provides automated dependency management. It opens pull requests to update dependencies
+when new versions are available. No manual configuration is required beyond the repository-level
+Dependabot settings.
+
+---
+
+## CI and Automation
 
 ### GitHub Actions
 
-GitHub Actions provides the automation and continuous integration platform for the repository.
+GitHub Actions is the CI and automation platform for this repository. It orchestrates all automated
+validation, linting, and enforcement jobs. CI is the authoritative enforcement gate for all
+repository standards — local tooling execution is the contributor's responsibility, but CI is the
+final authority.
 
-Typical responsibilities include:
+Workflow definitions live in `.github/workflows/`. For details on what each job does and when it
+runs, see [CI Pipeline](../process/ci-pipeline.md).
 
-- executing CI workflows
-- validating documentation structure
-- running repository validation checks
-- enforcing repository quality gates
+### action-semantic-pull-request
 
-Automation ensures repository consistency and helps detect issues early.
+`action-semantic-pull-request` validates that pull request titles conform to the conventional commit
+format. PR titles are used as squash commit messages, making this the enforcement point for commit
+message standards. This runs as a GitHub Actions job on every pull request.
+
+For commit message conventions, see [Commit Messages](../process/commit-messages.md).
 
 ---
 
-## Repository Validation Tools
+## Formatting
 
-Tools used within CI workflows to validate documentation and configuration files.
+### Prettier
+
+Prettier is the general-purpose formatter for this repository. It handles automatic formatting of
+Markdown and any other supported file types introduced in the future. Prettier is configured to run
+on save in VS Code via `.vscode/settings.json`.
+
+Configuration lives in `.prettierrc.json`. Files excluded from formatting are listed in
+`.prettierignore`.
+
+---
+
+## Documentation Validation
 
 ### markdownlint-cli2
 
-`markdownlint-cli2` enforces Markdown formatting consistency across repository documentation.
+`markdownlint-cli2` validates Markdown structure across all `.md` files. It enforces heading
+hierarchy, block spacing, and other structural rules. Configuration lives in
+`.markdownlint-cli2.yaml`.
 
-It helps maintain readability and ensures documentation follows established conventions.
+### Vale
 
-### yamllint
+Vale enforces prose quality in documentation. It validates tone, word choice, and style consistency
+against the rules defined in `.vale.ini` and the style packages in `.vale/styles/`. Vale is
+configured to skip YAML frontmatter blocks.
 
-`yamllint` validates YAML files and helps ensure configuration files such as GitHub workflows remain
-syntactically correct and consistent.
+### markdown-link-check
 
-### Custom Validation Scripts
+`markdown-link-check` validates that all hyperlinks in Markdown files resolve correctly. It runs in
+CI and will fail a pull request if any link is broken. This is the primary guard against
+documentation link rot.
 
-Custom validation scripts are used to enforce repository-specific rules that general linting tools
-cannot fully capture.
+---
 
-These checks may validate:
+## Adding or Replacing Tools
 
-- documentation metadata structure
-- ADR numbering conventions
-- required repository documentation
-- documentation organization rules
-
-These scripts are executed through CI workflows.
+Tool additions or replacements that change the scope of the approved stack require an update to this
+document and a corresponding PR. If the change represents a significant architectural shift, a new
+ADR should be considered. Individual configuration changes do not require an update to this
+document.

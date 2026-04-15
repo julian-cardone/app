@@ -1,53 +1,54 @@
 ---
-title: Documentation Structure
+title: "ADR-0001: Documentation Structure"
 doc_type: adr
-status: draft
+status: accepted
 owners: ["@julian-cardone"]
-tags: [documentation]
+last_reviewed: 2026-03-29
+related: []
+tags: [documentation, standards]
 ---
 
 # ADR-0001: Documentation Structure
 
 ## Context
 
-This is an early-stage repository. Documentation structure decisions made early tend to calcify and
-are costly to change later. Poorly structured documentation can quickly become difficult to read,
-maintain, and scale.
+Documentation structure decisions made early in a project tend to calcify and are costly to reverse
+later. Poorly structured documentation fragments over time, becoming difficult to maintain and
+inaccessible to automated tooling.
 
-We want to begin developing quickly while maintaining high-quality documentation. Documentation must
-be easy to access and maintain for developers, and structured in a way that supports future
-AI-assisted workflows such as search, summarization, and automation. By establishing a clear
-documentation structure now, we reduce future integration effort and avoid documentation
-fragmentation.
+This repository is designed to support AI-assisted workflows from the start. For that to work,
+documentation must be machine-readable, consistently structured, and versioned alongside code.
 
-External tools (Google Docs, SharePoint) were considered, but were ultimately not chosen because
-they introduce:
+Two alternatives were considered and rejected.
 
-- Weaker versioning.
-- Poor machine accessibility.
-- They are harder to integrate into automated workflows.
+External tools such as Google Docs, Notion, and SharePoint were rejected because they introduce
+weaker versioning, limited machine accessibility, and poor integration with automated pipelines.
+
+A wiki was rejected because it is not versioned with the repository, cannot be linted or validated
+in CI, and is harder to reference from code or tooling.
 
 ## Decision
 
-Documentation will:
-
-- Be located in the project repository under the `docs/` directory.
-- Use Markdown as the documentation format.
+All documentation is located in the repository under the `docs/` directory. Markdown is the required
+format for all documents. No external documentation tools are used as a primary source of truth.
 
 ## Consequences
 
-### Positive
+### Positives
 
-- Documentation is human-readable and machine-readable.
-- Documentation is versioned alongside code using GitHub.
-- Structured, text-based documentation enables future AI-assisted workflows with minimal
-  refactoring.
+- Documentation is versioned alongside code and subject to the same review process.
+- Markdown is human-readable and machine-readable without additional tooling.
+- Structured text-based documentation supports AI-assisted workflows including search,
+  summarization, and automation.
+- Linting and validation can be applied to documentation in CI.
 
-### Negative
+### Negatives
 
-- Maintaining documentation quality requires ongoing discipline.
+- Documentation quality requires ongoing contributor discipline to maintain.
+- Markdown has limited native support for rich formatting such as diagrams or complex tables.
 
 ### Out of Scope
 
-- This decision does not define how AI workflows or automation will be implemented.
-- This decision only establishes documentation structure to support potential future integration.
+- This ADR does not define the internal structure of the `docs/` directory or its subdirectories.
+- This ADR does not define documentation formatting standards or metadata requirements.
+- This ADR does not define how AI workflows or automation are implemented against the documentation.

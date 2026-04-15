@@ -1,7 +1,7 @@
 ---
 title: Documentation Standards
 doc_type: standard
-status: draft
+status: accepted
 owners: ["@julian-cardone"]
 last_reviewed: 2026-03-28
 related:
@@ -104,8 +104,12 @@ File paths to related documents. Enables agents to navigate the document graph e
 than by inference.
 
 ```yaml
-related: ["docs/adrs/0006-ci-as-linting-gate.md", "docs/process/git-workflow.md"]
+related: ["docs/adrs/0001-documentation-structure.md", "docs/process/git-workflow.md"]
 ```
+
+For documents with `doc_type: adr`, the `related` field must only contain paths to other ADRs. ADRs
+must not link to documentation, configuration, or any implementation artifact, as these drift and
+would require superseding an otherwise valid ADR.
 
 #### `tags` (optional but encouraged)
 
@@ -158,8 +162,7 @@ Documentation must be factual, neutral, and durable.
 
 ### Prose
 
-- Wrap prose at the configured line length (see `.prettierrc.json`).
-- Line length is not enforced for code blocks, tables, or headings.
+- Wrap prose at the configured line length defined in the repository formatting configuration.
 
 ### Lists
 
