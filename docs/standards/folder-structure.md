@@ -15,8 +15,8 @@ repository and any application code it contains.
 
 ## Current Status
 
-No application code has been introduced. Application-specific folder conventions will be added here
-when the technology stack is selected.
+No application code has been introduced. No application-specific folder conventions apply. No
+technology stack has been selected.
 
 ## Universal Principles
 
@@ -55,12 +55,4 @@ The following top-level directories are reserved and must not be repurposed:
 
 ## Application Structure
 
-Application folder conventions will be defined here when the technology stack is selected. At that
-point, this document will cover:
-
-- Where application entry points live
-- Where business logic lives vs. infrastructure
-- Where tests are colocated or separated
-- Where configuration and environment handling live
-- Where public assets and static files live
-- Where generated code lives
+No application-specific folder conventions apply.

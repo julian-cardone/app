@@ -16,7 +16,8 @@ configuration, and infrastructure introduced into the repository.
 ## Current Status
 
 Application-specific security requirements depend on the technology stack, deployment environment,
-and data handling needs. Stack-specific requirements will be added here when the stack is selected.
+and data handling needs. No stack-specific requirements apply. No technology stack has been
+selected.
 
 ## Universal Principles
 
@@ -55,13 +56,4 @@ callers. Log errors internally and return safe, minimal responses to callers.
 
 ## Application Security Requirements
 
-Stack-specific security requirements will be added here when the technology stack is selected. At
-that point, this document will cover:
-
-- Authentication and session management requirements
-- Authorization and access control patterns
-- Input validation and output encoding
-- Cryptography standards (algorithms, key lengths, storage)
-- Secure communication requirements
-- Data handling and retention requirements
-- Dependency scanning and audit tooling
+No stack-specific security requirements apply.

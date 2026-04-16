@@ -22,13 +22,7 @@ decision rationale — that belongs in [Architecture Decision Records](../adrs/)
 No application code has been introduced to this repository. There is no application architecture to
 document at this time.
 
-Architecture documentation will be added here as the application takes shape. At that point, this
-directory will describe:
-
-- High-level system components and their relationships
-- Data flow between components
-- External dependencies and integration points
-- Deployment topology
+No application architecture documentation applies. No application code has been introduced.
 
 ---
 

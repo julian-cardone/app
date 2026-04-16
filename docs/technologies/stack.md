@@ -118,9 +118,8 @@ hierarchy, block spacing, and other structural rules. Configuration lives in
 ### Vale
 
 Vale is configured as a prose quality enforcement tool. The base configuration in `.vale.ini` skips
-YAML frontmatter blocks. Vale requires style packages to be installed in `.vale/styles/` before it
-will enforce prose rules — style setup is project-specific. No styles are currently active; Vale
-enforcement will be enabled when style packages are selected and configured.
+YAML frontmatter blocks. Vale requires style packages before it will enforce prose rules — style
+setup is project-specific. No styles are currently active. Vale enforcement is inactive.
 
 ### markdown-link-check
 

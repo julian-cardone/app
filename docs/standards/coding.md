@@ -10,21 +10,12 @@ tags: [standards, tooling]
 
 # Coding Standards
 
-This document will define language-specific coding conventions for this repository.
+This document defines language-specific coding conventions for this repository.
 
 ## Current Status
 
-No application code has been introduced to this repository. The technology stack has not yet been
-selected.
-
-Coding standards will be defined when an application language and framework are chosen. At that
-point, this document will be updated to cover:
-
-- Code formatting rules and tooling
-- Naming conventions
-- File and module organization
-- Language-specific patterns and anti-patterns
-- Linting and static analysis configuration
+No application code has been introduced to this repository. No technology stack has been selected.
+No language-specific coding standards apply.
 
 ## Guiding Principles
 

@@ -10,21 +10,12 @@ tags: [testing, standards]
 
 # Testing Standards
 
-This document will define testing expectations and conventions for this repository.
+This document defines testing expectations and conventions for this repository.
 
 ## Current Status
 
-No application code has been introduced to this repository. The technology stack has not yet been
-selected.
-
-Testing standards will be defined when an application language and framework are chosen. At that
-point, this document will be updated to cover:
-
-- Testing framework selection and configuration
-- Test structure and organization
-- Coverage expectations
-- What to test and what not to test
-- CI integration for test execution
+No application code has been introduced to this repository. No technology stack has been selected.
+No application-specific testing standards apply.
 
 ## Guiding Principles
 

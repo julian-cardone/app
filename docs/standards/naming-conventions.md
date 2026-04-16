@@ -16,7 +16,7 @@ identifiers in this repository and any application code it contains.
 ## Current Status
 
 Language-specific naming conventions (camelCase, snake_case, PascalCase) depend on the technology
-stack and will be added here when the stack is selected.
+stack. No technology stack has been selected. No language-specific conventions apply.
 
 ## Universal Principles
 
@@ -55,11 +55,4 @@ Negated booleans create confusion when combined with conditional logic.
 
 ## Application Conventions
 
-Language-specific naming conventions will be added here when the technology stack is selected. At
-that point, this document will cover:
-
-- Case conventions per identifier type (variables, constants, functions, classes, types, files)
-- File naming patterns per file type
-- Directory naming patterns
-- Test file naming patterns
-- Environment variable naming
+No application-specific naming conventions apply.
