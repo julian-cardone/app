@@ -30,6 +30,7 @@ Format: `<type>(<scope>): <short description>`
 Valid types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`
 
 Examples:
+
 - `docs(process): add session and worktree management guide`
 - `chore(ci): fix required file paths in doc-checks workflow`
 
