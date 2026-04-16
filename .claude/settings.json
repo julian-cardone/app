@@ -10,6 +10,16 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '=== Session end — for compaction ===' && git branch --show-current && git status --short 2>&1"
+          }
+        ]
+      }
     ]
   }
 }
