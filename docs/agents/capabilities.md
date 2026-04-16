@@ -25,6 +25,7 @@ enforcement gate for all changes — agents must not push directly to `main` or 
 Agents may:
 
 - Create branches following the naming convention in [Git Workflow](../process/git-workflow.md)
+- Create and remove worktrees for task isolation
 - Stage and commit changes
 - Open pull requests
 

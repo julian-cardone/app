@@ -35,6 +35,7 @@ Read these only when the task calls for it — do not load all of them upfront.
 | Drafting a new ADR                          | `docs/adrs/_template.md`, `docs/process/doc-governance.md`                                               |
 | Writing a commit message                    | `docs/process/commit-messages.md`                                                                        |
 | Starting work / branching                   | `docs/process/git-workflow.md`                                                                           |
+| Starting work / session and worktree setup  | `docs/process/session-worktree-management.md`                                                            |
 | Creating a GitHub issue                     | `docs/process/project-management.md`                                                                     |
 | Opening a PR                                | `docs/agents/pr-format.md`, `docs/process/done-criteria.md`                                              |
 | PR includes doc changes                     | run `/check-doc` on each modified doc first                                                              |
