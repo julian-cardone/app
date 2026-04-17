@@ -37,15 +37,15 @@ increase workflow complexity before repository conventions are established.
 The repository adopts the following tooling stack to support the AI-assisted development workflow.
 
 GitHub Copilot provides in-editor development assistance and automated pull request feedback. Claude
-Code is used for agentic repository interaction and multi-file development tasks. GitHub Actions
-serves as the CI and automation platform. Dependabot provides automated dependency management. Pull
-request titles are validated against a conventional commit format using a dedicated GitHub Action,
-enforced at the CI level rather than locally.
+Code is used for agentic repository interaction and multi-file development tasks. Copilot
+`@workspace` and Claude Code together serve as the approved pattern for codebase Q&A and document
+retrieval. GitHub Actions serves as the CI and automation platform. Dependabot provides automated
+dependency management. Pull request titles are validated against a conventional commit format using
+a dedicated GitHub Action, enforced at the CI level rather than locally.
 
 Prettier is used for automated document formatting. markdownlint-cli2 and Vale enforce documentation
 structure and prose quality respectively. markdown-link-check validates hyperlink integrity across
-all documents. These tools run in CI and are the responsibility of contributors to execute locally
-before opening a pull request.
+all documents.
 
 Individual tool configurations and version selections are implementation details and do not require
 ADR-level decisions to change.

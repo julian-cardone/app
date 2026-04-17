@@ -99,11 +99,12 @@ For commit message conventions, see [Commit Messages](../process/commit-messages
 ### Prettier
 
 Prettier is the general-purpose formatter for this repository. It handles automatic formatting of
-Markdown and any other supported file types introduced in the future. Prettier is configured to run
-on save in VS Code via `.vscode/settings.json`.
+the following file types:
 
-Configuration lives in `.prettierrc.json`. Files excluded from formatting are listed in
-`.prettierignore`.
+- Markdown.
+
+Prettier is configured to run on save in VS Code via `.vscode/settings.json`. Configuration lives in
+`.prettierrc.json`. Files excluded from formatting are listed in `.prettierignore`.
 
 ---
 

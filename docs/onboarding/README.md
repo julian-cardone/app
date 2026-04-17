@@ -52,7 +52,7 @@ Before contributing, read the following documents in order:
 
 ## Local Tooling Setup
 
-Requires Node.js 20 or later.
+Check [package.json](../../package.json) under "engines" for the minimum required Node.js version.
 
 ```bash
 npm install

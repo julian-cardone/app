@@ -1,7 +1,7 @@
 # PR
 
-Open a pull request for the current branch following the repository's PR format and
-Definition of Done checklist.
+Open a pull request for the current branch following the repository's PR format and Definition of
+Done checklist.
 
 ## Read First
 
