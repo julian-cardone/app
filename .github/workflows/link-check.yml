@@ -1,0 +1,36 @@
+name: Link Check
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "README.md"
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "README.md"
+
+permissions:
+  contents: read
+
+jobs:
+  link-check:
+    name: Check markdown links
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check links in docs
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: "yes"
+          folder-path: "docs"
+
+      - name: Check links in README
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: "yes"
+          file-path: "README.md"

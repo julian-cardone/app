@@ -1,0 +1,5 @@
+{
+  "ignorePatterns": [],
+  "timeout": "10s",
+  "retryOn429": true
+}

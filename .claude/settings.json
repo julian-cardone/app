@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npm run lint:md 2>&1 || (echo '' && echo 'LINT FAILED — fix errors above before proceeding' && exit 1)"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '=== Session end — for compaction ===' && git branch --show-current && git status --short 2>&1"
+          }
+        ]
+      }
+    ]
+  }
+}
