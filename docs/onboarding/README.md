@@ -3,7 +3,7 @@ title: Onboarding
 doc_type: onboarding
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-15
+last_reviewed: 2026-04-20
 related:
   ["docs/standards/documentation.md", "docs/process/git-workflow.md", "docs/technologies/stack.md"]
 tags: [onboarding, process]
@@ -56,7 +56,7 @@ Check [package.json](../../package.json) under "engines" for the minimum require
 
 ```bash
 npm install
-npm run lint:md    # markdownlint — must pass before opening a PR
+npm run lint:md    # markdownlint — optional; CI enforces this on every PR
 npm run format:md  # Prettier — formats all Markdown files
 ```
 

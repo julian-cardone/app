@@ -3,72 +3,28 @@ title: Commit Messages
 doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-15
+last_reviewed: 2026-04-20
 tags: [git, workflow, process]
 ---
 
 # Commit Messages
 
-This document defines the rules for writing commit messages.
+This repository uses squash merge. Every pull request merges to `main` as a single commit.
 
-Commit messages must be clear, concise, and traceable to an issue.
+The squash commit message is the pull request title. Its required format is defined in
+[Pull Request Format](../agents/pr-format.md) and enforced by CI.
 
-This standard governs individual commits only. Pull request requirements are defined separately.
+Individual development commits are unconstrained. They do not appear in the permanent history and
+are not enforced.
 
-## Format
+## Issue Linking
 
-Each commit message must:
+Issue references belong in the pull request description, not in commit messages or the pull request
+title.
 
-- Use the imperative mood.
-- Start with a capital letter.
-- Avoid trailing punctuation.
-- Be concise and descriptive.
+Use GitHub's closing keywords in the PR body:
 
-### Imperative Mood
+`Closes #42`
 
-Write commit messages as commands.
-
-Correct:
-
-`Add authentication flow diagram`
-
-Incorrect:
-
-`Added authentication flow diagram`
-
-`Adding authentication flow diagram`
-
-`Adds authentication flow diagram`
-
-The message should describe what the commit does when applied.
-
-## Issue Referencing
-
-Commits may reference the associated GitHub issue using:
-
-`(#<id>)`
-
-Example:
-
-`Define documentation guidelines (#3)`
-
-Commits must not use closing keywords (e.g., `Closes #<id>`).  
-Issue closure must occur at the pull request level.
-
-## Scope
-
-- Each commit should represent a single logical change.
-- Avoid bundling unrelated changes into one commit.
-- Use multiple commits when changes are conceptually distinct.
-
-## Squash Merge Policy
-
-Pull requests are merged using squash merge.
-
-The final merged commit message must accurately summarize the change and retain issue traceability.
-
-This standard ensures:
-
-- Clean project history.
-- Clear mapping between issues and changes.
-- Consistent formatting for human and AI readability.
+This closes the issue automatically when the pull request merges and keeps the PR title clean for
+the commit record.
