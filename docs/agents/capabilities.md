@@ -36,7 +36,7 @@ Agents must not push directly to `main` or approve or merge pull requests.
 Agents may run read-only and non-destructive commands including:
 
 - `git status`, `git log`, `git diff`
-- `npm run lint:md` and other validation commands
+- Linters, formatters, and other code quality tools.
 - File search, glob, and grep operations
 
 #### GitHub CLI

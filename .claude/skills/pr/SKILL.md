@@ -17,10 +17,9 @@ Verify all of the following before opening the PR. Stop and fix any failures bef
 
 1. **Branch** — follows `issue-<id>-<slug>` naming per `docs/process/git-workflow.md`.
 2. **Issue** — originating issue exists (`gh issue view <id>`).
-3. **Lint** — `npm run lint:md` passes with 0 errors.
-4. **Doc changes** — run `/check-doc` on every modified `.md` file.
-5. **Clean tree** — `git status` shows nothing uncommitted.
-6. **Done criteria** — all applicable items in `docs/process/done-criteria.md` are satisfied.
+3. **Doc changes** — run `/check-doc` on every modified `.md` file.
+4. **Clean tree** — `git status` shows nothing uncommitted.
+5. **Done criteria** — all applicable items in `docs/process/done-criteria.md` are satisfied.
 
 ## Open the PR
 

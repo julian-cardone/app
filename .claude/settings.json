@@ -6,7 +6,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "npm run lint:md 2>&1 || (echo '' && echo 'LINT FAILED — fix errors above before proceeding' && exit 1)"
+            "statusMessage": "Linting docs/",
+            "command": "python3 -c \"\nimport json, sys\nd = json.load(sys.stdin)\npath = d.get('tool_input', {}).get('file_path', '')\nif '/docs/' in path and path.endswith('.md'):\n    import subprocess, sys\n    result = subprocess.run(['npm', 'run', 'lint:md'], capture_output=True, text=True)\n    if result.returncode != 0:\n        print(result.stdout)\n        print('LINT FAILED — fix errors above before proceeding')\n        sys.exit(1)\n\""
           }
         ]
       }

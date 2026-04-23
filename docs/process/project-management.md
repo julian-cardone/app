@@ -81,10 +81,11 @@ The standard workflow is:
 
 1. Create issue.
 2. Apply required labels.
-3. Create branch linked to issue.
-4. Open pull request.
-5. Review and merge.
-6. The issue is automatically closed when the pull request is merged.
+3. Add issue to the project workboard.
+4. Create branch linked to issue.
+5. Open pull request.
+6. Review and merge.
+7. The issue is automatically closed when the pull request is merged.
 
 Branch naming, pull request requirements, and merge strategy are defined separately.
 

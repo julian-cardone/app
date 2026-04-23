@@ -56,7 +56,7 @@ Check [package.json](../../package.json) under "engines" for the minimum require
 
 ```bash
 npm install
-npm run lint:md    # markdownlint — must pass before opening a PR
+npm run lint:md    # markdownlint — optional; CI enforces this on every PR
 npm run format:md  # Prettier — formats all Markdown files
 ```
 

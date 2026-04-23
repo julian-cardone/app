@@ -36,7 +36,21 @@ Calls `doc-checks.yml` as a reusable workflow.
 Runs `markdownlint-cli2` against all Markdown files in the repository. Enforces structural rules
 defined in `.markdownlint-cli2.yaml`, including heading hierarchy, block spacing, and line length.
 
-Triggers on pull requests and pushes to `main` when Markdown files are changed.
+Triggers on pull requests when Markdown files are changed.
+
+### `pr-title.yml`
+
+Validates that pull request titles follow the conventional commit format using
+`action-semantic-pull-request`. Runs on every pull request event (opened, synchronized, reopened,
+edited).
+
+The PR title is used as the squash commit message on merge. Format requirements are defined in
+[Pull Request Format](../agents/pr-format.md).
+
+### `link-check.yml`
+
+Validates that all hyperlinks in `docs/` and `README.md` resolve correctly. Runs on pull requests
+that touch those paths and on pushes to `main`.
 
 ### `doc-checks.yml`
 
@@ -68,7 +82,8 @@ missing.
 
 ## Running Checks Locally
 
-Before opening a pull request, run the following commands:
+These commands can be run locally for early feedback. CI is the enforcement gate — local execution
+is optional.
 
 ```bash
 npm run lint:md    # markdownlint-cli2 — same config as CI

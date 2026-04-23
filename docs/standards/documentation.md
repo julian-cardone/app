@@ -12,7 +12,7 @@ related:
     "docs/technologies/stack.md",
     "docs/process/ci-pipeline.md",
   ]
-tags: [documentation, standards, formatting, linting]
+tags: [documentation, standards]
 ---
 
 # Documentation Standards

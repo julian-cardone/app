@@ -9,7 +9,6 @@ Documentation-first repo. All governance lives in `docs/`. No application code e
 - All changes go through a pull request and require human approval before merging. Never push
   directly to `main`, approve, or merge pull requests.
 - Branches: `issue-<id>-<slug>` (e.g., `issue-12-add-auth-design`).
-- Verify: `npm run lint:md` (hook runs this automatically after edits).
 - All docs are writable. New ADRs in `docs/adrs/` only when explicitly instructed; never edit an
   accepted ADR — create a new one to supersede it.
 - After changes to CI workflows, tooling config, branching/PR conventions, or architecture: check
