@@ -3,7 +3,7 @@ title: Agent Capabilities
 doc_type: agent
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-15
+last_reviewed: 2026-04-20
 related: ["docs/agents/constraints.md", "docs/agents/ownership.md", "docs/process/git-workflow.md"]
 tags: [ai-agent, governance, tooling]
 ---
@@ -36,7 +36,7 @@ Agents must not push directly to `main` or approve or merge pull requests.
 Agents may run read-only and non-destructive commands including:
 
 - `git status`, `git log`, `git diff`
-- Linters, formatters, and other code quality tools.
+- Linters, formatters, and other code quality tools
 - File search, glob, and grep operations
 
 #### GitHub CLI

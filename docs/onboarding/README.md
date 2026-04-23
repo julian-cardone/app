@@ -3,7 +3,7 @@ title: Onboarding
 doc_type: onboarding
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-15
+last_reviewed: 2026-04-20
 related:
   ["docs/standards/documentation.md", "docs/process/git-workflow.md", "docs/technologies/stack.md"]
 tags: [onboarding, process]
