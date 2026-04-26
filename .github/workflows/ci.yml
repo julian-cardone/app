@@ -1,11 +1,13 @@
 name: CI
 
+# Single entry point for all PR checks
 on:
   pull_request:
     branches: [main]
 
 permissions:
   contents: read
+  pull-requests: read
 
 concurrency:
   group: ci-${{ github.head_ref }}
@@ -20,3 +22,6 @@ jobs:
     name: Documentation checks
     uses: ./.github/workflows/doc-checks.yml
 
+  pr-title:
+    name: PR title validation
+    uses: ./.github/workflows/pr-title.yml
