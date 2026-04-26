@@ -3,7 +3,7 @@ title: CI Pipeline
 doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-20
+last_reviewed: 2026-04-25
 related:
   [
     "docs/technologies/stack.md",
@@ -28,15 +28,16 @@ contributor's responsibility, but CI is the final authority.
 
 ### `ci.yml`
 
-The primary CI workflow. Runs on all pull requests targeting `main` and on direct pushes to `main`.
-Calls `doc-checks.yml` as a reusable workflow.
+The primary CI workflow. Runs on all pull requests targeting `main`. Calls `lint-markdown.yml`,
+`doc-checks.yml`, and `pr-title.yml` as reusable workflows. Cancels in-progress runs for the same
+branch when a new commit is pushed.
 
 ### `lint-markdown.yml`
 
 Runs `markdownlint-cli2` against all Markdown files in the repository. Enforces structural rules
 defined in `.markdownlint-cli2.yaml`, including heading hierarchy, block spacing, and line length.
 
-Triggers on pull requests when Markdown files are changed.
+Triggers on pull requests when Markdown files are changed, and when called from `ci.yml`.
 
 ### `pr-title.yml`
 
@@ -47,36 +48,45 @@ edited).
 The PR title is used as the squash commit message on merge. Format requirements are defined in
 [Pull Request Format](../agents/pr-format.md).
 
-### `link-check.yml`
-
-Validates that all hyperlinks in `docs/` and `README.md` resolve correctly. Runs on pull requests
-that touch those paths and on pushes to `main`.
-
 ### `doc-checks.yml`
 
-A reusable workflow that performs documentation-specific validation. Contains three jobs.
+A reusable workflow that performs documentation-specific validation. Contains five jobs.
 
 #### validate-doc-structure
 
-Scans all Markdown files under `docs/`.
-
-For each file, validates that:
+Scans all Markdown files under `docs/`. For each file, validates that:
 
 - The file is not empty.
 - The file begins with a YAML frontmatter delimiter (`---`).
 - A closing frontmatter delimiter appears within the first 20 lines.
-- The following required metadata fields are present: `title`, `doc_type`, `status`, `owners`,
-  `tags`.
+- All required metadata fields are present: `title`, `doc_type`, `status`, `owners`,
+  `last_reviewed`, `tags`.
+- `doc_type` is one of the approved values and matches the subfolder the file lives in.
+- `status` is one of the approved values.
+- `owners` contains at least one GitHub handle (`@handle` format).
+- `last_reviewed` is a valid date in `YYYY-MM-DD` format.
+- `tags` contains only values from the approved vocabulary and no more than six tags.
+- `title` matches the document's H1 heading exactly.
+- For ADR files: the `related` field references only other ADRs (`docs/adrs/` paths).
 
 #### validate-adr-sequence
 
 Checks that ADR files in `docs/adrs/` follow a strictly increasing numeric sequence. Files must be
 named `XXXX-*.md` where `XXXX` is a zero-padded number. Gaps are not permitted.
 
-#### validate-standard-doc-names
+#### validate-required-docs
 
-Checks that key documentation files exist at their expected paths. Fails if any required file is
-missing.
+Checks that all required documentation files exist at their expected paths. Fails if any required
+file is missing.
+
+#### vale
+
+Runs Vale prose linting against all files under `docs/` to enforce tone, word choice, and style
+rules defined in `.vale.ini`.
+
+#### link-check
+
+Validates that all hyperlinks in `docs/` and `README.md` resolve correctly.
 
 ---
 

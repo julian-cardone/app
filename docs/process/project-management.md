@@ -3,7 +3,7 @@ title: Project Management
 doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-20
+last_reviewed: 2026-04-25
 tags: [workflow, governance, process]
 ---
 
@@ -74,6 +74,11 @@ Work progresses through the following states:
 State transitions must reflect reality.
 
 An issue must not be moved to **Done** until its corresponding pull request is merged.
+
+## Quick Start
+
+Use `/start <description>` to automate steps 1–4 of the workflow below. The skill creates the
+issue, confirms labels, creates the branch, and moves the issue to **In Progress**.
 
 ## Workflow
 
