@@ -3,13 +3,23 @@ name: CI
 on:
   pull_request:
     branches: [main]
-  push:
-    branches: [main]
 
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
-  docs:
+  lint-markdown:
+    name: Lint Markdown
+    uses: ./.github/workflows/lint-markdown.yml
+
+  doc-checks:
     name: Documentation checks
     uses: ./.github/workflows/doc-checks.yml
+
+  pr-title:
+    name: PR title validation
+    uses: ./.github/workflows/pr-title.yml
