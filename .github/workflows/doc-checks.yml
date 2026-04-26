@@ -1,15 +1,8 @@
 name: Doc Checks
 
-# Runs on PRs touching docs or GitHub config files, and when called from ci.yml
+# Only called from ci.yml — not triggered directly on pull_request
 on:
   workflow_call:
-  pull_request:
-    paths:
-      - "docs/**"
-      - ".github/workflows/**"
-      - ".github/PULL_REQUEST_TEMPLATE*"
-      - ".github/copilot-instructions*"
-      - ".github/CODEOWNERS"
 
 permissions:
   contents: read

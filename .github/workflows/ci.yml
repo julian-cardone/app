@@ -1,5 +1,6 @@
 name: CI
 
+# Single entry point for all PR checks
 on:
   pull_request:
     branches: [main]
@@ -20,3 +21,6 @@ jobs:
     name: Documentation checks
     uses: ./.github/workflows/doc-checks.yml
 
+  pr-title:
+    name: PR title validation
+    uses: ./.github/workflows/pr-title.yml
