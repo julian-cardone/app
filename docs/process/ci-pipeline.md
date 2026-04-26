@@ -3,7 +3,7 @@ title: CI Pipeline
 doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-25
+last_reviewed: 2026-04-26
 related:
   [
     "docs/technologies/stack.md",
@@ -98,6 +98,7 @@ is optional.
 ```bash
 npm run lint:md    # markdownlint-cli2 — same config as CI
 npm run format:md  # Prettier — formats all Markdown files
+vale docs/         # Vale prose linter — same config as CI
 ```
 
 ---
