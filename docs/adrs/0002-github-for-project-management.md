@@ -3,7 +3,7 @@ title: "ADR-0002: GitHub for Project Management"
 doc_type: adr
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-15
+last_reviewed: 2026-04-26
 related: []
 tags: [process, tooling]
 ---
@@ -13,7 +13,7 @@ tags: [process, tooling]
 ## Context
 
 A project management solution is required to support task tracking and issue status management. The
-current team is small and the project is early-stage. The chosen solution must integrate with the
+current team is small and the project is early stage. The chosen solution must integrate with the
 existing GitHub-based development workflow and must not introduce disproportionate overhead for the
 current scale.
 
