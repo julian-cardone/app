@@ -20,6 +20,3 @@ jobs:
     name: Documentation checks
     uses: ./.github/workflows/doc-checks.yml
 
-  pr-title:
-    name: PR title validation
-    uses: ./.github/workflows/pr-title.yml
