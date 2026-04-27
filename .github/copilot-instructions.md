@@ -1,31 +1,38 @@
-# AI Contributor Instructions
+# Copilot Instructions
 
-This repository uses an AI-assisted development workflow. The authoritative rules for all AI
-contributors are in `CLAUDE.md` and `docs/standards/`. This file contains Copilot-specific guidance
-only.
+This repository is documentation-first. No application code exists. `docs/` is the source of
+truth. Structure, frontmatter, formatting, and prose quality are enforced by CI — do not repeat
+those rules in suggestions or reviews.
 
-## AI Tool Roles
+---
 
-**GitHub Copilot** — lightweight in-editor assistance: drafting documentation, suggesting small
-edits, applying conventions.
+## Writing Style
 
-**Claude Code** — broader agentic tasks: repository exploration, multi-file edits, structural
-changes.
+Use declarative, neutral, impersonal prose. Avoid first-person language (`I`, `we`, `our`),
+speculative phrasing (`likely`, `probably`), and opinionated language. Write for durability — as if
+the document will be read years from now without the context of the current task.
 
-**Copilot Code Review** — automated pull request feedback. Does not replace human review.
+---
 
-## Workflow Constraints
+## Content Rules
 
-All changes must:
+Do not duplicate information across documents. If a concept is defined in one doc, link to it
+rather than restating it.
 
-- originate from a GitHub issue
-- be submitted through a pull request
-- pass CI checks
-- receive human review
+When a PR changes behavior, process, or architecture, the relevant docs must be updated in the same
+PR. Flag any PR that modifies behavior without a corresponding doc update.
 
-AI tools must not approve or merge pull requests.
+Never edit an accepted ADR. A new ADR must be created to supersede it.
 
-## Review Gate
+Do not make architectural decisions in documentation without an ADR and explicit human approval.
 
-All AI-generated changes require human review via pull request before merging. AI tools must not
-push directly to `main`, approve pull requests, or merge pull requests.
+---
+
+## Review Focus
+
+When reviewing, check for:
+
+- Prose that is speculative, opinionated, or written in first person
+- Information duplicated from another document that should be a link instead
+- Behavior or process changes that lack a corresponding doc update in the same PR
+- Edits to accepted ADRs (flag immediately — these must be rejected)
