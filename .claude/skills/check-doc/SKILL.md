@@ -1,8 +1,8 @@
 ---
 name: check-doc
 description:
-  Validate a documentation file before submitting changes. Run before every PR that includes doc
-  changes.
+  Format and validate a documentation file before submitting changes. Run before every PR that
+  includes doc changes.
 ---
 
 # Check Doc
@@ -25,4 +25,5 @@ from memory.
 4. Validate that no information is duplicated per the rules in `docs/process/doc-governance.md`.
 5. Verify every relative file path referenced in the document body and `related` field exists on
    disk.
-6. Run `npm run lint:md` and fix all errors.
+6. Run `npm run format:md`.
+7. Run `npm run lint:md` and fix all errors.

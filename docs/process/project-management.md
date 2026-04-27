@@ -77,8 +77,8 @@ An issue must not be moved to **Done** until its corresponding pull request is m
 
 ## Quick Start
 
-Use `/start <description>` to automate steps 1–4 of the workflow below. The skill creates the
-issue, confirms labels, creates the branch, and moves the issue to **In Progress**.
+Use `/start <description>` to automate steps 1–4 of the workflow below. The skill creates the issue,
+confirms labels, creates the branch, and moves the issue to **In Progress**.
 
 ## Workflow
 
