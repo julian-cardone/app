@@ -19,8 +19,8 @@ Read these documents in full before taking any action. Do not proceed from memor
 
 ### 1 — Confirm title and labels
 
-Use the description from the skill argument as the proposed issue title. Show the user the
-available labels:
+Use the description from the skill argument as the proposed issue title. Show the user the available
+labels:
 
 ```bash
 gh label list
@@ -119,7 +119,7 @@ Print a summary:
 Then remind the user:
 
 > Per `docs/process/session-worktree-management.md`: for sequential work (no other tasks in
-> progress), check out the branch and open or reuse a named session scoped to it. For parallel
-> work or agent tasks, create a worktree first.
+> progress), check out the branch and open or reuse a named session scoped to it. For parallel work
+> or agent tasks, create a worktree first.
 >
 > Named session example: `claude --session issue-<number>-<slug>`

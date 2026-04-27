@@ -1,8 +1,8 @@
 # Copilot Instructions
 
-This repository is documentation-first. No application code exists. `docs/` is the source of
-truth. Structure, frontmatter, formatting, and prose quality are enforced by CI — do not repeat
-those rules in suggestions or reviews.
+This repository is documentation-first. No application code exists. `docs/` is the source of truth.
+Structure, frontmatter, formatting, and prose quality are enforced by CI — do not repeat those rules
+in suggestions or reviews.
 
 ---
 
@@ -16,8 +16,8 @@ the document will be read years from now without the context of the current task
 
 ## Content Rules
 
-Do not duplicate information across documents. If a concept is defined in one doc, link to it
-rather than restating it.
+Do not duplicate information across documents. If a concept is defined in one doc, link to it rather
+than restating it.
 
 When a PR changes behavior, process, or architecture, the relevant docs must be updated in the same
 PR. Flag any PR that modifies behavior without a corresponding doc update.
