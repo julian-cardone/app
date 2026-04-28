@@ -7,10 +7,5 @@ argument is provided.
 
 1. Stage and commit:
    ```bash
-   git add -A
-   git commit -m "$ARGUMENTS" || git commit -m "wip"
-   ```
-2. Confirm clean working tree:
-   ```bash
-   git status
+   git add -A && git commit -m "$ARGUMENTS" || git commit -m "wip"
    ```
