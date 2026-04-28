@@ -28,9 +28,10 @@ contributor's responsibility, but CI is the final authority.
 
 ### `ci.yml`
 
-The primary CI workflow. Runs on all pull requests targeting `main`. Calls `lint-markdown.yml`,
-`doc-checks.yml`, and `pr-title.yml` as reusable workflows. Cancels in-progress runs for the same
-branch when a new commit is pushed.
+The primary CI workflow. Runs on all pull requests targeting `main`. Skips all checks for Dependabot
+PRs via a `guard` job that gates the remaining jobs on `github.actor != 'dependabot[bot]'`. Calls
+`lint-markdown.yml`, `doc-checks.yml`, and `pr-title.yml` as reusable workflows. Cancels in-progress
+runs for the same branch when a new commit is pushed.
 
 ### `lint-markdown.yml`
 
