@@ -1,0 +1,6 @@
+package-lock.json
+
+# Build artifacts — uncomment when application code is added
+# dist/
+# build/
+# .cache/
