@@ -3,7 +3,7 @@ title: Technology Stack
 doc_type: technology
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-15
+last_reviewed: 2026-04-27
 related:
   [
     "docs/adrs/0003-ai-assisted-development.md",
@@ -36,7 +36,8 @@ including multi-file edits, documentation drafting, and codebase reasoning. It o
 terminal and as a VS Code extension.
 
 Claude Code reads `CLAUDE.md` at the repository root as its primary instruction file. All agent
-behavior is governed by the constraints and capabilities defined in `docs/agents/`.
+behavior is governed by the constraints and capabilities defined in `docs/agents/`. Use
+`.claudeignore` to exclude files and directories from Claude's view of the repository.
 
 ### GitHub Copilot
 
