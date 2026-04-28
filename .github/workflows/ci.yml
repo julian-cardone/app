@@ -14,14 +14,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  guard:
+    name: Guard
+    runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    steps:
+      - run: echo "Not a Dependabot PR"
+
   lint-markdown:
     name: Lint Markdown
+    needs: guard
     uses: ./.github/workflows/lint-markdown.yml
 
   doc-checks:
     name: Documentation checks
+    needs: guard
     uses: ./.github/workflows/doc-checks.yml
 
   pr-title:
     name: PR title validation
+    needs: guard
     uses: ./.github/workflows/pr-title.yml
