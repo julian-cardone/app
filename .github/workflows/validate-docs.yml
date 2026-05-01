@@ -1,0 +1,49 @@
+name: Doc Checks
+
+# Only called from ci.yml — not triggered directly on pull_request
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  # Validates frontmatter schema and content for all docs using a real YAML
+  # parser. See scripts/validate-docs-frontmatter.mjs for the full list of checks.
+  validate-doc-frontmatter:
+    name: Validate doc frontmatter
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate doc frontmatter
+        run: node scripts/validate-docs-frontmatter.mjs
+
+  # Runs Vale prose linting against docs/
+  # Uses the official Vale action which caches the Vale binary automatically
+  # and reads config from .vale.ini at the repo root.
+  vale:
+    name: Vale prose lint
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Vale lint
+        uses: errata-ai/vale-action@v2
+        with:
+          files: docs/

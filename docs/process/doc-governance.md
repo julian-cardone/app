@@ -3,7 +3,7 @@ title: Documentation Governance
 doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-15
+last_reviewed: 2026-05-01
 related:
   [
     "docs/standards/documentation.md",
@@ -105,3 +105,14 @@ accurate status is less harmful than a broken link or a silent gap.
 
 When architecture documentation is introduced or changed, any associated diagrams must be updated in
 the same pull request. Diagrams must not contradict written documentation.
+
+---
+
+## Command and Skill Maintenance
+
+When a document that is referenced by or inlined into a command or skill changes, the affected
+command or skill must be updated in the same pull request. Pull request reviewers are responsible
+for verifying this before approving.
+
+The commands in `.claude/commands/` and skills in `.claude/skills/` are the primary artifacts
+subject to this rule.

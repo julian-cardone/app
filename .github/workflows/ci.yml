@@ -1,8 +1,10 @@
 name: CI
 
-# Single entry point for all PR checks
+# Single entry point for all PR checks. Triggers on the full set of
+# pull_request event types including edited.
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited]
     branches: [main]
 
 permissions:
@@ -21,15 +23,15 @@ jobs:
     steps:
       - run: echo "Not a Dependabot PR"
 
-  lint-markdown:
+  markdown-checks:
     name: Lint Markdown
     needs: guard
-    uses: ./.github/workflows/lint-markdown.yml
+    uses: ./.github/workflows/markdown-checks.yml
 
-  doc-checks:
+  validate-docs:
     name: Documentation checks
     needs: guard
-    uses: ./.github/workflows/doc-checks.yml
+    uses: ./.github/workflows/validate-docs.yml
 
   pr-title:
     name: PR title validation

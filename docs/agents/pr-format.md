@@ -45,7 +45,6 @@ Every pull request must include:
 
 - A reference to the originating issue (e.g., `Closes #12` or `Relates to #12`)
 - A short description of what changed and why
-- A description of how the change was tested or verified
 
 ## Body Template
 
@@ -57,10 +56,6 @@ Every pull request must include:
 ## Changes
 
 <!-- List of specific changes made -->
-
-## Verification
-
-<!-- How this was tested or verified (e.g., CI passes, linting ran, manual check) -->
 
 ## Related
 

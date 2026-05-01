@@ -3,7 +3,7 @@ title: Documentation Standards
 doc_type: standard
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-20
+last_reviewed: 2026-05-01
 related:
   [
     "docs/adrs/0001-documentation-structure.md",
@@ -98,7 +98,7 @@ responsibility, not authorship.
 The date the document was last reviewed for accuracy, in `YYYY-MM-DD` format. Must be updated on
 every substantive review, even when no content changes.
 
-#### `related` (optional)
+#### `related` (required)
 
 File paths to related documents. Enables agents to navigate the document graph explicitly rather
 than by inference.
@@ -111,7 +111,7 @@ For documents with `doc_type: adr`, the `related` field must only contain paths 
 must not link to documentation, configuration, or any implementation artifact, as these drift and
 would require superseding an otherwise valid ADR.
 
-#### `tags` (optional but encouraged)
+#### `tags` (required)
 
 Lowercase keywords for cross-cutting concerns. Improves discoverability and helps AI cluster related
 documents.
@@ -135,7 +135,7 @@ vocabulary.
 ### Metadata Rules
 
 - All required fields must be present. Documents missing required fields will fail CI.
-- Optional fields should only be included when they add meaningful information.
+- `related` and `tags` may be empty arrays (`[]`) but must always be present.
 - Metadata must be updated when a document's lifecycle state, ownership, or relationships change.
 
 ---
