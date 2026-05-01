@@ -3,7 +3,7 @@ title: Commit Messages
 doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-20
+last_reviewed: 2026-04-30
 related: ["docs/agents/pr-format.md"]
 tags: [git, workflow, process]
 ---
@@ -34,7 +34,7 @@ Issue references belong in the pull request description, not in the title or ind
 
 Use GitHub's closing keywords in the PR body:
 
-```
+```text
 Closes #42
 ```
 
