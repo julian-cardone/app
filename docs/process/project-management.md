@@ -3,7 +3,8 @@ title: Project Management
 doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-25
+last_reviewed: 2026-05-01
+related: []
 tags: [workflow, governance, process]
 ---
 

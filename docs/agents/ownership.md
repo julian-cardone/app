@@ -3,7 +3,8 @@ title: Ownership and Responsibility
 doc_type: agent
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-15
+last_reviewed: 2026-05-01
+related: []
 tags: [governance, standards, ai-agent]
 ---
 

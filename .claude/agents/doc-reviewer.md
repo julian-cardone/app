@@ -13,7 +13,8 @@ When given a file or directory to review, check for the following:
 
 ## Frontmatter
 
-- All required fields are present: `title`, `doc_type`, `status`, `owners`, `last_reviewed`, `tags`
+- All required fields are present: `title`, `doc_type`, `status`, `owners`, `last_reviewed`,
+  `related`, `tags`
 - `doc_type` matches the directory the file lives in:
   - `docs/adrs/` → `adr`
   - `docs/architecture/` → `architecture`

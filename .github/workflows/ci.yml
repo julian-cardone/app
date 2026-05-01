@@ -1,8 +1,10 @@
 name: CI
 
-# Single entry point for all PR checks
+# Single entry point for all PR checks. Triggers on the full set of
+# pull_request event types including edited.
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited]
     branches: [main]
 
 permissions:
