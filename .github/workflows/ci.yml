@@ -23,15 +23,15 @@ jobs:
     steps:
       - run: echo "Not a Dependabot PR"
 
-  lint-markdown:
+  markdown-checks:
     name: Lint Markdown
     needs: guard
-    uses: ./.github/workflows/lint-markdown.yml
+    uses: ./.github/workflows/markdown-checks.yml
 
-  doc-checks:
+  validate-docs:
     name: Documentation checks
     needs: guard
-    uses: ./.github/workflows/doc-checks.yml
+    uses: ./.github/workflows/validate-docs.yml
 
   pr-title:
     name: PR title validation

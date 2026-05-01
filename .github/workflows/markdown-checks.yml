@@ -27,3 +27,19 @@ jobs:
 
       - name: Lint Markdown
         run: npm run lint:md
+
+  # Validates all hyperlinks in markdown files resolve correctly
+  link-check:
+    name: Check markdown links
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check all markdown links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: "yes"
+          folder-path: "."
