@@ -5,15 +5,10 @@ Open a pull request for the current branch.
 ## Pre-flight
 
 1. Extract `<id>` from the branch name (`issue-<id>-<slug>`).
-2. Run `gh issue view <id>` — confirm it exists and capture: title, assignees, labels.
-3. Run `git status` — if there are uncommitted changes, stage and commit them:
-
-```bash
-   git add -A
-   git commit -m "<type>(<scope>): <brief description of changes>"
-```
-
-4. Run `git push`.
+1. Run `gh issue view <id>` — confirm it exists and capture: title, assignees, labels.
+1. Run `git status` — if there are uncommitted changes, run
+   `git add -A && git commit -m "<type>(<scope>): <brief description>"`.
+1. Run `git push`.
 
 ## Labels
 
