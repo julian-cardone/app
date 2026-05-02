@@ -1,6 +1,6 @@
 ---
 title: Ownership and Responsibility
-doc_type: agent
+doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
 last_reviewed: 2026-05-01

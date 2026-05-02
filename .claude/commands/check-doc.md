@@ -11,4 +11,3 @@ Otherwise validate all modified `.md` files in the current branch.
    tone.
 3. Run `npm run lint:md` and fix all errors.
 4. Run `npm run format:md`.
-5. Run `npm run check:links` and report any broken links.

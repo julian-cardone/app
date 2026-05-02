@@ -4,7 +4,7 @@ doc_type: agent
 status: accepted
 owners: ["@julian-cardone"]
 last_reviewed: 2026-04-20
-related: ["docs/agents/constraints.md", "docs/agents/ownership.md", "docs/process/git-workflow.md"]
+related: ["docs/agents/constraints.md", "docs/process/ownership.md", "docs/process/git-workflow.md"]
 tags: [ai-agent, governance, tooling]
 ---
 
@@ -44,7 +44,7 @@ Agents may run read-only and non-destructive commands including:
 Agents may use the following `gh` operations:
 
 - `gh issue` — view, list, create, and comment on issues
-- `gh pr view`, `gh pr list`, `gh pr create`, `gh pr checks`, `gh pr status`
+- `gh pr view`, `gh pr list`, `gh pr create`, `gh pr checks`, `gh pr status`, `gh pr edit`
 - `gh label` — list and manage labels
 - `gh run` — view CI run results
 - `gh repo view` — read repository metadata
@@ -54,7 +54,6 @@ Agents must not use the following `gh` operations without explicit human instruc
 - `gh pr merge` — merging pull requests
 - `gh pr review` — approving or requesting changes on pull requests
 - `gh pr close` — closing pull requests
-- `gh pr edit` — editing pull request metadata
 - `gh release` — creating or modifying releases
 
 Agents must not run destructive commands without explicit instruction.
@@ -70,7 +69,7 @@ Agents may create and update documentation when instructed, provided that:
 
 ### Pull Requests
 
-When opening pull requests, agents must follow the format defined in [PR Format](./pr-format.md).
+When opening pull requests, agents must follow the format defined in [PR Format](../process/pr-format.md).
 
 ## Scope of Autonomy
 

@@ -9,11 +9,20 @@ Argument may be a short phrase or a long description of intent. Derive:
 - A concise issue title (Title Case, under ~8 words)
 - The most appropriate `type:*` and `scope:*` labels from the lists below
 
-**Type labels** (pick exactly one): `type:doc` `type:adr` `type:design` `type:tech-debt`
-`type:chore`
+**Type labels** (pick exactly one):
 
-**Scope labels** (pick at least one): `scope:process` `scope:docs` `scope:system-design`
-`scope:infra`
+- `type:doc` — writing or changing documentation
+- `type:adr` — the work will produce an Architecture Decision Record (explicit decision required)
+- `type:design` — systems design work (pre-code)
+- `type:tech-debt` — cleanup, refactors, paydown
+- `type:chore` — setup, tooling, housekeeping, configuration
+
+**Scope labels** (pick at least one):
+
+- `scope:process` — standards, workflow, governance
+- `scope:docs` — documentation system itself
+- `scope:system-design` — architecture and design work
+- `scope:infra` — CI, tooling, hosting
 
 ## 2 — Create the issue
 
