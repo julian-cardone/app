@@ -53,7 +53,7 @@ Validates that pull request titles follow the conventional commit format using
 edited).
 
 The PR title is used as the squash commit message on merge. Format requirements are defined in
-[Pull Request Format](../agents/pr-format.md).
+[Pull Request Format](./pr-format.md).
 
 ### `validate-docs.yml`
 
