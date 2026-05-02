@@ -1,0 +1,7 @@
+{
+  "ignorePatterns": [{ "pattern": "^https?://localhost" }],
+  "ignoreFiles": ["node_modules/**", ".git/**"],
+  "retryOn429": true,
+  "retryCount": 3,
+  "fallbackRetryDelay": "30s"
+}

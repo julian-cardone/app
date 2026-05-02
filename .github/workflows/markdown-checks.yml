@@ -43,4 +43,4 @@ jobs:
         with:
           use-quiet-mode: "yes"
           folder-path: "."
-          ignore-files: "node_modules/**"
+          config-file: ".markdown-link-check.json"
