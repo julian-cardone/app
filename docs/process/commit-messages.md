@@ -4,7 +4,7 @@ doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
 last_reviewed: 2026-04-30
-related: ["docs/agents/pr-format.md"]
+related: ["docs/process/pr-format.md"]
 tags: [git, workflow, process]
 ---
 
@@ -13,7 +13,7 @@ tags: [git, workflow, process]
 This repository uses squash merge. Every pull request merges to `main` as a single commit.
 
 The squash commit message is the pull request title. Its required format is defined in
-[PR Format](../agents/pr-format.md) and enforced by CI.
+[PR Format](../process/pr-format.md) and enforced by CI.
 
 Individual development commits are unconstrained. They do not appear in permanent history and are
 not enforced.

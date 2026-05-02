@@ -4,7 +4,7 @@ doc_type: agent
 status: accepted
 owners: ["@julian-cardone"]
 last_reviewed: 2026-04-15
-related: ["docs/agents/capabilities.md", "docs/agents/ownership.md", "docs/process/git-workflow.md"]
+related: ["docs/agents/capabilities.md", "docs/process/ownership.md", "docs/process/git-workflow.md"]
 tags: [ai-agent, governance, tooling]
 ---
 

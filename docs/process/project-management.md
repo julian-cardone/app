@@ -42,11 +42,11 @@ Describes the nature of the work.
 
 Examples:
 
-- `type:doc`
-- `type:design`
-- `type:adr`
-- `type:chore`
-- `type:tech-debt`
+- `type:doc` — writing or changing documentation
+- `type:adr` — the work will produce an Architecture Decision Record (explicit decision required)
+- `type:design` — systems design work (pre-code)
+- `type:chore` — setup, tooling, housekeeping, configuration
+- `type:tech-debt` — cleanup, refactors, paydown
 
 ### Scope
 
@@ -54,10 +54,10 @@ Describes the area impacted.
 
 Examples:
 
-- `scope:docs`
-- `scope:infra`
-- `scope:process`
-- `scope:system-design`
+- `scope:docs` — documentation system itself
+- `scope:infra` — CI, tooling, hosting
+- `scope:process` — standards, workflow, governance
+- `scope:system-design` — architecture and design work
 
 Labels must not be omitted.
 
