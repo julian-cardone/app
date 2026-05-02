@@ -38,6 +38,16 @@ Note the issue number from the output URL.
 
 ## 3 — Create the branch
 
+Ensure main is up to date before branching:
+
+```bash
+git checkout main
+git pull origin main
+```
+
+If `git pull` reports conflicts or exits with a non-zero status, stop immediately and report the
+error. Do not proceed until main is clean.
+
 Slug: lowercase title, hyphens only, no special characters, drop filler words, ~5 words max.
 
 Format: `issue-<number>-<slug>`
@@ -50,7 +60,15 @@ git checkout -b issue-<number>-<slug> main
 
 ```bash
 gh project item-add 1 --owner @me --url <issue-url>
+sleep 3
 ```
+
+Query the project to get IDs. Extract:
+
+- `projectId` — the project node ID
+- `itemId` — the item where `content.number` matches the issue number
+- `statusFieldId` — the `id` of the field named "Status"
+- `inProgressOptionId` — the `id` of the option named "In Progress"
 
 ```bash
 gh api graphql -f query='
@@ -77,19 +95,26 @@ gh api graphql -f query='
 }'
 ```
 
+Verify the item is present before proceeding. If the issue number is not found in the items list,
+wait 3 seconds and re-query. Retry up to 3 times before stopping with an error.
+
+Then update status:
+
 ```bash
 gh api graphql -f query='
 mutation {
   updateProjectV2ItemFieldValue(input: {
-    projectId: "<project-id>"
-    itemId: "<item-id>"
-    fieldId: "<status-field-id>"
-    value: { singleSelectOptionId: "<in-progress-option-id>" }
+    projectId: "<projectId>"
+    itemId: "<itemId>"
+    fieldId: "<statusFieldId>"
+    value: { singleSelectOptionId: "<inProgressOptionId>" }
   }) {
     projectV2Item { id }
   }
 }'
 ```
+
+If the mutation returns errors, print them and stop.
 
 ## 5 — Print summary
 
