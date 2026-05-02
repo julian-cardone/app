@@ -38,6 +38,16 @@ Note the issue number from the output URL.
 
 ## 3 — Create the branch
 
+Ensure main is up to date before branching:
+
+```bash
+git checkout main
+git pull origin main
+```
+
+If `git pull` reports conflicts or exits with a non-zero status, stop immediately and report the
+error. Do not proceed until main is clean.
+
 Slug: lowercase title, hyphens only, no special characters, drop filler words, ~5 words max.
 
 Format: `issue-<number>-<slug>`
