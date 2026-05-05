@@ -3,8 +3,8 @@ title: Project Management
 doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-05-01
-related: []
+last_reviewed: 2026-05-02
+related: ["docs/process/git-workflow.md", "docs/process/pr-format.md"]
 tags: [workflow, governance, process]
 ---
 
@@ -76,10 +76,13 @@ State transitions must reflect reality.
 
 An issue must not be moved to **Done** until its corresponding pull request is merged.
 
-## Quick Start
+## Commands
 
-Use `/start <description>` to automate steps 1–4 of the workflow below. The command creates the issue,
-confirms labels, creates the branch, and moves the issue to **In Progress**.
+### `/start`
+
+Automates project setup: creates the issue, applies labels, creates the branch, and moves the issue
+to **In Progress** on the project board. Run this at the beginning of every unit of work before
+touching any files.
 
 ## Workflow
 
@@ -97,7 +100,7 @@ Branch naming, pull request requirements, and merge strategy are defined separat
 
 ## Closure Rules
 
-Issues must be closed through pull request merge using GitHub’s automatic closing mechanism.
+Issues must be closed through pull request merge using GitHub's automatic closing mechanism.
 
 Issues must not be manually closed unless the work is explicitly abandoned.
 

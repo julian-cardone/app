@@ -3,25 +3,25 @@ title: Pull Request Format
 doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-15
-related:
-  [
-    "docs/process/git-workflow.md",
-    "docs/process/commit-messages.md",
-    "docs/process/done-criteria.md",
-  ]
-tags: [ai-agent, workflow, governance, git]
+last_reviewed: 2026-05-02
+related: ["docs/process/git-workflow.md", "docs/process/done-criteria.md"]
+tags: [workflow, git, process]
 ---
 
 # Pull Request Format
 
-This document defines the required format for pull requests in this repository. All pull requests —
-human and AI-generated — must follow this format.
+This document defines how to structure a pull request. For the criteria that must be satisfied
+before merging, see [Definition of Done](./done-criteria.md).
+
+The repository uses squash merge. Every pull request becomes a single commit on `main`, and the pull
+request title becomes the squash commit message. Individual development commits are unconstrained
+and do not appear in permanent history.
+
+---
 
 ## Title
 
-Pull request titles must follow the conventional commit format, as enforced by
-`action-semantic-pull-request` in CI.
+Titles must follow the conventional commit format, enforced by `action-semantic-pull-request` in CI.
 
 Format:
 
@@ -37,14 +37,9 @@ chore(ci): fix required file paths in doc-checks workflow
 fix(adrs): correct broken cross-reference in ADR-0004
 ```
 
-The title is used as the squash commit message when merged. It must accurately summarize the change.
+The title is the permanent commit record. It must accurately summarize the change.
 
-## Required Fields
-
-Every pull request must include:
-
-- A reference to the originating issue (e.g., `Closes #12` or `Relates to #12`)
-- A short description of what changed and why
+---
 
 ## Body Template
 
@@ -59,12 +54,22 @@ Every pull request must include:
 
 ## Related
 
-<!-- Issue reference: Closes #<id> -->
+<!-- Closes #<id> -->
 ```
 
-## Rules
+The pull request description is the permanent record of context, reasoning, and issue references for
+a change. Git history contains only the title — all additional context belongs in the description,
+which remains accessible on GitHub after merge.
 
-- Pull requests must reference an existing issue.
-- Pull request descriptions must not be left blank.
-- All required CI status checks must pass before requesting review.
-- Pull requests must not be self-approved — human review is required for all changes.
+---
+
+## Issue Linking
+
+Issue references belong in the description, not in the title. Use GitHub's closing keywords:
+
+```text
+Closes #42
+```
+
+This closes the issue automatically on merge and keeps the title clean for the commit record. Issue
+linking is required for all pull requests.

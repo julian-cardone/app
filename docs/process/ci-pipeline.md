@@ -3,12 +3,12 @@ title: CI Pipeline
 doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-05-01
+last_reviewed: 2026-05-02
 related:
   [
     "docs/technologies/stack.md",
     "docs/standards/documentation.md",
-    "docs/process/git-workflow.md",
+    "docs/process/pr-format.md",
     "docs/process/done-criteria.md",
   ]
 tags: [ci-cd, workflow, tooling, governance]
@@ -28,54 +28,49 @@ contributor's responsibility, but CI is the final authority.
 
 ### `ci.yml`
 
-The primary CI workflow. Runs on all pull requests targeting `main`. Skips all checks for Dependabot
-PRs via a `guard` job that gates the remaining jobs on `github.actor != 'dependabot[bot]'`. Calls
-`markdown-checks.yml`, `validate-docs.yml`, and `pr-title.yml` as reusable workflows. Cancels
-in-progress runs for the same branch when a new commit is pushed.
+The single entry point for all pull request checks. Triggers on `pull_request` events of type
+`opened`, `synchronize`, `reopened`, and `edited` against `main`. A `guard` job skips all downstream
+jobs for Dependabot pull requests. Remaining jobs are invoked as reusable workflows:
+`markdown-checks.yml`, `validate-docs.yml`, and `pr-title.yml`. In-progress runs for the same branch
+are cancelled when a new commit is pushed.
 
 ### `markdown-checks.yml`
 
-A reusable workflow scoped to all Markdown files in the repository. Contains two jobs.
+A reusable workflow invoked by `ci.yml`. Scoped to Markdown files across the repository. Contains
+two jobs.
 
 #### markdownlint
 
-Runs `markdownlint-cli2` against all Markdown files. Enforces structural rules defined in
-`.markdownlint-cli2.yaml`, including heading hierarchy, block spacing, and line length.
+Runs `markdownlint-cli2` via `npm run lint:md` against all Markdown files. Enforces structural rules
+defined in `.markdownlint-cli2.yaml`, including heading hierarchy, block spacing, and line length.
 
 #### link-check
 
-Validates that all hyperlinks in Markdown files across the repository resolve correctly.
+Validates that all hyperlinks in Markdown files across the repository resolve correctly using
+`gaurav-nelson/github-action-markdown-link-check`.
 
 ### `pr-title.yml`
 
-Validates that pull request titles follow the conventional commit format using
-`action-semantic-pull-request`. Runs on every pull request event (opened, synchronized, reopened,
-edited).
+A reusable workflow invoked by `ci.yml`. Validates that the pull request title conforms to the
+conventional commit format using `amannn/action-semantic-pull-request`.
 
 The PR title is used as the squash commit message on merge. Format requirements are defined in
 [Pull Request Format](./pr-format.md).
 
 ### `validate-docs.yml`
 
-A reusable workflow scoped to documentation files under `docs/`. Contains two jobs.
+A reusable workflow invoked by `ci.yml`. Scoped to documentation under `docs/`. Contains two jobs.
 
 #### validate-doc-frontmatter
 
-Validates frontmatter schema and content for all documents using a real YAML parser
-(`scripts/validate-docs-frontmatter.mjs`). For each file, validates that:
-
-- All required metadata fields are present: `title`, `doc_type`, `status`, `owners`,
-  `last_reviewed`, `related`, `tags`.
-- `doc_type` is one of the approved values and matches the subfolder the file lives in.
-- `status` is one of the approved values.
-- `owners` contains at least one GitHub handle (`@handle` format).
-- `last_reviewed` is a valid date in `YYYY-MM-DD` format.
-- `title` matches the document's H1 heading exactly.
+Validates frontmatter schema and content for all documents using
+`scripts/validate-docs-frontmatter.mjs`. The script enforces the metadata rules defined in
+[Documentation Standards](../standards/documentation.md).
 
 #### vale
 
-Runs Vale prose linting against all files under `docs/` to enforce tone, word choice, and style
-rules defined in `.vale.ini`.
+Runs Vale via `errata-ai/vale-action` against `docs/` to enforce tone, word choice, and style rules
+defined in `.vale.ini`.
 
 ---
 

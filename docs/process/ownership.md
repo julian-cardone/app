@@ -3,100 +3,51 @@ title: Ownership and Responsibility
 doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-05-01
-related: []
-tags: [governance, standards, ai-agent]
+last_reviewed: 2026-05-02
+related: ["docs/agents/capabilities.md", "docs/agents/constraints.md"]
+tags: [governance, process, ai-agent]
 ---
 
 # Ownership and Responsibility
 
-This document defines ownership expectations for the repository and its documentation. Its purpose
-is to make decision-making, review, and maintenance responsibilities clear, even when work is
-assisted by AI tools.
-
-## Principles
-
-Ownership exists to create accountability, not bureaucracy.
-
-The owner of a document, workflow, or area is responsible for its accuracy, maintenance, and review
-quality. AI tools may help produce or update content, but responsibility always remains with a human
-owner.
-
-## Repository Ownership
-
-The repository owner is responsible for the overall structure, standards, and quality gates of the
-project.
-
-Repository ownership includes:
-
-- maintaining the repository structure
-- maintaining GitHub settings and automation
-- approving changes to core standards
-- ensuring documentation remains coherent and current
+This document defines ownership rules for the repository. The owner of a document, workflow, or area
+is responsible for its accuracy, maintenance, and review quality. AI tools may help produce content,
+but responsibility always remains with a human owner.
 
 ## Document Ownership
 
-Every standards, architecture, design, ADR, runbook, or backlog document should include one or more
-owners in its metadata header.
+Every document must list one or more owners in its metadata header. Document owners are responsible
+for:
 
-Document owners are responsible for:
-
-- keeping the document accurate
-- reviewing proposed changes for correctness
-- updating the document when related decisions or workflows change
-- rejecting changes that introduce drift, ambiguity, or contradictions
+- Keeping the document accurate.
+- Reviewing proposed changes for correctness.
+- Updating the document when related decisions or workflows change.
+- Rejecting changes that introduce drift, ambiguity, or contradictions.
 
 ## Code and Automation Ownership
 
-When application code, scripts, workflows, or automation are added, each area should have a clearly
-understood owner.
-
-Owners are responsible for:
-
-- reviewing changes in their area
-- maintaining quality and correctness
-- updating related documentation when behavior changes
-- ensuring automation reflects the documented workflow
+When application code, scripts, or workflows are added, each area must have a clearly understood
+owner. Owners are responsible for review, correctness, and keeping related documentation current.
 
 ## AI-Assisted Work
 
-AI-generated content does not own itself and does not approve itself.
+AI-generated content does not own itself. When AI is used to produce or modify a change, the human
+submitting it is responsible for:
 
-When AI is used to create or modify code, workflows, or documentation, the human submitting the
-change is responsible for:
-
-- reviewing the full output
-- validating correctness
-- checking for unintended changes
-- ensuring the result follows repository standards
-- updating documentation when needed
+- Reviewing the full output.
+- Validating correctness.
+- Checking for unintended changes.
+- Ensuring the result follows repository standards.
+- Updating documentation when needed.
 
 ## Review Responsibility
 
-Reviewers are responsible for validating that a change is appropriate for the repository, not just
-that it “looks reasonable.”
-
-Review responsibility includes:
-
-- checking whether the change matches the documented workflow
-- checking whether related documentation was updated
-- identifying missing context, unclear ownership, or weak validation
-- requesting revision when standards are not met
+Reviewers validate that a change is appropriate for the repository, not just that it looks
+reasonable. Review includes confirming the change matches documented workflow, related documentation
+was updated, and standards are met. Reviewers must request revision when standards are not met.
 
 ## Ownership Changes
 
-Ownership should be updated when responsibility genuinely changes.
-
-This may happen when:
-
-- a new maintainer takes over an area
-- a document changes scope significantly
-- a new workflow or subsystem is introduced
-- repository responsibilities are redistributed
-
-Ownership changes should be reflected in document metadata and, where applicable, in repository
-review rules such as CODEOWNERS.
-
-## Minimum Rule
-
-If a file, workflow, or decision matters, it must have a clearly understood human owner.
+Ownership must be updated when responsibility changes — when a new maintainer takes over, when a
+document changes scope, or when a new subsystem is introduced. Ownership changes must be reflected
+in document metadata and, where applicable, in CODEOWNERS.

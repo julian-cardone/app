@@ -3,7 +3,7 @@ title: "ADR-0004: AI and CI Tooling Stack"
 doc_type: adr
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-15
+last_reviewed: 2026-05-02
 related: ["docs/adrs/0003-ai-assisted-development.md"]
 tags: [ai-agent, ci-cd, tooling]
 ---
@@ -64,7 +64,8 @@ ADR-level decisions to change.
 ### Negatives
 
 - The workflow depends on several independent tools rather than a single integrated platform.
-- Contributors must run validation locally before opening pull requests, which requires discipline.
+- Pull request feedback cycles depend on CI completion, since enforcement is centralized at the CI
+  level rather than at the local development environment.
 - Automated pull request feedback may produce suggestions that require human judgment to evaluate.
 
 ### Out of Scope

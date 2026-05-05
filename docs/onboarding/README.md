@@ -3,9 +3,14 @@ title: Onboarding
 doc_type: onboarding
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-27
+last_reviewed: 2026-05-02
 related:
-  ["docs/standards/documentation.md", "docs/process/git-workflow.md", "docs/technologies/stack.md"]
+  [
+    "docs/standards/documentation.md",
+    "docs/process/git-workflow.md",
+    "docs/process/project-management.md",
+    "docs/technologies/stack.md",
+  ]
 tags: [onboarding, process]
 ---
 
@@ -44,9 +49,11 @@ Before contributing, read the following documents in order:
 1. `docs/agents/capabilities.md` — what AI agents can do
 2. `docs/agents/constraints.md` — what AI agents must not do
 3. `docs/standards/documentation.md` — how all documents must be written
-4. `docs/process/git-workflow.md` — branching and PR conventions
-5. `docs/process/done-criteria.md` — what a completed task looks like
-6. `docs/technologies/stack.md` — what tools are in use
+4. `docs/process/project-management.md` — how work is initiated and tracked
+5. `docs/process/git-workflow.md` — branching and merge conventions
+6. `docs/process/pr-format.md` — pull request structure
+7. `docs/process/done-criteria.md` — merge criteria
+8. `docs/technologies/stack.md` — what tools are in use
 
 ---
 
@@ -56,19 +63,12 @@ Check [package.json](../../package.json) under "engines" for the minimum require
 
 ```bash
 npm install
-npm run format:md  # Prettier — formats all Markdown files
-npm run lint:md    # markdownlint — optional; CI enforces this on every PR
 ```
 
 ---
 
-## Workflow Summary
+## Workflow
 
-1. Find or create a GitHub issue for the work.
-2. Apply required labels (`type:*` and `scope:*`).
-3. Create a branch: `issue-<id>-<slug>`.
-4. Make changes and commit.
-5. Open a pull request referencing the issue.
-6. Ensure all CI checks pass.
-7. Request human review.
-8. The issue closes automatically when the PR is merged.
+The end-to-end workflow is defined in [Project Management](../process/project-management.md). Branch
+naming is defined in [Git Workflow](../process/git-workflow.md). Pull request structure is defined
+in [Pull Request Format](../process/pr-format.md).

@@ -48,10 +48,10 @@ instructions.
 
 ### Codebase Q&A
 
-Copilot `@workspace` combined with Claude Code is the approved pattern for querying the repository —
-asking questions about code, documentation, or architecture without initiating an agentic task.
-`@workspace` provides RAG-based retrieval across the codebase; Claude Code reasons over the results.
-Use this pattern when the goal is understanding, not making changes.
+Copilot `@workspace` is the approved tool for repository queries — asking questions about code,
+documentation, or architecture without initiating an agentic task. `@workspace` provides RAG-based
+retrieval across the codebase at significantly lower token cost than an agentic Claude Code session.
+Use `@workspace` when the goal is understanding, not making changes.
 
 ---
 
@@ -84,14 +84,6 @@ final authority.
 
 Workflow definitions live in `.github/workflows/`. For details on what each job does and when it
 runs, see [CI Pipeline](../process/ci-pipeline.md).
-
-### action-semantic-pull-request
-
-`action-semantic-pull-request` validates that pull request titles conform to the conventional commit
-format. PR titles are used as squash commit messages, making this the enforcement point for commit
-message standards. This runs as a GitHub Actions job on every pull request.
-
-For commit message conventions, see [Commit Messages](../process/commit-messages.md).
 
 ---
 
