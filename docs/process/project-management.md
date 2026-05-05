@@ -80,9 +80,9 @@ An issue must not be moved to **Done** until its corresponding pull request is m
 
 ### `/start`
 
+Run `/start <description>` at the beginning of every unit of work before touching any files.
 Automates project setup: creates the issue, applies labels, creates the branch, and moves the issue
-to **In Progress** on the project board. Run this at the beginning of every unit of work before
-touching any files.
+to **In Progress** on the project board.
 
 ## Workflow
 
