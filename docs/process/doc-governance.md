@@ -87,9 +87,6 @@ Documentation must not be deleted unless it meets the criteria below.
 ADRs must never be deleted. If an ADR is no longer valid, its status must be updated to `deprecated`
 or `superseded`.
 
-Standards and architecture documents must be updated in place. They must not be deleted or
-deprecated for minor changes.
-
 A document may be deleted when all of the following are true:
 
 - The concept, process, or decision it describes no longer exists.

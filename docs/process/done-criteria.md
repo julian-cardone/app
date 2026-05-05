@@ -3,58 +3,36 @@ title: Definition of Done
 doc_type: process
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-05-01
-related: []
+last_reviewed: 2026-05-02
+related: ["docs/process/pr-format.md", "docs/process/doc-governance.md"]
 tags: [workflow, governance, process]
 ---
 
 # Definition of Done
 
-This document defines the criteria that must be satisfied before a pull request can be merged.
+This document defines the criteria that must be satisfied before a pull request can be merged. It is
+a checklist for reviewers. For pull request structure and content rules, see
+[Pull Request Format](./pr-format.md).
 
-All work must meet the Definition of Done.
+A pull request may be merged only after all applicable criteria below are satisfied.
 
-Pull request reviews must verify that the following requirements are satisfied.
+## All Pull Requests
 
-## General Requirements
-
-The following requirements apply to all pull requests.
-
-- The pull request references the originating issue.
-- The pull request description follows the required template.
-- The change fulfills the intent of the issue.
-- Documentation has been updated when required.
-- Required reviews have been completed.
-- Required status checks pass.
+- The pull request follows [Pull Request Format](./pr-format.md).
+- The change fulfills the intent of the referenced issue.
+- All required CI status checks pass.
+- Required human review has been completed.
+- Documentation has been updated when required by [Doc Governance](./doc-governance.md).
 
 ## Documentation Changes
 
-Pull requests that modify or introduce documentation must satisfy the following requirements.
-
-- The document is placed in the correct directory.
+- The document is placed in the correct directory for its `doc_type`.
 - A valid metadata header is present.
-- The document follows the documentation guidelines.
-- The change does not introduce duplicated information.
-- Related diagrams are updated when applicable.
-- Links within the document are valid.
+- No information is duplicated from another document.
+- Related resources are updated.
 
 ## Architecture and Design Changes
 
-Pull requests that modify architecture or design documentation must satisfy the following
-requirements.
-
 - Architecture documentation reflects the current system structure.
-- Design documents accurately describe the intended implementation.
-- Any diagrams related to the change have been updated.
-
-## Decision Records
-
-When a change introduces a significant architectural decision:
-
-- An Architecture Decision Record (ADR) has been drafted.
-- The ADR follows the required template.
-
-## Completion
-
-A pull request may be merged only after all applicable requirements in this document have been
-satisfied.
+- An ADR has been drafted for any significant architectural decision.
+- Related resources are updated.

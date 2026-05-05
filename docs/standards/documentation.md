@@ -3,14 +3,12 @@ title: Documentation Standards
 doc_type: standard
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-05-01
+last_reviewed: 2026-05-02
 related:
   [
     "docs/adrs/0001-documentation-structure.md",
     "docs/process/doc-governance.md",
     "docs/agents/constraints.md",
-    "docs/technologies/stack.md",
-    "docs/process/ci-pipeline.md",
   ]
 tags: [documentation, standards]
 ---
@@ -21,9 +19,8 @@ This document defines the standards for writing and structuring documentation in
 covers metadata requirements, writing tone, and formatting rules.
 
 For how and when to create, update, or delete documents, see
-[Documentation Governance](../process/doc-governance.md).
-
-For agent-specific restrictions on documentation, see [Agent Constraints](../agents/constraints.md).
+[Documentation Governance](../process/doc-governance.md). For agent-specific restrictions on
+documentation, see [Agent Constraints](../agents/constraints.md).
 
 ---
 
@@ -101,7 +98,7 @@ every substantive review, even when no content changes.
 #### `related` (required)
 
 File paths to related documents. Enables agents to navigate the document graph explicitly rather
-than by inference.
+than by inference. May be an empty array (`[]`) but must be present.
 
 ```yaml
 related: ["docs/adrs/0001-documentation-structure.md", "docs/process/git-workflow.md"]
@@ -114,7 +111,7 @@ would require superseding an otherwise valid ADR.
 #### `tags` (required)
 
 Lowercase keywords for cross-cutting concerns. Improves discoverability and helps AI cluster related
-documents.
+documents. May be an empty array (`[]`) but must be present.
 
 Rules:
 
@@ -125,9 +122,8 @@ Rules:
 
 Approved tags:
 
-`documentation` | `standards` | `formatting` | `linting` | `workflow` | `git` | `ci-cd` | `testing`
-| `security` | `ai-agent` | `ai-readiness` | `architecture` | `onboarding` | `process` | `tooling` |
-`maintenance` | `governance`
+`documentation` | `standards` | `workflow` | `git` | `ci-cd` | `ai-agent` | `architecture` |
+`onboarding` | `process` | `tooling` | `governance`
 
 To add a new tag, open a PR updating this list. Agents must not introduce tags outside this
 vocabulary.

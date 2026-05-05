@@ -3,7 +3,7 @@ title: ADR Template
 doc_type: adr
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-15
+last_reviewed: 2026-05-02
 related: []
 tags: [documentation, governance]
 ---
@@ -21,23 +21,27 @@ An ADR should be written only when a decision:
 
 ADRs are not used for preferences, temporary experiments, or implementation details.
 
-ADRs must be written in an impersonal, durable tone. Avoid first-person language (`we`, `I`),
-speculative phrasing (`likely`, `probably`, `in the future`), and expressions of opinion. Describe
-decisions as objective constraints based on context at the time.
+---
 
-ADRs must not reference specific files, configurations, documentation, or any implementation
-artifact. These references drift and would require superseding an otherwise valid ADR. ADRs may
-reference other ADRs in the `related` field, as ADRs are equally timeless.
+## Before Writing
 
-Status transition rules and deletion policy are defined in the documentation governance process
-document.
+Read [Documentation Standards](../standards/documentation.md) for metadata requirements, writing
+tone, and formatting rules. Read [Documentation Governance](../process/doc-governance.md) for
+lifecycle rules, status transitions, supersession procedure, and deletion policy.
+
+ADRs may name specific tools, vendors, or systems when doing so is necessary to make the context or
+decision intelligible. ADRs must not reference repository-internal artifacts: file paths,
+configuration filenames, scripts, or documentation files. The `related` field must contain only
+paths to other ADRs.
+
+ADR filenames follow the pattern `XXXX-decision-title.md` where `XXXX` is a four-digit sequence
+number with leading zeros. Sequence numbers are never reused.
 
 ---
 
 ## Template
 
-Copy the block below into a new file named `XXXX-decision-title.md` in `docs/adrs/`. Optional fields
-(`related`, `tags`) must remain in the frontmatter with empty values rather than being removed.
+Copy the block below into a new file in `docs/adrs/`.
 
 ```markdown
 ---
@@ -66,8 +70,8 @@ Include:
 
 ## Decision
 
-State the decision clearly and unambiguously in declarative prose. Describe the constraint being
-introduced and define its scope of applicability. Avoid implementation details.
+State the decision clearly and unambiguously in declarative prose. Define the scope of applicability
+— what areas, contexts, or types of work the decision constrains. Avoid implementation details.
 
 ## Consequences
 
@@ -91,6 +95,6 @@ State explicitly what related decisions are not made by this ADR.
 
 ## Notes (optional)
 
-Clarifications or follow-up considerations that provide additional context but do not change the
-decision itself.
+Reserved for clarifications that emerged during review but do not change the decision itself. If a
+note would alter the decision's meaning or scope, the ADR must be superseded instead.
 ```

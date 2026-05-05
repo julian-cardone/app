@@ -30,9 +30,11 @@ Do not make architectural decisions in documentation without an ADR and explicit
 
 ## Review Focus
 
-When reviewing, check for:
+CI handles structure, frontmatter, formatting, and prose style. Focus reviews on what CI cannot
+catch:
 
-- Prose that is speculative, opinionated, or written in first person
 - Information duplicated from another document that should be a link instead
-- Behavior or process changes that lack a corresponding doc update in the same PR
-- Edits to accepted ADRs (flag immediately — these must be rejected)
+- Behavior, process, or architecture changes without a corresponding doc update in the same PR
+- Edits to accepted ADRs (flag immediately — these must be rejected via new ADR)
+- Statements that contradict another document in the repository
+- Speculative or opinionated content that slipped past Vale
