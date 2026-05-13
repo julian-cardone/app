@@ -5,7 +5,7 @@
       "Bash(git commit*)",
       "Bash(git checkout*)",
       "Bash(git push*)",
-      "Bash(git pull *)",
+      "Bash(git pull*)",
       "Bash(git status*)",
       "Bash(git diff*)",
       "Bash(git log*)",
@@ -37,24 +37,37 @@
     ]
   },
   "hooks": {
-    "PostToolUse": [
+    "Notification": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "",
         "hooks": [
           {
+            "description": "Display a macOS system notification when Claude Code requires user attention or input",
             "type": "command",
-            "statusMessage": "Linting docs/",
-            "command": "python3 -c \"\nimport json, sys\nd = json.load(sys.stdin)\npath = d.get('tool_input', {}).get('file_path', '')\nif '/docs/' in path and path.endswith('.md'):\n    import subprocess, sys\n    result = subprocess.run(['npm', 'run', 'lint:md'], capture_output=True, text=True)\n    if result.returncode != 0:\n        print(result.stdout)\n        print('LINT FAILED — fix errors above before proceeding')\n        sys.exit(1)\n\""
+            "command": "osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\"'"
           }
         ]
       }
     ],
-    "Stop": [
+    "PostToolUse": [
       {
+        "matcher": "Edit|Write",
         "hooks": [
           {
+            "description": "Extract the modified file path from the hook payload and automatically format the file with Prettier",
             "type": "command",
-            "command": "echo '=== Session end — for compaction ===' && git branch --show-current && git status --short 2>&1"
+            "command": "jq -r '.tool_input.file_path' | xargs npx prettier --write"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "description": "If the modified file is a Markdown document inside /docs/, run markdown linting and fail the workflow on lint errors",
+            "type": "command",
+            "statusMessage": "Linting docs/",
+            "command": "python3 -c \"\nimport json, sys\nd = json.load(sys.stdin)\npath = d.get('tool_input', {}).get('file_path', '')\nif '/docs/' in path and path.endswith('.md'):\n    import subprocess, sys\n    result = subprocess.run(['npm', 'run', 'lint:md'], capture_output=True, text=True)\n    if result.returncode != 0:\n        print(result.stdout)\n        print('LINT FAILED — fix errors above before proceeding')\n        sys.exit(1)\n\""
           }
         ]
       }

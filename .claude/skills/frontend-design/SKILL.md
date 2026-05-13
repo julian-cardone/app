@@ -6,7 +6,6 @@ description:
   include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when
   styling/beautifying any web UI). Generates creative, polished code and UI design that avoids
   generic AI aesthetics.
-license: Complete terms in LICENSE.txt
 ---
 
 This skill guides creation of distinctive, production-grade frontend interfaces that avoid generic
