@@ -9,45 +9,107 @@ related:
     "docs/standards/css.md",
     "docs/standards/frontend-philosophy.md",
     "docs/standards/project-structure.md",
+    "docs/standards/documentation.md",
   ]
 tags: [standards]
 ---
 
 # Layout
 
-This document defines the flex layout patterns used throughout the application. It covers the rules
-that govern shrinking, scrolling, and the division of layout responsibility between pages, panes,
-and reusable components.
+This document defines the layout mechanics used throughout the application.
 
-For general styling conventions, see [CSS Standards](./css.md). For the principles that determine
-which component owns which concern, see [Frontend Philosophy](./frontend-philosophy.md).
+It covers flex behavior, shrinking rules, overflow ownership, scrolling boundaries, and layout
+constraint chains.
+
+The layout philosophy is durable, predictable, and composition-oriented.
+
+Layout behavior must remain stable under refactoring. Components should behave consistently
+regardless of where they are rendered.
+
+For styling rules, variants, and design-token conventions, see [CSS Standards](./css.md).
+
+For component architecture and ownership boundaries, see
+[Frontend Philosophy](./frontend-philosophy.md).
 
 ---
 
 ## Layout Ownership
 
-Layout responsibility is divided across three roles. The boundary between them must be preserved.
+Layout responsibility is divided across three roles.
 
-| Role                  | Owns                                                 |
-| --------------------- | ---------------------------------------------------- |
-| Page                  | Major layout, surface, content area arrangement      |
-| Pane                  | Overflow, height constraints, clipping, empty states |
-| Reusable UI component | Internal structure, intrinsic shape, variants        |
+The ownership boundary between them must remain explicit.
 
-Reusable components must not declare height constraints, overflow rules, or viewport assumptions.
-Reusable components fill width naturally, structure their content, and expose variants. Pages and
-panes constrain them.
+| Role                  | Owns                                                  |
+| --------------------- | ----------------------------------------------------- |
+| Page                  | Route-level layout and major content arrangement      |
+| Layout container      | Constraints, overflow boundaries, clipping, scrolling |
+| Reusable UI component | Internal structure and intrinsic shape                |
+
+A layout container may be:
+
+- A pane
+- A modal body
+- A sidebar
+- A card body
+- A tab panel
+- A section wrapper
+
+Any wrapper whose job is to constrain and arrange child content is a layout container.
+
+Reusable components must not own:
+
+- Scroll boundaries
+- Viewport assumptions
+- Page-level positioning
+- Layout orchestration
+- Hard-coded external sizing
+
+Reusable components should remain layout-agnostic.
+
+Layout ownership applies regardless of where the CSS rule is written. A reusable component's CSS
+must not define external sizing, scroll boundaries, viewport assumptions, or page-level positioning.
+
+Pages and layout containers constrain them.
+
+---
+
+## Constraint Chains
+
+Flex layouts operate through chains of constraints.
+
+A missing constraint at any level breaks containment below it.
+
+Most layout bugs are caused by one of the following:
+
+- Missing `min-width: 0`
+- Missing `min-height: 0`
+- Incorrect `align-items`
+- Incorrect ownership of scrolling
+- Multiple competing scroll containers
+
+Layout debugging should focus on locating the broken constraint chain rather than masking symptoms.
 
 ---
 
 ## The `min-height: 0` Rule
 
-In a flex column, children default to `min-height: auto`, which prevents them from shrinking below
-their content height. This breaks scrolling: the child refuses to shrink, the scroll container never
-receives a constrained height, and overflow has nothing to clip.
+In a flex column, children default to `min-height: auto`.
 
-A flex child that needs to shrink, scroll, or contain a scrolling descendant must declare
-`min-height: 0`.
+This prevents them from shrinking below their content height.
+
+When this occurs:
+
+- Scroll containers never receive a constrained height
+- Overflow cannot clip
+- Content pushes past the viewport instead of scrolling
+
+Any flex child that must shrink, scroll, or contain a scrolling descendant must declare:
+
+```css
+min-height: 0;
+```
+
+Example:
 
 ```css
 .parent {
@@ -64,18 +126,32 @@ A flex child that needs to shrink, scroll, or contain a scrolling descendant mus
 }
 ```
 
-This rule must be applied at every level of a flex column chain that needs to shrink. Skipping a
-single level breaks scrolling for everything below it.
+This rule must be applied at every shrinking level in the flex column chain.
+
+Skipping a single level breaks scrolling below it.
 
 ---
 
 ## The `min-width: 0` Rule
 
-In a flex row, children default to `min-width: auto`, which prevents them from shrinking below their
-content width. This causes text overflow, blown-out containers, and tables that stretch
-indefinitely.
+In a flex row, children default to `min-width: auto`.
 
-A flex child that should shrink horizontally must declare `min-width: 0`.
+This prevents them from shrinking below their intrinsic content width.
+
+When this occurs:
+
+- Text overflows horizontally
+- Containers stretch beyond their parent
+- Tables grow indefinitely
+- Adjacent panes are pushed outside the viewport
+
+Any flex child that must shrink horizontally must declare:
+
+```css
+min-width: 0;
+```
+
+Example:
 
 ```css
 .row {
@@ -88,59 +164,72 @@ A flex child that should shrink horizontally must declare `min-width: 0`.
 }
 ```
 
-This rule must be applied at every level of a flex row chain that should shrink. Skipping a single
-level breaks containment for everything below it.
+This rule must be applied throughout the shrinking chain.
 
-This rule applies heavily to:
+Skipping a single level breaks containment below it.
 
-- Table cells that contain long text or arbitrary content.
-- Flex panes in side-by-side layouts.
-- Any flex child whose content width is not bounded by the design.
+Common use cases include:
+
+- Table cells with arbitrary content
+- Side-by-side layout regions
+- Resizable panes
+- Content-heavy cards
+- Flex children containing long text
 
 ---
 
 ## `align-items` and Width Inheritance
 
-A flex container's `align-items` property determines how children are sized on the cross axis. The
-default is `stretch`, which makes children fill the container's full cross-axis allocation. This is
-what makes `min-width: 0` effective for children of a flex column: the parent allocates a definite
-width and the child is bounded by it.
+A flex container's `align-items` value controls cross-axis sizing behavior.
 
-`align-items: center`, `flex-start`, or `flex-end` breaks this. Children are no longer stretched to
-fill the parent — they size themselves to their content. A `min-width: 0` declaration on a child
-that sits inside a `center`-aligned parent has no effect: there is no upstream definite width for it
-to be bounded by.
+The default value is:
 
 ```css
-/* WRONG: children of this column become intrinsic-width.
-   min-width: 0 on descendants has no effect. */
+align-items: stretch;
+```
+
+This allows descendants to inherit constrained width from the layout chain.
+
+Changing `align-items` to:
+
+- `center`
+- `flex-start`
+- `flex-end`
+
+causes children to become intrinsically sized rather than width-constrained.
+
+As a result, `min-width: 0` may stop functioning because no upstream constrained width exists.
+
+```css
+/* Avoid */
 .page {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* RIGHT: children fill the column's width. min-width: 0
-   constraints on descendants are honoured. */
+/* Preferred */
 .page {
   display: flex;
   flex-direction: column;
-  /* align-items: stretch is the default — do not override it */
+  /* align-items: stretch is the default */
 }
 ```
 
-Use `align-items: center` only for visual centering of fixed-size decorative elements where
-intrinsic-width behavior is intentional. Never use it on a container whose children are expected to
-participate in a width-constrained layout chain.
+`align-items: center` should only be used when intrinsic-width behavior is intentionally desired.
+
+It must not be used on containers participating in a constrained layout chain.
 
 ---
 
 ## Scroll Ownership
 
-Scroll boundaries are owned by pages or panes. Reusable components must not own scrolling.
+Scroll boundaries belong to pages or layout containers.
+
+Reusable components must not own scrolling.
 
 ```tsx
-/* Disallowed: the table owns scrolling. */
+/* Avoid */
 <Table />
 ```
 
@@ -151,29 +240,81 @@ Scroll boundaries are owned by pages or panes. Reusable components must not own 
 ```
 
 ```tsx
-/* Required: the wrapping pane owns scrolling. */
-<div className={styles.scroll}>
+/* Preferred */
+<div className={styles.scrollRegion}>
   <Table />
 </div>
 ```
 
 ```css
-.scroll {
+.scrollRegion {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
 }
 ```
 
-Each scrollable area must have exactly one scroll container. Page scroll, pane scroll, and
-component-internal scroll must not stack within the same area. Stacked scroll containers produce
-nested scroll bars, unreachable content, and inconsistent keyboard scrolling.
+Each scrollable region must have exactly one scroll container.
+
+Nested scroll ownership produces:
+
+- Double scrollbars
+- Unreachable content
+- Broken keyboard scrolling
+- Inconsistent wheel behavior
+- Fragile layout interactions
+
+Scroll ownership must remain explicit and singular.
+
+---
+
+## Stretch and Content Sizing
+
+The following patterns cover the majority of layout behavior.
+
+| Behavior                        | Pattern                          |
+| ------------------------------- | -------------------------------- |
+| Fill remaining vertical space   | `flex: 1; min-height: 0;`        |
+| Fill remaining horizontal space | `flex: 1; min-width: 0;`         |
+| Size to content, never shrink   | `flex-shrink: 0;`                |
+| Preferred width with shrinking  | `flex: 1 <basis>; min-width: 0;` |
+
+Layouts requiring exceptions should document the reason.
+
+---
+
+## Column Sizing
+
+Hard widths should generally be avoided.
+
+Columns should declare preferred basis values and allow flex distribution to handle resizing.
+
+```css
+/* Avoid */
+.cell {
+  width: 12rem;
+}
+
+/* Preferred */
+.cell {
+  flex: 1 14rem;
+}
+```
+
+This approach:
+
+- Produces sensible default widths
+- Allows graceful shrinking
+- Reduces brittle layout assumptions
+- Improves responsiveness naturally
+
+Large minimum widths should also be avoided unless they represent a genuine product constraint.
 
 ---
 
 ## Standard Recipes
 
-### Fixed header with a scrolling content region
+### Fixed header with scrolling content
 
 ```css
 .parent {
@@ -194,10 +335,13 @@ nested scroll bars, unreachable content, and inconsistent keyboard scrolling.
 }
 ```
 
-The header retains its content height. The content region fills the remaining space and owns the
-scroll boundary.
+The header sizes to content.
 
-### Side-by-side panes with independent shrinking
+The content region fills remaining space and owns scrolling.
+
+---
+
+### Side-by-side shrinking regions
 
 ```css
 .row {
@@ -217,10 +361,13 @@ scroll boundary.
 }
 ```
 
-Each pane shrinks independently. Long content in either pane does not push the other pane out of the
-viewport.
+Each region shrinks independently.
 
-### Table cell that shrinks gracefully
+Long content in one region does not force the other region outside the viewport.
+
+---
+
+### Table cell that shrinks correctly
 
 ```css
 .row {
@@ -233,83 +380,100 @@ viewport.
 }
 ```
 
-The `flex: 1 5rem` shorthand sets a preferred basis of `5rem` while allowing the cell to grow and
-shrink. The `min-width: 0` permits the cell to shrink below its intrinsic content width.
+The basis value establishes preferred sizing while still allowing flexible growth and shrinking.
 
 ---
 
-## Column Sizing
+## Decorative Clipping
 
-Hard widths and large minimum widths must be avoided. Columns should declare a preferred basis and
-allow flex to handle distribution.
+`overflow: hidden` is permitted only for decorative clipping.
+
+Examples include:
+
+- Rounded-corner image clipping
+- Decorative overlay masking
+- Purely visual overflow masking
 
 ```css
-/* Avoid */
-.cell {
-  width: 12rem;
-}
-
-/* Prefer */
-.cell {
-  flex: 1 14rem;
-}
-```
-
-This pattern produces columns that have a sensible default width, grow to fill available space, and
-shrink when constrained. It avoids the brittleness of hard pixel widths.
-
----
-
-## Stretch and Content Sizing
-
-| Behavior                        | Pattern                          |
-| ------------------------------- | -------------------------------- |
-| Stretch to fill remaining space | `flex: 1; min-height: 0;`        |
-| Size to content, never shrink   | `flex-shrink: 0;`                |
-| Side-by-side, equal share       | `flex: 1; min-width: 0;` on each |
-| Preferred width, allow flex     | `flex: 1 <basis>; min-width: 0;` |
-
-These patterns cover the majority of layout needs. Components that require behavior outside this set
-must document the reason in a comment.
-
----
-
-## `overflow: hidden` — Decorative Clipping Only
-
-`overflow: hidden` is permitted only when clipping is decorative: a border-radius cutting an inner
-image or iframe, or an absolutely-positioned overlay that bleeds outside a positioned ancestor.
-
-```css
-/* Allowed: clips a child image to the card's rounded corners */
 .card {
   border-radius: 1rem;
   overflow: hidden;
 }
 ```
 
-It must never be used to compensate for an unconstrained layout. If content escapes its container,
-the fix is to locate the missing `min-width: 0` or `min-height: 0` in the chain, or to correct
-`align-items` on the container — not to hide the symptom with `overflow: hidden`.
+`overflow: hidden` must never be used to suppress broken layout behavior.
+
+If content escapes a container, the root cause is usually:
+
+- Missing `min-width: 0`
+- Missing `min-height: 0`
+- Incorrect flex constraints
+- Incorrect scroll ownership
+- Broken constraint chains
+
+The constraint chain must be corrected rather than visually masking the symptom.
 
 ---
 
 ## Common Failures
 
-The patterns above prevent the following recurring failures:
+The rules above prevent several recurring layout failures.
 
-- A scroll container whose parent does not declare `min-height: 0`. The container never receives a
-  constrained height, and content overflows the viewport instead of scrolling.
-- A flex row child whose content forces the row wider than the parent. The fix is `min-width: 0` on
-  the child.
-- A `min-width: 0` declaration that has no effect because an ancestor uses `align-items: center`,
-  making the child intrinsic-width. The fix is to remove the `align-items` override (revert to
-  `stretch`) on the ancestor that starts the constrained chain.
-- A reusable component that declares its own `overflow` or `max-height`. The component cannot be
-  reused inside a fixed pane and a fully-scrolling page.
-- `overflow: hidden` used to suppress content escaping its container. The symptom disappears but the
-  root cause — a missing constraint in the chain — remains.
-- Stacked scroll containers. The fix is to remove the inner scroll and let the outer pane own the
-  boundary.
+### Missing `min-height: 0`
+
+A scroll container never receives a constrained height.
+
+Result:
+
+- Content overflows the viewport
+- Scrolling never activates
+
+---
+
+### Missing `min-width: 0`
+
+A flex child refuses to shrink horizontally.
+
+Result:
+
+- Text overflow
+- Blown-out layouts
+- Horizontal scrolling
+
+---
+
+### Incorrect `align-items`
+
+An ancestor uses intrinsic-width sizing unintentionally.
+
+Result:
+
+- `min-width: 0` stops functioning
+- Width constraints collapse
+
+---
+
+### Nested scroll containers
+
+Multiple regions compete for scroll ownership.
+
+Result:
+
+- Double scrollbars
+- Broken interaction behavior
+- Fragile scrolling UX
+
+---
+
+### Layout bugs hidden with `overflow: hidden`
+
+Visual overflow disappears, but the constraint problem remains unresolved.
+
+Result:
+
+- Fragile layouts
+- Hidden clipping bugs
+- Unpredictable resizing behavior
 
 ---
 
@@ -317,21 +481,19 @@ The patterns above prevent the following recurring failures:
 
 ```text
 Page
-  owns major layout
+  owns major route-level layout
 
-Pane
-  owns overflow region
+Layout container
+  owns constraints, overflow, and scrolling
 
 Reusable UI component
-  owns structure and intrinsic shape
+  owns structure and visual behavior
 
 Rows and cells
-  declare min-width: 0 to allow shrinking
+  require min-width: 0 to shrink
 
-Scrollable flex children
-  declare min-height: 0 to allow shrinking
+Scrollable flex descendants
+  require min-height: 0 to shrink
 ```
 
-This model is the source of truth. When a layout misbehaves, the cause is almost always a missing
-`min-height: 0`, a missing `min-width: 0`, or a reusable component that has taken ownership of a
-concern that belongs to a pane.
+This model is the source of truth.

@@ -16,18 +16,40 @@ tags: [standards]
 
 # CSS Standards
 
-This document defines the conventions for styling React components. It covers the styling system,
-sizing and overflow ownership, variants, file placement, and class naming.
+This document defines the styling conventions for frontend code.
 
-For component design principles, see [Frontend Philosophy](./frontend-philosophy.md). For folder
-layout, see [Project Structure](./project-structure.md). For flex layout patterns and scroll
-ownership recipes, see [Layout](./layout.md).
+It covers the styling system, CSS ownership boundaries, variants, naming, design tokens, and file
+organization.
+
+The styling philosophy is minimal, durable, predictable, and scalable.
+
+CSS should remain easy to reason about as the application grows. Styling decisions should favor
+composition, consistency, and predictable refactoring over short-term convenience.
+
+The goal of these standards is to ensure that features can be added, layouts adjusted, and
+components refactored without creating fragile coupling or cascading visual regressions.
+
+For related layout and component architecture rules, see [Layout](./layout.md) and
+[Frontend Philosophy](./frontend-philosophy.md).
+
+---
+
+## Styling Scope
+
+CSS is responsible for visual presentation.
+
+Layout ownership, overflow behavior, and constraint management are defined in [Layout](./layout.md).
+
+Component ownership and architectural boundaries are defined in
+[Frontend Philosophy](./frontend-philosophy.md).
 
 ---
 
 ## Styling System
 
-All component styles must use CSS Modules. Each component imports its own `.module.css` file.
+All component styles must use CSS Modules.
+
+Each component imports its own `.module.css` file.
 
 ```tsx
 import styles from "./EventCard.module.css";
@@ -37,138 +59,98 @@ import styles from "./EventCard.module.css";
 </div>;
 ```
 
-Class names within a CSS Module are scoped at build time. Scoped names may be short and structural,
-including names such as `card`, `title`, `actions`, and `header`.
+Class names within a CSS Module are scoped at build time.
+
+Scoped names may therefore remain short and structural:
+
+- `card`
+- `title`
+- `content`
+- `actions`
+- `header`
 
 Global CSS is restricted to:
 
-- A single `globals.css` file containing CSS resets, base typography, and root-level defaults.
-- A `variables.css` file (or equivalent) defining design tokens, including colors, spacing, radii,
-  shadows, and font definitions.
+- `reset.css`
+- `globals.css`
+- `variables.css`
 
-Global styles must only be introduced when the rule is genuinely global. A rule that applies to a
-single component or feature must not be placed in a global file.
+Global rules must only exist when the rule is genuinely global.
 
-Inline `style` attributes must not be used except when the value is genuinely dynamic and cannot be
-expressed through a class. Examples of acceptable inline use include positioning values computed
-from runtime measurement and animation delays derived from element index.
+A rule applying to a single feature or component must not appear in a global stylesheet.
+
+---
+
+## Design Tokens
+
+Repeated visual values must be extracted into design tokens.
+
+Design tokens live in `variables.css`.
+
+Examples include:
+
+- Colors
+- Spacing
+- Radii
+- Typography
+- Shadows
+- Z-index layers
+- Transition durations
+
+Magic numbers must not appear repeatedly throughout component CSS.
+
+A recurring visual value indicates a missing token.
 
 ---
 
 ## Units
 
-All CSS sizing must use `rem`, not `px`. This keeps values consistent with the user's font-size
-preference and avoids brittle pixel math.
+Length values should use `rem` rather than `px` unless the value is conceptually pixel-bound.
 
-```css
-/* Disallowed */
-.avatar {
-  width: 24px;
-  height: 24px;
-}
+This keeps layouts consistent with user font-size preferences and avoids brittle pixel-based sizing
+assumptions.
 
-/* Allowed */
-.avatar {
-  width: 1.5rem;
-  height: 1.5rem;
-}
+`rem` values should be calculated directly from the intended pixel value using the browser default
+base size of `16px`.
+
+```text
+target_px / 16 = rem
 ```
 
-Common conversions, assuming a 16px base: `4px → 0.25rem`, `8px → 0.5rem`, `12px → 0.75rem`,
-`16px → 1rem`, `24px → 1.5rem`, `32px → 2rem`. Odd values must be calculated, not rounded.
+Examples:
 
-`px` is permitted only for values that are conceptually pixel-bound, such as a `1px` hairline
-border, and for properties where `rem` is meaningless, such as `box-shadow` blur radii on extremely
-small values.
+- `8px → 0.5rem`
+- `24px → 1.5rem`
+
+Values must be calculated precisely rather than rounded to arbitrary increments.
+
+`px` is permitted only for conceptually pixel-bound values:
+
+- `1px` hairline borders
+- Extremely small shadow blur values
+- Browser APIs that operate in pixels
 
 ---
 
-## Parent-Owned Sizing
+## Inline Styles
 
-Components must not set their own external width, height, or maximum width. Sizing is a layout
-concern and is owned by the parent.
+Inline `style` attributes must not be used unless the value is genuinely dynamic and cannot be
+expressed through a class.
 
-```css
-/* Disallowed: the component declares its own width. */
-.button {
-  width: 12.5rem;
-}
+Acceptable inline usage includes:
 
-/* Allowed: the component declares only its intrinsic shape. */
-.button {
-  padding: 0.5rem 1rem;
-}
-```
+- Runtime positioning values
+- Dynamically computed transforms
+- Animation delays derived from index
+- Runtime CSS variable assignment
 
-A component may declare intrinsic sizing through padding, line-height, and gap between internal
-elements. These rules describe the component's internal shape. They do not declare the component's
-external footprint.
-
-The parent decides external sizing by means of its own layout — flex, grid, or an explicit container
-width. The same component must function unchanged inside a flex container, a grid cell, or a
-fixed-width wrapper.
-
-Parents adjust a child's external presentation by passing a `className` prop, not by overriding the
-child's internal styles. See [Frontend Philosophy](./frontend-philosophy.md) for the `className`
-prop convention.
-
----
-
-## Parent-Owned Scrolling
-
-Reusable components must not declare their own overflow behavior. Scroll boundaries are determined
-by the wrapping page or pane.
-
-```css
-/* Disallowed: the table declares its own scroll boundary. */
-.tableBody {
-  overflow-y: auto;
-  max-height: 25rem;
-}
-
-/* Allowed: the table renders structure; the wrapper handles overflow. */
-.tableBody {
-  /* no overflow rules */
-}
-```
-
-This rule allows a single table or list component to function inside a fixed-height pane, a
-fully-scrolling page, or a modal without modification.
-
-Each scrollable area must have exactly one scroll container. Page scroll, panel scroll, and
-component-internal scroll must not stack within the same area. The recipes for assigning scroll
-ownership are in [Layout](./layout.md).
-
-`overflow: hidden` is permitted only for decorative clipping — when a border-radius must clip a
-child image or an absolutely-positioned overlay. It must never be used to compensate for an
-unconstrained layout. Content escaping its container is a signal that a `min-width: 0`,
-`min-height: 0`, or `align-items: stretch` correction is needed upstream, not that the symptom
-should be hidden.
-
----
-
-## Layout Ownership Summary
-
-The division of responsibility for layout concerns is:
-
-| Concern                              | Owner                 |
-| ------------------------------------ | --------------------- |
-| External width, height, max-width    | Parent (page or pane) |
-| Overflow and scroll boundaries       | Parent (page or pane) |
-| Clipping                             | Parent (page or pane) |
-| Intrinsic shape (padding, gap, etc.) | Component itself      |
-| Variant styling                      | Component itself      |
-
-Reusable components must fill width naturally, structure their content, expose variants, and avoid
-viewport assumptions. The full set of layout patterns — including the `min-height: 0` and
-`min-width: 0` rules that govern flex shrinking — is documented in [Layout](./layout.md).
+Inline styles must not replace reusable styling patterns.
 
 ---
 
 ## Variants
 
-When a shared UI primitive supports a stable set of visual modes, those modes must be expressed as
-variants.
+Stable visual modes must be expressed through variants.
 
 ```tsx
 <Button variant="primary" />
@@ -178,7 +160,7 @@ variants.
 
 ```css
 .button {
-  /* base styles shared by all variants */
+  /* base styles */
 }
 
 .buttonPrimary {
@@ -190,16 +172,18 @@ variants.
 }
 ```
 
-Color and visual treatment must live in variants rather than in scattered component CSS.
+Variants are preferred over scattered overrides or one-off modifier classes.
 
-A primitive should expose a small number of variants, typically two or three. A primitive that
-requires five or more variants indicates excessive responsibility and should be split.
+A reusable primitive should expose only a small number of stable variants.
+
+A primitive requiring many unrelated variants likely owns too much responsibility and should be
+split.
 
 ---
 
 ## File Placement
 
-CSS files must be co-located with the component they style.
+CSS files must remain co-located with the component they style.
 
 ```text
 EventCard/
@@ -207,78 +191,108 @@ EventCard/
   EventCard.module.css
 ```
 
-A CSS file must contain only styles for its associated component. Styles for sibling or child
-components belong in those components' own files.
+A CSS file must contain only styles for its associated component.
+
+Styles for sibling or child components belong in those components' own files.
+
+See [Project Structure](./project-structure.md) for broader folder organization rules.
 
 ---
 
-## Reusable vs. Feature CSS
+## Styling Placement
 
-Shared UI primitives must contain only generic styles. Feature-specific styling lives in feature
-components.
+Styling should remain co-located with the concern it supports.
 
-Generic styles owned by a shared primitive include:
+Reusable primitives may contain only domain-agnostic styling.
 
-- Structural layout for the primitive.
-- Base typography.
-- Variant definitions.
+Feature-specific presentation belongs in feature components.
 
-Feature-specific styles owned by a feature component include:
+Feature-specific styling must not appear inside shared primitives.
 
-- Column widths and alignment for the data the feature renders.
-- Placement and spacing of feature-specific actions.
-- Feature-specific decorative treatment.
-
-Feature-specific rules must not appear in `components/ui/` files. A feature-specific rule in a
-shared primitive's CSS indicates a leak of domain knowledge into the primitive.
+See [Frontend Philosophy](./frontend-philosophy.md) for component ownership boundaries.
 
 ---
 
 ## Class Naming
 
-Within a CSS Module, class names use camelCase and may be short and structural.
+Within CSS Modules, class names use camelCase.
+
+Class names may remain short and structural because module scoping already provides namespacing.
 
 ```css
 .panel {
   /* ... */
 }
+
 .header {
   /* ... */
 }
+
 .content {
-  /* ... */
-}
-.actions {
   /* ... */
 }
 ```
 
-Variants and modifiers are expressed through camelCase suffixes:
+Variants and modifiers use camelCase suffixes:
 
 ```css
 .button {
   /* ... */
 }
+
 .buttonPrimary {
   /* ... */
 }
+
 .buttonDisabled {
   /* ... */
 }
 ```
 
-BEM block-element-modifier naming must not be used. Module scoping makes the namespacing prefix
-redundant.
+BEM naming must not be used.
+
+CSS Modules already solve namespacing.
+
+---
+
+## Selectors
+
+Selectors must remain shallow.
+
+Component CSS should target the component's own structure directly.
+
+Deep descendant selectors indicate brittle coupling between markup and styling.
+
+```css
+/* Avoid */
+.card .content .header .title {
+}
+
+/* Prefer */
+.title {
+}
+```
+
+CSS should compose through structure and variants rather than selector specificity battles.
 
 ---
 
 ## Minimalism
 
-CSS rules must be removed when they are not actively required. Each declaration must do work.
+CSS rules must be removed when they are not actively required.
 
-The following practices apply:
+Each declaration must do work.
 
-- Repeated values must be extracted into design tokens in `variables.css`.
-- Magic numbers must not appear in component CSS. All recurring values must reference a token.
-- Selectors must be as shallow as the markup permits.
-- Override-driven styling must be avoided in favor of composition through variants.
+The following principles apply:
+
+- Repeated values become tokens
+- Selectors remain shallow
+- Overrides are avoided
+- Variants are preferred over branching selectors
+- Layout bugs are fixed at the source
+- Generic abstractions are introduced cautiously
+
+CSS should remain predictable under refactoring.
+
+A future engineer or AI agent should be able to modify styling confidently without unintended side
+effects.

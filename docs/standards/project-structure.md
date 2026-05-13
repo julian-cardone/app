@@ -16,36 +16,49 @@ tags: [standards]
 
 # Project Structure
 
-This document defines the folder layout for frontend code. It covers the boundary between shared and
-feature code, service organization, hooks and providers, and the rules for introducing new folders.
+This document defines the physical organization of frontend code.
 
-For component design principles, see [Frontend Philosophy](./frontend-philosophy.md). For styling
-conventions, see [CSS Standards](./css.md). For flex layout patterns, see [Layout](./layout.md).
+It covers folder boundaries, module ownership, public surfaces, feature organization, and file
+placement conventions.
+
+The project structure must remain scalable, predictable, and easy to navigate.
+
+A future engineer or AI agent should be able to determine:
+
+- Where code belongs
+- What owns a concern
+- Which modules are public
+- Which boundaries must remain isolated
+
+For architectural philosophy and ownership rules, see
+[Frontend Philosophy](./frontend-philosophy.md).
+
+For styling conventions, see [CSS Standards](./css.md).
+
+For layout mechanics and overflow behavior, see [Layout](./layout.md).
 
 ---
 
-## Reference Layout
+## Reference Structure
 
 ```text
 src/
   components/
-    ui/                     # Shared UI primitives
-      Button/
-      Input/
-      Modal/
+    ui/                        # Shared UI primitives
 
   features/
     <feature-name>/
-      components/           # Feature components
-      hooks/                # Feature-scoped hooks
-      lib/                  # Feature-scoped pure logic
-      models/               # Feature domain types
-      pages/                # Routed page components
+      components/              # Feature components
+      hooks/                   # Feature-scoped hooks
+      lib/                     # Feature-scoped pure logic
+      models/                  # Feature domain models
+      pages/                   # Route-level pages
 
-  hooks/                    # Cross-cutting hooks
-  providers/                # Context providers
-  services/                 # API clients and integration code
-  lib/                      # Cross-cutting pure utilities
+  services/                    # Backend integrations
+  providers/                   # Context providers
+  hooks/                       # Cross-feature hooks
+  lib/                         # Cross-feature pure utilities
+
   styles/
     reset.css
     globals.css
@@ -56,151 +69,320 @@ src/
   index.tsx
 ```
 
-A feature folder must include only the subfolders that contain files. A folder must not be created
-in advance of its contents.
+Folders must not be created before they contain files.
+
+Structure should emerge from real complexity rather than speculative organization.
 
 ---
 
-## App Entry
+## Application Entry
 
-The application root is composed of three files at the top of `src/`:
+The application root consists of three files:
 
-- `index.tsx` — the DOM entry point. It mounts the router into the root element and imports global
-  stylesheets. It must not contain application logic.
-- `router.tsx` — the route tree. It defines the routes, references feature pages, and exports the
-  router. It must not contain layout markup beyond the route configuration itself.
-- `App.tsx` — the root layout component. It renders the current route via `<Outlet />` and is the
-  natural home for top-level provider composition when providers are introduced.
+- `index.tsx`
+- `router.tsx`
+- `App.tsx`
 
-The chain is `index.tsx` mounts the router, the router renders `App`, `App` renders the current
-route. Each file owns a single concern and must not absorb the others.
+Responsibilities are divided as follows:
 
-These three files are the only `.tsx` files permitted directly under `src/`. All other components
-must live in `components/ui/`, `features/<feature>/components/`, or `features/<feature>/pages/`.
+| File         | Responsibility                            |
+| ------------ | ----------------------------------------- |
+| `index.tsx`  | DOM entry and global stylesheet imports   |
+| `router.tsx` | Route configuration                       |
+| `App.tsx`    | Root application shell and provider setup |
+
+These files must remain narrowly scoped.
+
+They must not absorb unrelated concerns.
+
+These are the only `.tsx` files permitted directly under `src/`.
+
+All other components belong within feature or component boundaries.
 
 ---
 
-## Components vs. Features
+## Shared and Feature Boundaries
 
-The boundary between `components/ui/` and `features/<feature>/components/` must be preserved.
+Shared code lives outside `features/` and must remain domain-agnostic.
 
-`components/ui/` contains primitives that are domain-agnostic and may be used by any feature. These
-primitives must not import from `features/`.
+Feature code lives inside:
 
-`features/<feature>/components/` contains components that reference domain models, workflows, and
-business decisions. These components may import from `components/ui/` and from their own feature.
+```text
+features/<feature-name>/
+```
 
-A component that is used by only one feature must live in that feature. Promotion to
-`components/ui/` requires that the component is genuinely domain-agnostic and is needed by a second
-feature.
+Shared modules must not import from feature folders.
+
+Feature modules may import from shared modules and services.
+
+Feature modules must not import directly from unrelated feature folders.
+
+Cross-feature behavior should be introduced through shared abstractions or service boundaries only
+after reuse is proven.
+
+See [Frontend Philosophy](./frontend-philosophy.md) for component ownership and abstraction rules.
+
+---
+
+## Promotion Rules
+
+Code should remain local until reuse is proven.
+
+A module used by only one feature belongs in that feature.
+
+Promotion into shared areas such as:
+
+- `components/ui/`
+- `hooks/`
+- `lib/`
+
+requires:
+
+1. Proven reuse
+2. Domain-agnostic behavior
+3. Stable abstraction boundaries
+
+Premature promotion creates fragile generic systems and weak ownership boundaries.
+
+See [Frontend Philosophy](./frontend-philosophy.md) for abstraction rules.
+
+---
+
+## Public Surfaces
+
+Every major boundary should expose a public surface.
+
+Examples include:
+
+```text
+components/ui/index.ts
+features/events/index.ts
+services/events/index.ts
+```
+
+Consumers import through the public surface rather than internal implementation files.
+
+```ts
+import { EventCard } from "@/features/events";
+import { Button } from "@/components/ui";
+```
+
+Internal implementation details must remain private to their boundary.
+
+This allows internal refactoring without cascading dependency breakage.
 
 ---
 
 ## Services
 
-Services encapsulate backend integration. Components must not call backend APIs directly.
+Services encapsulate backend integration.
 
-A service folder includes:
+Components must not call backend APIs directly.
+
+A service structure typically includes:
 
 ```text
 services/
   events/
-    events.api.ts        # API request functions
-    events.mappers.ts    # API-to-application type mapping
-    events.types.ts      # API and application types
-    index.ts             # Public surface
+    events.api.ts
+    events.mappers.ts
+    events.types.ts
+    index.ts
 ```
 
-Components import from a service's public surface (`index.ts`). Components must not import internal
-service files directly.
+Responsibilities are divided as follows:
 
-`snake_case` field names and raw API response shapes must not appear outside of service files. Any
-such reference in a component indicates a missing or misplaced mapper.
+| File           | Responsibility               |
+| -------------- | ---------------------------- |
+| `*.api.ts`     | Network requests             |
+| `*.mappers.ts` | Backend/frontend translation |
+| `*.types.ts`   | Backend and frontend types   |
+| `index.ts`     | Public surface               |
+
+Backend/frontend translation occurs in service mappers.
+
+See [Frontend Philosophy](./frontend-philosophy.md) for model-separation rules.
 
 ---
 
-## Hooks and Providers
+## Hooks
 
 Hooks are organized by scope.
 
-- Cross-cutting hooks live in `src/hooks/`. Examples include `useDebounce`, `useLocalStorage`, and
-  `useMediaQuery`.
-- Feature-scoped hooks live in `features/<feature>/hooks/`. Examples include `useEvent` and
-  `useRsvp`.
+### Cross-feature hooks
 
-A hook used by only one feature must live in that feature. Promotion to `src/hooks/` requires use by
-a second feature.
+Cross-feature hooks live in:
 
-Context providers live in `src/providers/`. The hooks that read from each provider live alongside
-the provider.
+```text
+src/hooks/
+```
+
+Examples include:
+
+- `useDebounce`
+- `useLocalStorage`
+- `useMediaQuery`
+
+---
+
+### Feature hooks
+
+Feature-scoped hooks live in:
+
+```text
+features/<feature>/hooks/
+```
+
+Examples include:
+
+- `useEvent`
+- `useRsvp`
+
+Hooks used by only one feature remain in that feature.
+
+Promotion to shared hooks requires proven cross-feature reuse.
+
+---
+
+## Providers
+
+Context providers live in:
+
+```text
+src/providers/
+```
+
+Providers own cross-cutting state and application-wide concerns.
+
+Hooks consuming provider state should live alongside the provider itself.
+
+Providers must remain narrowly scoped.
+
+A provider accumulating unrelated concerns should be split.
 
 ---
 
 ## Styles
 
-Global stylesheets live in `src/styles/`:
+Global stylesheets live in:
 
-- `reset.css` — CSS reset that normalizes browser defaults.
-- `globals.css` — base typography and root-level defaults.
-- `variables.css` — design tokens including colors, spacing, radii, shadows, and font definitions.
+```text
+src/styles/
+```
 
-These are the only files in which global CSS is permitted. All other styles must be CSS Modules
-co-located with their component. The full rule is in [CSS Standards](./css.md).
+Only the following files are permitted:
 
-`index.tsx` is the only place these stylesheets are imported.
+- `reset.css`
+- `globals.css`
+- `variables.css`
+
+All other styling must use CSS Modules co-located with components.
+
+Global styles must remain minimal.
+
+See [CSS Standards](./css.md).
 
 ---
 
 ## Feature Folders
 
-A new `features/<name>/` folder must be created when both of the following are true:
+A new feature folder should be introduced only when the work owns:
 
-1. The work has its own routes, pages, or distinct user-facing flow.
-2. The work has its own domain models or workflow logic that does not belong in another feature.
+1. A distinct user-facing workflow
+2. Distinct domain logic or models
 
-A feature folder must not be created for components that lack distinct domain logic. A confirmation
-dialog or a generic notification banner is not a feature.
+A feature folder must not be created for:
 
----
+- Generic dialogs
+- Shared primitives
+- Generic utilities
+- Isolated visual components lacking domain behavior
 
-## Pages
-
-Page components live in `features/<feature>/pages/`.
-
-Pages own:
-
-- Wiring of feature components into a screen.
-- Page-level state, including current selection, fetched data, and route parameters.
-- Routing concerns specific to the page.
-
-Pages must remain shells. They contain a surface, a layout container, and instances of feature
-components. They must not render content directly. The full rule is in
-[Frontend Philosophy](./frontend-philosophy.md).
-
-Workflow logic, content rendering, and section-level state belong in feature components, not in
-pages.
+Feature boundaries should reflect product boundaries rather than visual grouping alone.
 
 ---
 
-## Imports
+## File Co-location
 
-Imports must use a feature or service's public surface (`features/events`, `services/events`) rather
-than reaching into internal files. An `index.ts` at each boundary defines the public surface.
+Files should remain co-located with the concern they support.
 
-Within a feature, relative imports between sibling files are permitted.
+Example:
+
+```text
+EventCard/
+  EventCard.tsx
+  EventCard.module.css
+  EventCard.types.ts
+  index.ts
+```
+
+Additional files should only be introduced when complexity justifies the split.
+
+Small components should remain compact.
+
+Structure should scale gradually with complexity.
+
+---
+
+## Import Rules
+
+Imports must respect ownership boundaries.
+
+Consumers should import from public surfaces rather than internal implementation files.
+
+Within a feature, relative imports between sibling modules are acceptable.
+
+Cross-feature imports reaching into internal implementation details are prohibited.
+
+Feature boundaries should remain encapsulated.
+
+Type-only imports must use `import type`.
+
+```ts
+import type { Event } from "@/features/events";
+```
+
+This makes runtime dependencies explicit, improves clarity, and reduces accidental runtime coupling
+between modules.
 
 ---
 
 ## Folder Discipline
 
-The following constraints apply to folder creation:
+Folders should remain intentional and minimal.
 
-- A folder must not be created before it contains a file.
-- Nested `components/` folders within a feature must not exceed two levels.
-- A `shared/` folder under `features/` must not be created. Cross-feature primitives belong in
-  `components/ui/`.
-- A `utils/` folder must not be used as a general-purpose collection. Utilities must be grouped by
-  category (`date`, `string`, `dom`) into named files or sub-areas.
+The following rules apply:
 
-Folder depth must follow project complexity. Additional structure is introduced when files exist to
-populate it.
+- Folders must not exist before they contain files
+- Nested component hierarchies should remain shallow
+- `shared/` folders inside features must not exist
+- `utils/` must not become a dumping ground
+- Generic folders without ownership meaning should be avoided
+
+Utilities should instead be grouped by responsibility:
+
+```text
+lib/
+  date/
+  string/
+  dom/
+```
+
+Folder depth should emerge from real project complexity rather than speculative organization.
+
+---
+
+## Predictable Navigation
+
+The structure of the project should make ownership obvious.
+
+A future engineer or AI agent should be able to answer the following quickly:
+
+- Where does this code belong?
+- Which layer owns this concern?
+- Is this feature-specific or shared?
+- What is the public interface?
+- What dependencies are allowed?
+
+The structure should optimize for local reasoning and predictable refactoring rather than maximal
+generic reuse.
