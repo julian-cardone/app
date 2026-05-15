@@ -39,12 +39,12 @@
   "hooks": {
     "Notification": [
       {
-        "matcher": "",
+        "matcher": ".*",
         "hooks": [
           {
-            "description": "Display a macOS system notification when Claude Code requires user attention or input",
+            "description": "Display a macOS notification with the Claude Code message",
             "type": "command",
-            "command": "osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\"'"
+            "command": "INPUT=$(cat); MSG=$(echo \"$INPUT\" | jq -r '.message // \"Claude Code needs your attention\"'); osascript -e \"display notification \\\"$MSG\\\" with title \\\"Claude Code\\\"\""
           }
         ]
       }
@@ -54,9 +54,9 @@
         "matcher": "Edit|Write",
         "hooks": [
           {
-            "description": "Extract the modified file path from the hook payload and automatically format the file with Prettier",
+            "description": "Format the edited file with Prettier using the project config",
             "type": "command",
-            "command": "prettier --write \"$(jq -r '.tool_input.file_path')\""
+            "command": "INPUT=$(cat); FILE=$(echo \"$INPUT\" | jq -r '.tool_input.file_path'); npx prettier --write --ignore-unknown \"$FILE\""
           }
         ]
       },
@@ -64,10 +64,10 @@
         "matcher": "Write|Edit",
         "hooks": [
           {
-            "description": "If the modified file is a Markdown document inside /docs/, run markdown linting and fail the workflow on lint errors",
+            "description": "Lint the changed file with markdownlint if it is a Markdown file inside docs/",
             "type": "command",
             "statusMessage": "Linting docs/",
-            "command": "python3 -c \"\nimport json, sys\nd = json.load(sys.stdin)\npath = d.get('tool_input', {}).get('file_path', '')\nif '/docs/' in path and path.endswith('.md'):\n    import subprocess, sys\n    result = subprocess.run(['npm', 'run', 'lint:md'], capture_output=True, text=True)\n    if result.returncode != 0:\n        print(result.stdout)\n        print('LINT FAILED — fix errors above before proceeding')\n        sys.exit(1)\n\""
+            "command": "python3 -c \"\nimport json, sys\nd = json.load(sys.stdin)\npath = d.get('tool_input', {}).get('file_path', '')\nif '/docs/' in path and path.endswith('.md'):\n    import subprocess\n    result = subprocess.run(['npx', 'markdownlint-cli2', path], capture_output=True, text=True)\n    if result.returncode != 0:\n        print(result.stdout + result.stderr)\n        print('LINT FAILED — fix errors above before proceeding')\n        sys.exit(1)\n\""
           }
         ]
       }
