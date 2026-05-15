@@ -56,7 +56,7 @@
           {
             "description": "Extract the modified file path from the hook payload and automatically format the file with Prettier",
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | xargs npx prettier --write"
+            "command": "prettier --write \"$(jq -r '.tool_input.file_path')\""
           }
         ]
       },

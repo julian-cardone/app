@@ -140,6 +140,18 @@ import { EventCard } from "@/features/events";
 import { Button } from "@/components/ui";
 ```
 
+Page components live inside `features/<feature>/pages/` and are part of the feature they serve. They
+must be exported through the feature's `index.ts` so that `router.tsx` can import them without
+reaching into internal paths:
+
+```ts
+// features/events/index.ts
+export { EventPage } from "./pages/EventPage";
+
+// router.tsx
+import { EventPage } from "@/features/events";
+```
+
 Internal implementation details stay private to their boundary. This is what allows internal
 refactoring without cascading dependency breakage. If a consumer is reaching into an internal file,
 the public surface is missing something — fix the surface, don't bypass it.
@@ -161,15 +173,17 @@ services/
     index.ts
 ```
 
-| File           | Responsibility               |
-| -------------- | ---------------------------- |
-| `*.api.ts`     | Network requests             |
-| `*.mappers.ts` | Backend/frontend translation |
-| `*.types.ts`   | Backend and frontend types   |
-| `index.ts`     | Public surface               |
+| File           | Responsibility                            |
+| -------------- | ----------------------------------------- |
+| `*.api.ts`     | Network requests                          |
+| `*.mappers.ts` | Backend/frontend translation              |
+| `*.types.ts`   | API response types and raw backend shapes |
+| `index.ts`     | Public surface                            |
 
-Backend/frontend translation happens in mappers. Raw backend response shapes must not leak into
-component code — that's a sign the mapper is missing or misplaced.
+`*.types.ts` holds API-layer types only — raw backend shapes in backend conventions. Domain models
+live in `features/<feature>/models/` and are the `camelCase` application-facing types consumed by
+components. Mappers translate between the two at the service boundary. Raw backend shapes must not
+appear in component code.
 
 ---
 

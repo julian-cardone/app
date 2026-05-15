@@ -1,14 +1,14 @@
 ---
 title: Frontend Philosophy
 doc_type: standard
-status: draft
+status: accepted
 owners: ["@julian-cardone"]
 last_reviewed: 2026-05-08
 related:
   [
-    "docs/standards/css.md",
+    "docs/standards/web-css.md",
     "docs/standards/project-structure.md",
-    "docs/standards/layout.md",
+    "docs/standards/web-layout.md",
     "docs/standards/documentation.md",
   ]
 tags: [standards]
@@ -26,9 +26,9 @@ The frontend architecture must remain minimal, durable, predictable, and scalabl
 Code organization should favor explicit structure, narrow ownership, and predictable refactoring
 over generic abstraction systems.
 
-For styling rules and CSS conventions, see [CSS Standards](./css.md).
+For styling rules and CSS conventions, see [Web CSS Standards](./web-css.md).
 
-For flex behavior, overflow ownership, and layout mechanics, see [Layout](./layout.md).
+For flex behavior, overflow ownership, and layout mechanics, see [Web Layout](./web-layout.md).
 
 For folder structure and module boundaries, see [Project Structure](./project-structure.md).
 
@@ -68,19 +68,12 @@ Ambiguous ownership produces duplicated logic, diverging state, and fragile beha
 
 Ownership boundaries must remain explicit.
 
-Examples:
-
-| Concern             | Owner             |
-| ------------------- | ----------------- |
-| Workflow state      | Feature component |
-| Form state          | Form component    |
-| Route-level data    | Page              |
-| Visual styling      | CSS               |
-| Layout constraints  | Layout container  |
-| Cross-cutting state | Context provider  |
-| Backend integration | Service layer     |
-
 A concern should generally be owned by the lowest layer capable of managing it correctly.
+
+Each layer's ownership rules are defined in the document responsible for that layer. Spatial and
+layout concerns are defined in [Layout](./web-layout.md). Folder and module boundaries are defined
+in [Project Structure](./project-structure.md). Styling concerns are defined in
+[CSS Standards](./web-css.md).
 
 ---
 
@@ -107,6 +100,9 @@ They must not own:
 - Backend integration
 - Domain models
 - Feature-specific behavior
+
+Spatial concerns — scroll boundaries, viewport assumptions, overflow behavior, and external sizing —
+are a separate category governed by [Layout](./layout.md), not by this document.
 
 Shared primitives should remain narrowly scoped and broadly reusable.
 
@@ -160,6 +156,36 @@ If a block of JSX:
 it should generally be extracted into a feature component.
 
 Pages should remain composition-oriented rather than content-heavy.
+
+```tsx
+/* Disallowed: the page renders content directly. */
+export default function EventPage() {
+  const [rsvpOpen, setRsvpOpen] = useState(false);
+  return (
+    <div className={styles.page}>
+      <h1>{event.title}</h1>
+      <p>{event.description}</p>
+      <button onClick={() => setRsvpOpen(true)}>RSVP</button>
+      {/* ... */}
+    </div>
+  );
+}
+
+/* Required: the page composes feature components. */
+export default function EventPage() {
+  return (
+    <div className={styles.page}>
+      <div className={styles.layout}>
+        <EventDetails />
+        <EventActions />
+      </div>
+    </div>
+  );
+}
+```
+
+The page defines the surface and layout container. Each content area is owned by a feature component
+that manages its own state and workflow.
 
 ---
 
@@ -218,6 +244,17 @@ Effects should primarily synchronize React state with:
 
 Effects that only derive local values from other local values usually indicate misplaced state or
 unnecessary synchronization.
+
+```tsx
+/* Disallowed: derived value implemented as an effect. */
+const [fullName, setFullName] = useState("");
+useEffect(() => {
+  setFullName(`${firstName} ${lastName}`);
+}, [firstName, lastName]);
+
+/* Required: derived value computed during render. */
+const fullName = `${firstName} ${lastName}`;
+```
 
 ---
 
@@ -297,6 +334,9 @@ Two similar implementations are acceptable.
 
 Three similar implementations is the threshold at which shared structure should be evaluated.
 
+The structural criteria and destination for promoted code — where it lands and what qualifies it as
+genuinely shared — are defined in [Project Structure](./project-structure.md).
+
 ---
 
 ## Naming
@@ -307,14 +347,19 @@ Generic names are reserved for shared primitives.
 
 Feature components must use domain-specific names.
 
-The following names should generally be avoided:
+A name that describes a generic role rather than a domain concept typically indicates unclear
+ownership or excessive responsibility. If a name could apply to multiple unrelated features, it is
+too generic.
+
+The following names are common examples of this pattern and should generally be avoided:
 
 - `Manager`
 - `Handler`
 - `Wrapper`
 - `DataTable`
 
-These names usually indicate unclear ownership or excessive responsibility.
+When tempted to reach for one of these, rename the component after the domain concept it actually
+represents, or split it into narrower components that can be named precisely.
 
 ---
 
@@ -355,20 +400,21 @@ The surrounding feature component owns loading, selection, modals, and workflow 
 
 ## Backend and Frontend Separation
 
-Backend and frontend models must remain separate.
+Backend and frontend models must remain separate and serve distinct purposes.
 
-Backend conventions remain backend conventions.
+API types live in service files (`services/<x>/*.types.ts`). They represent the raw shapes returned
+by the backend and follow backend conventions such as `snake_case` field names. These types are used
+only within the service layer.
 
-Frontend conventions remain frontend conventions.
+Domain models live in feature folders (`features/<feature>/models/`). They represent the
+application-facing shape of data, follow frontend conventions such as `camelCase`, and are the types
+consumed by components and hooks.
 
-Examples:
+Translation between the two occurs at the service boundary through explicit mappers
+(`services/<x>/*.mappers.ts`).
 
-- Backend models may use `snake_case`
-- Frontend models should use `camelCase`
-
-Translation occurs at the service boundary through explicit mapping.
-
-Raw backend response shapes must not leak into component code.
+Raw backend response shapes must not leak into component code. A `snake_case` field name inside a
+component file indicates a missing or misplaced mapper.
 
 ---
 

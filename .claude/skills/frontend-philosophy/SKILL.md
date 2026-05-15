@@ -61,17 +61,9 @@ it.
 Every concern has a clear owner. Ambiguous ownership produces duplicated logic, diverging state, and
 fragile behavior.
 
-| Concern             | Owner             |
-| ------------------- | ----------------- |
-| Workflow state      | Feature component |
-| Form state          | Form component    |
-| Route-level data    | Page              |
-| Visual styling      | CSS               |
-| Layout constraints  | Layout container  |
-| Cross-cutting state | Context provider  |
-| Backend integration | Service layer     |
-
-A concern belongs to the lowest layer capable of managing it correctly.
+A concern belongs to the lowest layer capable of managing it correctly. Each layer's ownership rules
+are defined in the document responsible for that layer — spatial and layout concerns in
+`web-layout`, folder and module boundaries in `project-structure`, styling concerns in `web-css`.
 
 ---
 
@@ -94,6 +86,9 @@ They must not own:
 - Backend integration
 - Domain models
 - Feature-specific behavior
+
+Spatial concerns — scroll boundaries, viewport assumptions, overflow behavior, and external sizing —
+are a separate category. Those rules live in the layout skill for your platform, not here.
 
 Narrowly scoped, broadly reusable.
 
@@ -132,6 +127,35 @@ A block of JSX in a page must be extracted into a feature component when it:
 - Represents a distinct visual section
 
 Pages stay composition-oriented, not content-heavy.
+
+```tsx
+/* Wrong — page renders content and owns state directly. */
+export default function EventPage() {
+  const [rsvpOpen, setRsvpOpen] = useState(false);
+  return (
+    <div className={styles.page}>
+      <h1>{event.title}</h1>
+      <p>{event.description}</p>
+      <button onClick={() => setRsvpOpen(true)}>RSVP</button>
+    </div>
+  );
+}
+
+/* Right — page composes feature components. */
+export default function EventPage() {
+  return (
+    <div className={styles.page}>
+      <div className={styles.layout}>
+        <EventDetails />
+        <EventActions />
+      </div>
+    </div>
+  );
+}
+```
+
+The page defines the surface and layout container. State, workflow, and rendering belong in the
+feature components.
 
 ---
 
@@ -177,6 +201,17 @@ Effects synchronize React state with:
 
 An effect that only derives local values from other local values is a signal of misplaced state or
 unnecessary synchronization. Move the logic into render, or move the state to its proper owner.
+
+```tsx
+/* Wrong — derived value implemented as an effect */
+const [fullName, setFullName] = useState("");
+useEffect(() => {
+  setFullName(`${firstName} ${lastName}`);
+}, [firstName, lastName]);
+
+/* Right — derived during render */
+const fullName = `${firstName} ${lastName}`;
+```
 
 ---
 
@@ -253,15 +288,19 @@ Names describe responsibility.
 
 Generic names are reserved for shared primitives. Feature components use domain-specific names.
 
-**Avoid these names** — they typically indicate unclear ownership or excessive responsibility:
+A name that describes a generic role rather than a domain concept typically indicates unclear
+ownership or excessive responsibility. If a name could apply to multiple unrelated features, it is
+too generic.
+
+**Common examples to avoid:**
 
 - `Manager`
 - `Handler`
 - `Wrapper`
 - `DataTable`
 
-When tempted to reach for one of these, split the component or rename it after the domain concept it
-actually represents.
+When tempted to reach for one of these, rename the component after the domain concept it actually
+represents, or split it into narrower components that can be named precisely.
 
 ---
 
@@ -301,14 +340,18 @@ The surrounding feature component owns loading, selection, modals, and workflow 
 
 ## Backend and Frontend Separation
 
-Backend and frontend models stay separate.
+Backend and frontend models stay separate and serve distinct purposes.
 
-- Backend models may use `snake_case`.
-- Frontend models use `camelCase`.
+**API types** live in `services/<x>/*.types.ts` — raw backend shapes, `snake_case`, used only within
+the service layer.
 
-Translation happens at the service boundary through explicit mapping. Raw backend response shapes
-must not leak into component code. A `snake_case` reference inside a component file is a signal of a
-missing or misplaced mapper.
+**Domain models** live in `features/<feature>/models/` — the application-facing representation,
+`camelCase`, consumed by components and hooks.
+
+**Mappers** in `services/<x>/*.mappers.ts` translate between the two at the service boundary.
+
+Raw backend shapes must not appear in component code. A `snake_case` field name inside a component
+file is a signal of a missing or misplaced mapper.
 
 ---
 

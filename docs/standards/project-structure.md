@@ -1,14 +1,14 @@
 ---
 title: Project Structure
 doc_type: standard
-status: draft
+status: accepted
 owners: ["@julian-cardone"]
 last_reviewed: 2026-05-08
 related:
   [
     "docs/standards/frontend-philosophy.md",
-    "docs/standards/css.md",
-    "docs/standards/layout.md",
+    "docs/standards/web-css.md",
+    "docs/standards/web-layout.md",
     "docs/standards/documentation.md",
   ]
 tags: [standards]
@@ -33,9 +33,9 @@ A future engineer or AI agent should be able to determine:
 For architectural philosophy and ownership rules, see
 [Frontend Philosophy](./frontend-philosophy.md).
 
-For styling conventions, see [CSS Standards](./css.md).
+For styling conventions, see [Web CSS Standards](./web-css.md).
 
-For layout mechanics and overflow behavior, see [Layout](./layout.md).
+For layout mechanics and overflow behavior, see [Web Layout](./web-layout.md).
 
 ---
 
@@ -144,7 +144,8 @@ requires:
 
 Premature promotion creates fragile generic systems and weak ownership boundaries.
 
-See [Frontend Philosophy](./frontend-philosophy.md) for abstraction rules.
+The decision of whether a pattern is stable enough to abstract — the three-condition test and the
+rule of three — is defined in [Frontend Philosophy](./frontend-philosophy.md).
 
 ---
 
@@ -165,6 +166,18 @@ Consumers import through the public surface rather than internal implementation 
 ```ts
 import { EventCard } from "@/features/events";
 import { Button } from "@/components/ui";
+```
+
+Page components live inside `features/<feature>/pages/` and are part of the feature they serve. They
+must be exported through the feature's `index.ts` so that `router.tsx` can import them from the
+feature's public surface rather than reaching into internal paths.
+
+```ts
+// features/events/index.ts
+export { EventPage } from "./pages/EventPage";
+
+// router.tsx
+import { EventPage } from "@/features/events";
 ```
 
 Internal implementation details must remain private to their boundary.
@@ -192,14 +205,28 @@ services/
 
 Responsibilities are divided as follows:
 
-| File           | Responsibility               |
-| -------------- | ---------------------------- |
-| `*.api.ts`     | Network requests             |
-| `*.mappers.ts` | Backend/frontend translation |
-| `*.types.ts`   | Backend and frontend types   |
-| `index.ts`     | Public surface               |
+| File           | Responsibility                        |
+| -------------- | ------------------------------------- |
+| `*.api.ts`     | Network requests                      |
+| `*.mappers.ts` | Backend/frontend translation          |
+| `*.types.ts`   | API response types and backend shapes |
+| `index.ts`     | Public surface                        |
 
-Backend/frontend translation occurs in service mappers.
+`*.types.ts` holds API-layer types: the raw shapes returned by the backend, expressed in backend
+conventions. These types must not be used directly in component code.
+
+Domain models live in `features/<feature>/models/`. These are frontend types expressed in frontend
+conventions — the mapped, application-facing representation of backend data. Mappers in
+`*.mappers.ts` translate from API types to domain models at the service boundary.
+
+```text
+services/events/events.types.ts   → ApiEvent (snake_case, raw API shape)
+features/events/models/           → Event (camelCase, domain model)
+services/events/events.mappers.ts → maps ApiEvent → Event
+```
+
+Component code uses domain models from `features/<feature>/models/`. API types from services must
+not appear in component files.
 
 See [Frontend Philosophy](./frontend-philosophy.md) for model-separation rules.
 

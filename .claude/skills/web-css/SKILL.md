@@ -207,8 +207,8 @@ Variants and modifiers use camelCase suffixes on the base name:
 Selectors stay shallow. Component CSS targets its own structure directly.
 
 ```css
-/* Wrong — brittle coupling between markup and styling */
-.card .content .header .title {
+/* Wrong — even two levels creates coupling between markup structure and styling */
+.card .title {
 }
 
 /* Right */
@@ -216,8 +216,8 @@ Selectors stay shallow. Component CSS targets its own structure directly.
 }
 ```
 
-Deep descendant selectors indicate fragile coupling. Compose through structure and variants instead
-of specificity battles.
+Descendant selectors couple styling to markup structure. Compose through structure and variants
+instead of specificity battles.
 
 ---
 
@@ -236,6 +236,38 @@ The principles:
 
 CSS must stay predictable under refactoring. A future engineer or AI agent should be able to modify
 styling confidently without unintended side effects.
+
+---
+
+## Common Failures
+
+The rules above prevent several recurring styling failures. For each failure, the cause and result
+are documented in `docs/standards/web-css.md`. The summary:
+
+### Magic numbers in component CSS
+
+Hardcoded values instead of tokens → inconsistent values, brittle refactoring.
+
+### Feature-specific rules in shared primitives
+
+Domain rules in `components/ui/` → coupled primitives, leaking feature concerns.
+
+### `px` where `rem` is required
+
+Pixel sizing → ignores user font-size preferences, inconsistent accessibility behavior.
+
+### Inline styles replacing reusable classes
+
+`style={{}}` for static values → values can't be tokenized or reused.
+
+### Variants expressed as scattered overrides
+
+One-off modifier classes instead of defined variants → fragile, inconsistent visual treatment.
+
+### Deep descendant selectors
+
+Targeting markup structure instead of direct classes → styling coupled to DOM, silent breakage on
+refactor.
 
 ---
 

@@ -1,12 +1,12 @@
 ---
-title: Layout
+title: Web Layout
 doc_type: standard
-status: draft
+status: accepted
 owners: ["@julian-cardone"]
 last_reviewed: 2026-05-08
 related:
   [
-    "docs/standards/css.md",
+    "docs/standards/web-css.md",
     "docs/standards/frontend-philosophy.md",
     "docs/standards/project-structure.md",
     "docs/standards/documentation.md",
@@ -14,7 +14,7 @@ related:
 tags: [standards]
 ---
 
-# Layout
+# Web Layout
 
 This document defines the layout mechanics used throughout the application.
 
@@ -26,7 +26,7 @@ The layout philosophy is durable, predictable, and composition-oriented.
 Layout behavior must remain stable under refactoring. Components should behave consistently
 regardless of where they are rendered.
 
-For styling rules, variants, and design-token conventions, see [CSS Standards](./css.md).
+For styling rules, variants, and design-token conventions, see [Web CSS Standards](./web-css.md).
 
 For component architecture and ownership boundaries, see
 [Frontend Philosophy](./frontend-philosophy.md).
@@ -63,6 +63,10 @@ Reusable components must not own:
 - Page-level positioning
 - Layout orchestration
 - Hard-coded external sizing
+
+Behavioral concerns — workflow logic, backend integration, domain models, and feature-specific
+behavior — are a separate category governed by [Frontend Philosophy](./frontend-philosophy.md), not
+by this document.
 
 Reusable components should remain layout-agnostic.
 
@@ -167,6 +171,10 @@ Example:
 This rule must be applied throughout the shrinking chain.
 
 Skipping a single level breaks containment below it.
+
+`min-width: 0` only works when ancestors use `align-items: stretch` (the default). An ancestor
+overriding this breaks the constrained width chain and makes `min-width: 0` ineffective on all
+descendants. See [`align-items` and Width Inheritance](#align-items-and-width-inheritance) below.
 
 Common use cases include:
 
@@ -297,9 +305,13 @@ Columns should declare preferred basis values and allow flex distribution to han
 
 /* Preferred */
 .cell {
-  flex: 1 14rem;
+  flex: 1 14rem; /* grow and shrink, preferred starting width of 14rem */
 }
 ```
+
+`flex: 1 14rem` is shorthand for `flex-grow: 1; flex-shrink: 1; flex-basis: 14rem`. It gives the
+column a sensible default width while allowing it to grow into available space and shrink when
+constrained.
 
 This approach:
 

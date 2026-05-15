@@ -1,20 +1,20 @@
 ---
-title: CSS Standards
+title: Web CSS Standards
 doc_type: standard
-status: draft
+status: accepted
 owners: ["@julian-cardone"]
 last_reviewed: 2026-05-08
 related:
   [
     "docs/standards/frontend-philosophy.md",
     "docs/standards/project-structure.md",
-    "docs/standards/layout.md",
+    "docs/standards/web-layout.md",
     "docs/standards/documentation.md",
   ]
 tags: [standards]
 ---
 
-# CSS Standards
+# Web CSS Standards
 
 This document defines the styling conventions for frontend code.
 
@@ -29,7 +29,7 @@ composition, consistency, and predictable refactoring over short-term convenienc
 The goal of these standards is to ensure that features can be added, layouts adjusted, and
 components refactored without creating fragile coupling or cascading visual regressions.
 
-For related layout and component architecture rules, see [Layout](./layout.md) and
+For related layout and component architecture rules, see [Web Layout](./web-layout.md) and
 [Frontend Philosophy](./frontend-philosophy.md).
 
 ---
@@ -265,7 +265,7 @@ Deep descendant selectors indicate brittle coupling between markup and styling.
 
 ```css
 /* Avoid */
-.card .content .header .title {
+.card .title {
 }
 
 /* Prefer */
@@ -273,7 +273,84 @@ Deep descendant selectors indicate brittle coupling between markup and styling.
 }
 ```
 
-CSS should compose through structure and variants rather than selector specificity battles.
+Even a two-level descendant selector creates coupling between markup structure and styling. CSS
+should compose through structure and variants rather than selector specificity battles.
+
+---
+
+## Common Failures
+
+The rules above prevent several recurring styling failures.
+
+### Magic numbers in component CSS
+
+A value is hardcoded directly in a component rather than referencing a token.
+
+Result:
+
+- Inconsistent values across components
+- Refactoring requires hunting down every occurrence
+- Design changes require multiple edits
+
+---
+
+### Feature-specific rules in shared primitives
+
+A rule describing domain behavior or feature-specific layout appears in `components/ui/`.
+
+Result:
+
+- Shared primitives become coupled to feature concerns
+- Reuse breaks when the feature changes
+- Domain knowledge leaks into the component layer
+
+---
+
+### `px` used where `rem` is required
+
+A sizing value uses pixels rather than `rem`.
+
+Result:
+
+- Layout ignores user font-size preferences
+- Sizing behaves inconsistently across accessibility settings
+
+---
+
+### Inline styles replacing reusable classes
+
+A static visual value is applied via `style={{}}` rather than a class.
+
+Result:
+
+- Values cannot be reused or tokenized
+- Styling is invisible to design-token tooling
+- Overrides become inconsistent
+
+---
+
+### Variants expressed as scattered overrides
+
+Visual modes are handled through one-off modifier classes or prop-driven conditional styles rather
+than defined variants.
+
+Result:
+
+- Visual treatment is fragile and inconsistent
+- Adding a mode requires changes in multiple places
+- The component's visual contract becomes implicit
+
+---
+
+### Deep descendant selectors
+
+A selector targets markup structure rather than a direct class.
+
+Result:
+
+- Styling is coupled to DOM structure
+- Markup refactoring breaks styles silently
+- Specificity conflicts accumulate
 
 ---
 

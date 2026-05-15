@@ -48,6 +48,9 @@ Reusable components do not own:
 - Layout orchestration
 - Hard-coded external sizing
 
+Behavioral concerns — workflow logic, backend integration, domain models, and feature-specific
+behavior — are a separate category. Those rules live in `frontend-philosophy`, not here.
+
 Reusable components stay layout-agnostic. This applies regardless of where the CSS rule is written —
 a reusable component's `.module.css` must not define external sizing, scroll boundaries, viewport
 assumptions, or page-level positioning. Pages and layout containers constrain them.
@@ -137,7 +140,11 @@ Full example:
 }
 ```
 
-Apply throughout the shrinking chain. Common use cases:
+Apply throughout the shrinking chain. `min-width: 0` only works when ancestors use
+`align-items: stretch` (the default) — an ancestor overriding this makes `min-width: 0` ineffective
+on all descendants. See `align-items` and Width Inheritance below.
+
+Common use cases:
 
 - Table cells with arbitrary content
 - Side-by-side layout regions
@@ -245,12 +252,12 @@ Avoid hard widths. Declare preferred basis values and let flex handle distributi
 /* Preferred */
 .cell {
   flex: 1 14rem;
-}
+} /* grow and shrink, preferred starting width of 14rem */
 ```
 
-This produces sensible default widths, allows graceful shrinking, reduces brittle layout
-assumptions, and improves responsiveness naturally. Avoid large minimum widths unless they represent
-a genuine product constraint.
+`flex: 1 14rem` is shorthand for `flex-grow: 1; flex-shrink: 1; flex-basis: 14rem`. It gives the
+column a sensible default width while allowing it to grow into available space and shrink when
+constrained. Avoid large minimum widths unless they represent a genuine product constraint.
 
 ---
 
