@@ -38,7 +38,8 @@ For related layout and component architecture rules, see [Web Layout](./web-layo
 
 CSS is responsible for visual presentation.
 
-Layout ownership, overflow behavior, and constraint management are defined in [Layout](./layout.md).
+Layout ownership, overflow behavior, and constraint management are defined in
+[Layout](./web-layout.md).
 
 Component ownership and architectural boundaries are defined in
 [Frontend Philosophy](./frontend-philosophy.md).

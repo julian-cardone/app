@@ -102,7 +102,7 @@ They must not own:
 - Feature-specific behavior
 
 Spatial concerns — scroll boundaries, viewport assumptions, overflow behavior, and external sizing —
-are a separate category governed by [Layout](./layout.md), not by this document.
+are a separate category governed by [Layout](./web-layout.md), not by this document.
 
 Shared primitives should remain narrowly scoped and broadly reusable.
 

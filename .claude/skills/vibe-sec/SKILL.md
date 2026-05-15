@@ -68,7 +68,7 @@ For **every data point and action** that requires authentication:
 
 ### Implementation Pattern
 
-```
+```text
 # Pseudocode for secure resource access
 function getResource(resourceId, currentUser):
     resource = database.find(resourceId)
@@ -131,7 +131,7 @@ Every input controllable by the user—whether directly or indirectly—must be 
 
 2. **Content Security Policy (CSP)**
 
-   ```
+   ```text
    Content-Security-Policy:
      default-src 'self';
      script-src 'self';
@@ -192,7 +192,7 @@ Every state-changing endpoint must be protected against CSRF attacks.
 
 2. **SameSite Cookies**
 
-   ```
+   ```http
    Set-Cookie: session=abc123; SameSite=Strict; Secure; HttpOnly
    ```
 
@@ -283,11 +283,11 @@ No secrets or sensitive information should be accessible to client-side code.
 
 Any endpoint accepting a URL for redirection must be protected against open redirect attacks.
 
-### Protection Strategies
+### Open Redirect Protections
 
 1. **Allowlist Validation**
 
-   ```
+   ```python
    allowed_domains = ['yourdomain.com', 'app.yourdomain.com']
 
    function isValidRedirect(url):
@@ -360,7 +360,7 @@ protected.
 - Proxy functionality
 - HTML to PDF/image converters
 
-#### Protection Strategies
+#### SSRF Protections
 
 1. **Allowlist Approach** (Preferred)
    - Only allow requests to pre-approved domains
@@ -422,20 +422,20 @@ File uploads must validate type, content, and size to prevent various attacks.
 
 #### Validation Requirements
 
-**1. File Type Validation**
+##### 1. File Type Validation
 
 - Check file extension against allowlist
 - Validate magic bytes/file signature match expected type
 - Never rely on just one check
 
-**2. File Content Validation**
+##### 2. File Content Validation
 
 - Read and verify magic bytes
 - For images: attempt to process with image library (detects malformed files)
 - For documents: scan for macros, embedded objects
 - Check for polyglot files (files valid as multiple types)
 
-**3. File Size Limits**
+##### 3. File Size Limits
 
 - Set maximum file size server-side
 - Configure web server/proxy limits as well
@@ -499,13 +499,13 @@ query = "SELECT * FROM users WHERE id = ?"
 execute(query, [userId])
 ```
 
-**2. ORM Usage**
+##### 2. ORM Usage
 
 - Use ORM methods that automatically parameterize
 - Be cautious with raw query methods in ORMs
 - Watch for ORM-specific injection points
 
-**3. Input Validation**
+##### 3. Input Validation
 
 - Validate data types (integer should be integer)
 - Whitelist allowed values where applicable
@@ -622,7 +622,7 @@ template = "templates/" + user_provided_template
 
 #### Prevention Strategies
 
-**1. Avoid User Input in Paths**
+##### 1. Avoid User Input in Paths
 
 ```python
 # Instead of using user input directly
@@ -631,7 +631,7 @@ files = {'report': '/reports/q1.pdf', 'invoice': '/invoices/2024.pdf'}
 file_path = files.get(user_input)  # Returns None if invalid
 ```
 
-**2. Canonicalization and Validation**
+##### 2. Canonicalization and Validation
 
 ```python
 import os
@@ -650,7 +650,7 @@ def safe_join(base_directory, user_path):
     return target
 ```
 
-**3. Input Sanitization**
+##### 3. Input Sanitization
 
 - Remove or reject `..` sequences
 - Remove or reject absolute path indicators (`/`, `C:`)
@@ -670,7 +670,7 @@ def safe_join(base_directory, user_path):
 
 Include these headers in all responses:
 
-```
+```http
 Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 Content-Security-Policy: [see XSS section]
 X-Content-Type-Options: nosniff

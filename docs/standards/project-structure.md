@@ -307,7 +307,7 @@ All other styling must use CSS Modules co-located with components.
 
 Global styles must remain minimal.
 
-See [CSS Standards](./css.md).
+See [CSS Standards](./web-css.md).
 
 ---
 
