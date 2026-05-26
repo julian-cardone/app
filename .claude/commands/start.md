@@ -59,7 +59,7 @@ git checkout -b issue-<number>-<slug> main
 ## 4 — Add to project board and set "In Progress"
 
 ```bash
-gh project item-add 1 --owner @me --url <issue-url>
+gh project item-add 1 --owner "@me" --url <issue-url>
 sleep 3
 ```
 
@@ -77,8 +77,7 @@ gh api graphql -f query='
     projectV2(number: 1) {
       id
       items(first: 50) {
-        nodes {
-          id
+        nodes {          id
           content { ... on Issue { number } }
         }
       }

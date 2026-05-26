@@ -4,8 +4,8 @@ Open a pull request for the current branch.
 
 ## Pre-flight
 
-1. Extract `<id>` from the branch name (`issue-<id>-<slug>`). If the branch name does not match
-   this format, stop immediately and report the error. Do not create an issue.
+1. Extract `<id>` from the branch name (`issue-<id>-<slug>`). If the branch name does not match this
+   format, stop immediately and report the error. Do not create an issue.
 2. Run `gh issue view <id>` — confirm it exists and capture: title, assignees, labels. If the issue
    is not found, stop immediately and report the error.
 3. Run `git status` — if there are uncommitted changes, run
@@ -16,19 +16,24 @@ Open a pull request for the current branch.
 
 Copy all `type:*` and `scope:*` labels from the issue directly onto the PR.
 
-Also add these based on `git diff --name-only`:
+Also add these based on `git diff main...HEAD --name-only`:
 
-| If diff contains        | Add label        |
-| ----------------------- | ---------------- |
-| `package.json`/lockfile | `dependencies`   |
-| `.github/workflows/`    | `github_actions` |
-| `.js`/`.ts` files       | `javascript`     |
+| If diff contains         | Add label        |
+| ------------------------ | ---------------- |
+| `package.json`/lockfile  | `dependencies`   |
+| `.github/workflows/`     | `github_actions` |
+| `.js`/`.ts`/`.tsx` files | `javascript`     |
 
 ## Title
 
 `<type>(<scope>): <short description>`
 
 - Type: map `type:*` label → `docs` `feat` `fix` `chore` `refactor` `test` `ci`
+  - `type:doc` → `docs`
+  - `type:adr` → `docs`
+  - `type:design` → `docs`
+  - `type:tech-debt` → `refactor`
+  - `type:chore` → `chore`
 - Scope: map `scope:*` label → `docs` `process` `system-design` `infra`
 
 ## Create
@@ -38,20 +43,36 @@ gh pr create \
   --title "<title>" \
   --assignee "<assignee from issue, or @me if unassigned>" \
   --label "<labels>" \
-  --project "app" \
   --body "<body>"
 ```
 
-Use the body template below. Do not self-approve. Do not merge.
+Do not add `--project`. Pull requests are not tracked on the project board — only issues are. Do not
+self-approve. Do not merge.
 
 ## Body template
 
 ```markdown
 ## Summary
 
+<!-- What changed and why -->
+
 ## Changes
+
+<!-- List of specific changes made -->
 
 ## Related
 
 Closes #<id>
+
+## Documentation Updates
+
+<!-- Note any documentation updates, or write "Not applicable" -->
+
+## ADR Requirement
+
+<!-- Note whether an ADR was created, superseded, or not required -->
+
+## Definition of Done
+
+<!-- Confirm the relevant done criteria were satisfied -->
 ```
