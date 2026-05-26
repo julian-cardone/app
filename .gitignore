@@ -32,6 +32,7 @@ Icon
 
 CLAUDE.local.md
 .claude/settings.local.json
+.claude/worktrees/
 
 # -----------------------------
 # Editor / IDE
