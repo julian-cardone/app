@@ -7,6 +7,7 @@ description: >
   not obvious. Does NOT write code — it produces a plan for the executor to carry out.
 tools: Read, Grep, Glob, Bash
 model: opus
+effort: high
 permissionMode: plan
 color: purple
 ---

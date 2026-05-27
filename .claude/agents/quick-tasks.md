@@ -8,6 +8,8 @@ description: >
   out to need real judgment, stop and recommend the executor or planner instead.
 tools: Read, Grep, Glob, Bash
 model: haiku
+effort: low
+maxTurns: 5
 color: green
 ---
 

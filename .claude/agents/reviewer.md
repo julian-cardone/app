@@ -6,6 +6,7 @@ description: >
   unit of work, and before opening a pull request.
 tools: Read, Grep, Glob, Bash
 model: sonnet
+memory: project
 color: orange
 ---
 
