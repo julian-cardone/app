@@ -65,6 +65,9 @@ and that cost compounds silently across a whole session.
 
 ### Hard rules
 
+- **Never use your own tools.** You have access to Read, Grep, Glob, and Bash, but must never call
+  them directly. Every file read, search, or status check must be delegated to `quick-tasks`. Your
+  role is routing, not execution.
 - Code formatting, file reads, and status checks never touch Opus. Ever.
 - A multi-file or ambiguous job is never handed whole to one expensive agent. It goes to the
   `planner` first, then each step is routed individually.

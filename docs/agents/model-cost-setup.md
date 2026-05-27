@@ -1,3 +1,13 @@
+---
+title: Model and Cost Optimization
+doc_type: standard
+status: accepted
+owners: ["@julian-cardone"]
+last_reviewed: 2026-05-27
+related: []
+tags: [tooling, ai-agent]
+---
+
 # Model & Cost Optimization
 
 A cost-intelligent multi-agent setup for Claude Code. The goal is simple: every task runs on the
@@ -12,14 +22,14 @@ automatically.
 ```text
 .claude/
 ├── settings.json              Project settings; sets the orchestrator as default agent
-├── MODEL-COST-SETUP.md        This file
-└── agents/
-    ├── ROUTING.md             The pre-routing classifier (decision rubric)
-    ├── orchestrator.md        Opus  — routes work, does not do work
-    ├── planner.md             Opus  — architecture & planning only
-    ├── executor.md            Sonnet — implementation
-    ├── reviewer.md            Sonnet — review, read-only
-    └── quick-tasks.md         Haiku — reads, searches, status, formatting
+├── agents/
+│   ├── ROUTING.md             The pre-routing classifier (decision rubric)
+│   ├── orchestrator.md        Opus  — routes work, does not do work
+│   ├── planner.md             Opus  — architecture & planning only
+│   ├── executor.md            Sonnet — implementation
+│   ├── reviewer.md            Sonnet — review, read-only
+│   └── quick-tasks.md         Haiku — reads, searches, status, formatting
+└── commands/                  Slash command specs (/pr, /start, /check-doc, …)
 ```
 
 ## The model tiers
@@ -75,6 +85,26 @@ You can also invoke a worker directly when you already know the tier:
 @agent-executor     implement step 3 of the plan
 @agent-planner      plan the refactor of the auth module
 ```
+
+## Default agent and slash commands
+
+`settings.json` sets `"agent": "orchestrator"` so every session uses the orchestrator by default.
+This is the right default for open-ended, multi-step work where routing judgment adds value.
+
+For slash commands (`/pr`, `/start`, `/check-doc`), the command spec is already fully written — no
+routing judgment is needed. Invoking a slash command through the orchestrator wastes an Opus turn.
+Use the `@agent-executor` syntax instead:
+
+```text
+@agent-executor /pr
+@agent-executor /start
+@agent-executor /check-doc
+```
+
+This routes the command directly to Sonnet, which reads the spec and executes it — no Opus overhead.
+
+The orchestrator's "never use own tools" rule also applies here: it must never read
+`.claude/commands/` files itself. Any reads it does trigger must go through `quick-tasks`.
 
 ## Effort and thinking levels
 
