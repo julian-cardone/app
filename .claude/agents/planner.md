@@ -8,7 +8,6 @@ description: >
 tools: Read, Grep, Glob, Bash
 model: opus
 effort: high
-permissionMode: plan
 color: purple
 ---
 

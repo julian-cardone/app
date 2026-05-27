@@ -28,6 +28,7 @@ Load only when the task requires it.
 | Merge criteria and reviewer checklist                         | `docs/process/done-criteria.md`         |                                       |
 | Workflow definitions and what each CI job checks              | `docs/process/ci-pipeline.md`           |                                       |
 | Approved tools, their purpose, and rationale                  | `docs/technologies/stack.md`            |                                       |
+| How tasks are routed across model tiers (cost control)        | `.claude/MODEL-COST-SETUP.md`           |                                       |
 | Why decisions were made and what they constrain               | `docs/adrs/` in numerical order         |                                       |
 | Web component styling conventions                             | `docs/standards/web-css.md`             | `skills/web-css/SKILL.md`             |
 | Web flex layout, overflow, and scroll ownership               | `docs/standards/web-layout.md`          | `skills/web-layout/SKILL.md`          |

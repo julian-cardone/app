@@ -9,7 +9,7 @@ routing was skipped.
 All files live in `.claude/` at the repository root. Claude Code discovers `.claude/agents/`
 automatically.
 
-```
+```text
 .claude/
 ├── settings.json              Project settings; sets the orchestrator as default agent
 ├── MODEL-COST-SETUP.md        This file
@@ -56,7 +56,6 @@ tier closes that gap.
 
 One caveat: the `CLAUDE_CODE_SUBAGENT_MODEL` environment variable, if set, **overrides every agent's
 `model:` field**. Do not set it. It would collapse the whole tiered setup back into a single model.
-`settings.json` includes a comment to this effect.
 
 ## Using it
 
@@ -71,7 +70,7 @@ by default. The orchestrator then classifies each task and delegates to a worker
 
 You can also invoke a worker directly when you already know the tier:
 
-```
+```text
 @agent-quick-tasks  read src/config.ts and report the exported names
 @agent-executor     implement step 3 of the plan
 @agent-planner      plan the refactor of the auth module
@@ -83,7 +82,11 @@ Model choice is the coarse cost lever. Effort is the fine one. The `effort` fron
 (`low`, `medium`, `high`, `xhigh`, `max`) sets how hard a model thinks, and overrides the session
 effort level for that agent.
 
-The current agent files do not set `effort` — they inherit the session level.
+Per-agent effort settings:
+
+- `planner` — `effort: high` (its output constrains every downstream executor; think hard).
+- `quick-tasks` — `effort: low` (mechanical, no thinking budget needed).
+- `orchestrator`, `executor`, `reviewer` — no `effort` set; inherit the session default.
 
 ## Tracking whether it works
 
@@ -91,3 +94,11 @@ Across a session, expect roughly 70–80% of tasks to land on `quick-tasks` or `
 everything is reaching `planner`, the classifier is being skipped — that is the failure mode this
 rubric exists to prevent. In the event that the classifier is being skipped, re-read `ROUTING.md`
 and tighten the orchestrator prompt.
+
+## Known caveat: plan mode inheritance
+
+Subagents may inherit plan-mode state from the parent session — once plan mode is active in the
+parent, sibling agents spawned during that session can refuse edits even after plan mode is lifted.
+Removing `permissionMode: plan` from `planner.md` eliminates one source of contamination (the
+planner is no longer a per-session contaminant), but the residual platform behaviour is a Claude
+Code-level concern outside this repo. Restart the session if subagents start declining to execute.
