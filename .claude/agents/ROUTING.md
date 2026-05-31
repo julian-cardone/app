@@ -1,8 +1,13 @@
 # Pre-Routing Classifier
 
-This is the routing rubric the orchestrator consults before delegating any task. Its purpose is cost
-control: every task goes to the cheapest model tier that can do it correctly. Skipping this step is
-the main way a cheap task ends up on an expensive model.
+This is the routing rubric for picking the right agent tier. It serves two audiences: the human user
+deciding which `@agent-<name>` to invoke, and any orchestrator explicitly spawned with
+`@agent-orchestrator`. The default Claude Code session in this repo runs on Sonnet with no
+orchestrator — for that default session, this table is a guide for choosing which `@agent-*` to
+reach for when a task warrants a different tier.
+
+The purpose is cost control: every task goes to the cheapest model tier that can do it correctly.
+Skipping this step is the main way a cheap task ends up on an expensive model.
 
 ## The tiers
 

@@ -1,5 +1,4 @@
 {
-  "agent": "orchestrator",
   "permissions": {
     "allow": [
       "Bash(git add*)",

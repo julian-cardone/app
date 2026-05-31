@@ -21,7 +21,7 @@ automatically.
 
 ```text
 .claude/
-├── settings.json              Project settings; sets the orchestrator as default agent
+├── settings.json              Project settings (permissions, hooks). No default agent set.
 ├── agents/
 │   ├── ROUTING.md             The pre-routing classifier (decision rubric)
 │   ├── orchestrator.md        Opus  — routes work, does not do work
@@ -34,13 +34,13 @@ automatically.
 
 ## The model tiers
 
-| Agent          | Model  | Role                                            |
-| -------------- | ------ | ----------------------------------------------- |
-| `orchestrator` | Opus   | Classifies and routes every task                |
-| `planner`      | Opus   | Architecture decisions, multi-file planning     |
-| `executor`     | Sonnet | Writing/editing code, scoped implementation     |
-| `reviewer`     | Sonnet | Reviewing completed work                        |
-| `quick-tasks`  | Haiku  | File reads, searches, status checks, formatting |
+| Agent          | Model  | Role                                                           |
+| -------------- | ------ | -------------------------------------------------------------- |
+| `orchestrator` | Opus   | Opt-in: routes complex multi-step work when explicitly invoked |
+| `planner`      | Opus   | Architecture decisions, multi-file planning                    |
+| `executor`     | Sonnet | Writing/editing code, scoped implementation                    |
+| `reviewer`     | Sonnet | Reviewing completed work                                       |
+| `quick-tasks`  | Haiku  | File reads, searches, status checks, formatting                |
 
 Opus is reserved for judgment — coordination and planning. Sonnet does the implementation and
 review. Haiku absorbs the high-volume mechanical work that makes up most of a session. Expect 70–80%
@@ -49,9 +49,15 @@ of tasks to land on Sonnet or Haiku.
 ## How the pre-routing classifier works
 
 There is no programmatic hook that intercepts a task before execution, so the classifier is
-implemented as a **decision rubric** — [ROUTING.md](./agents/ROUTING.md) — that the orchestrator is
-instructed to consult before every delegation. The orchestrator's own prompt enforces it. The rubric
-is a plain table: match the task to a row, route to the named agent.
+implemented as a **decision rubric** — `ROUTING.md` (at `.claude/agents/ROUTING.md`) — that two
+audiences consult:
+
+1. **The human user**, when choosing which `@agent-<name>` to invoke (or none — the default Sonnet
+   session handles most work).
+2. **The orchestrator**, when explicitly spawned via `@agent-orchestrator`. Its own prompt enforces
+   the rubric before every delegation.
+
+The rubric is a plain table: match the task to a row, route to the named agent.
 
 ## Why every agent pins its model explicitly
 
@@ -69,31 +75,50 @@ One caveat: the `CLAUDE_CODE_SUBAGENT_MODEL` environment variable, if set, **ove
 
 ## Using it
 
-Run the orchestrator as your main session agent:
+The default session has no orchestrator and no special flag:
 
 ```bash
-claude --agent orchestrator
+claude
 ```
 
-`settings.json` also sets `"agent": "orchestrator"`, so any session started in this project uses it
-by default. The orchestrator then classifies each task and delegates to a worker.
+This runs on Claude Code's normal default (Sonnet on most plans). Most work — single-file edits,
+straightforward questions, scoped tasks — should stay here.
 
-You can also invoke a worker directly when you already know the tier:
+When a task warrants a different tier, invoke an agent explicitly with `@agent-<name>`:
 
 ```text
 @agent-quick-tasks  read src/config.ts and report the exported names
 @agent-executor     implement step 3 of the plan
+@agent-reviewer     review my unstaged changes
 @agent-planner      plan the refactor of the auth module
+@agent-orchestrator decompose and route this multi-step refactor
 ```
 
 ## Default agent and slash commands
 
-`settings.json` sets `"agent": "orchestrator"` so every session uses the orchestrator by default.
-This is the right default for open-ended, multi-step work where routing judgment adds value.
+There is no default agent. `.claude/settings.json` does not set `"agent"`, so a bare `claude`
+session runs on Claude Code's normal default (Sonnet). Specialized agents are opt-in via
+`@agent-<name>`.
 
-For slash commands (`/pr`, `/start`, `/check-doc`), the command spec is already fully written — no
-routing judgment is needed. Invoking a slash command through the orchestrator wastes an Opus turn.
-Use the `@agent-executor` syntax instead:
+The full invocation table:
+
+| Invocation                 | When to use                                                                  | Model               |
+| -------------------------- | ---------------------------------------------------------------------------- | ------------------- |
+| (default session, no flag) | Straightforward tasks, single-file edits, questions, anything clearly scoped | Sonnet              |
+| `@agent-quick-tasks`       | File reads, searches, status checks, formatting                              | Haiku               |
+| `@agent-executor`          | Implementation: writing code, editing files, scoped changes                  | Sonnet              |
+| `@agent-reviewer`          | Reviewing completed work before finalizing or opening a PR                   | Sonnet              |
+| `@agent-planner`           | Architecture decisions, planning multi-file or ambiguous work                | Opus (effort: high) |
+| `@agent-orchestrator`      | Complex multi-step tasks needing decomposition and routing                   | Opus                |
+
+**Key rule:** No task reaches Opus by default — only by explicit invocation. Start at the lowest
+tier that could plausibly do the work; escalate after a miss rather than defaulting high.
+
+### Slash commands
+
+Slash commands (`/pr`, `/start`, `/check-doc`) are write-capable specs that live in
+`.claude/commands/`. Run them inside the executor by combining `@agent-executor` with the slash
+command:
 
 ```text
 @agent-executor /pr
@@ -101,10 +126,12 @@ Use the `@agent-executor` syntax instead:
 @agent-executor /check-doc
 ```
 
-This routes the command directly to Sonnet, which reads the spec and executes it — no Opus overhead.
+This routes execution directly to Sonnet — no orchestrator overhead, no Opus turn for the routing
+decision.
 
-The orchestrator's "never use own tools" rule also applies here: it must never read
-`.claude/commands/` files itself. Any reads it does trigger must go through `quick-tasks`.
+Do not combine slash commands with `@agent-reviewer`. The reviewer is read-only, and slash commands
+map 1:1 to their write-capable spec. For reviewing a diff before opening a PR, use a free-form
+prompt: `@agent-reviewer review my unstaged changes`.
 
 ## Effort and thinking levels
 
@@ -122,8 +149,8 @@ Per-agent effort settings:
 
 Across a session, expect roughly 70–80% of tasks to land on `quick-tasks` or `executor`. If almost
 everything is reaching `planner`, the classifier is being skipped — that is the failure mode this
-rubric exists to prevent. In the event that the classifier is being skipped, re-read `ROUTING.md`
-and tighten the orchestrator prompt.
+rubric exists to prevent. If the classifier is being skipped: as a human, re-read `ROUTING.md`
+before invoking an agent. If you are using `@agent-orchestrator`, tighten its prompt as well.
 
 ## Known caveat: plan mode inheritance
 
