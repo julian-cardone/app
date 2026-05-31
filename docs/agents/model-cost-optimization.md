@@ -1,6 +1,6 @@
 ---
 title: Model and Cost Optimization
-doc_type: standard
+doc_type: agent
 status: accepted
 owners: ["@julian-cardone"]
 last_reviewed: 2026-05-27
@@ -8,7 +8,7 @@ related: []
 tags: [tooling, ai-agent]
 ---
 
-# Model & Cost Optimization
+# Model and Cost Optimization
 
 A cost-intelligent multi-agent setup for Claude Code. The goal is simple: every task runs on the
 cheapest model that can do it correctly, and no task silently lands on an expensive model because
