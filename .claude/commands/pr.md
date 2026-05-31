@@ -49,6 +49,62 @@ gh pr create \
 Do not add `--project`. Pull requests are not tracked on the project board — only issues are. Do not
 self-approve. Do not merge.
 
+## Board update
+
+After the PR is created, move the issue to **Review** on the project board.
+
+Query the project to get IDs:
+
+```bash
+gh api graphql -f query='
+{
+  viewer {
+    projectV2(number: 1) {
+      id
+      items(first: 50) {
+        nodes {
+          id
+          content { ... on Issue { number } }
+        }
+      }
+      fields(first: 20) {
+        nodes {
+          ... on ProjectV2SingleSelectField {
+            id name
+            options { id name }
+          }
+        }
+      }
+    }
+  }
+}'
+```
+
+Extract:
+
+- `projectId` — the project node ID
+- `itemId` — the item where `content.number` matches `<id>`
+- `statusFieldId` — the `id` of the field named "Status"
+- `reviewOptionId` — the `id` of the option named "Review"
+
+Then update status:
+
+```bash
+gh api graphql -f query='
+mutation {
+  updateProjectV2ItemFieldValue(input: {
+    projectId: "<projectId>"
+    itemId: "<itemId>"
+    fieldId: "<statusFieldId>"
+    value: { singleSelectOptionId: "<reviewOptionId>" }
+  }) {
+    projectV2Item { id }
+  }
+}'
+```
+
+If the mutation returns errors, print them and stop.
+
 ## Body template
 
 ```markdown
