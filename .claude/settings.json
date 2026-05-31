@@ -24,7 +24,8 @@
       "Bash(gh repo view*)",
       "Bash(gh api*)",
       "Bash(npm run lint:md*)",
-      "Bash(npm run format:md*)"
+      "Bash(npm run format:md*)",
+      "Bash(npx markdownlint-cli2 *)"
     ],
     "deny": [
       "Bash(git rebase*)",
