@@ -3,7 +3,7 @@ title: Onboarding
 doc_type: onboarding
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-05-02
+last_reviewed: 2026-06-02
 related:
   [
     "docs/standards/documentation.md",
@@ -17,6 +17,16 @@ tags: [onboarding, process]
 # Onboarding
 
 This document orients new contributors to the repository. Read it before making any changes.
+
+---
+
+## What We're Building
+
+Placecard is a friendship-first mobile app that matches people through shared real-world plans.
+Users link a verified plan — a restaurant reservation, concert ticket, or event invite — and the app
+surfaces people who want to join. Every match is tied to something real and dated. The launch is
+scoped to New York City, targeting young professionals and transplants looking to expand their
+social circle through what they're already doing.
 
 ---
 

@@ -1,17 +1,26 @@
-# Welcome
+# Placecard
 
-This document provides an overview of the project and its core technical philosophies.
+Placecard is a friendship-first mobile app that matches people through shared real-world plans. A
+match does not just mean a chat — it means a dinner reservation, concert ticket, or event already
+exists. The hard part is handled. All you have to do is show up.
 
-## Project Overview
+## Product
 
-This repository is a documentation-first governance framework for a future application. It
-establishes the standards, processes, tooling, and AI-assisted workflow conventions that all
-contributors — human and AI — follow. No application code exists yet. The goal is to build a clean,
-machine-readable foundation that supports AI-assisted development at scale.
+Users link a real, verified plan — a Resy reservation, Partiful invite, Eventbrite URL, or concert
+ticket — and the app surfaces people who want to join. Every match is tied to something specific and
+dated. Users specify their intent upfront (Platonic or Romantic), so expectations are clear from the
+start.
 
-## Core Technical Philosophy
+Placecard is not a dating app with a friendship toggle. Genuine in-person connection through shared
+experience is the primary goal. Romantic connections can emerge, but they are not the entry point.
 
-The repository is lightweight but scalable. To ensure AI-readiness and long-term maintainability:
+The initial launch targets New York City, focused on young professionals, transplants, and anyone
+looking to expand their social circle through what they're already doing.
+
+## Technical Philosophy
+
+The repository is documentation-first. No application code exists yet. The goal is a clean,
+machine-readable foundation that supports AI-assisted development at scale:
 
 - Everything important is text-based (markdown, JSON).
 - One source of truth per concern.
