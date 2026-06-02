@@ -34,7 +34,7 @@ repository owner to review, not documentation.
 
 Filename format:
 
-```
+```text
 <YYYY-MM-DD-HHMMSS>-<process-name>.md
 ```
 
