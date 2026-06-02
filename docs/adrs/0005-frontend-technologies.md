@@ -5,7 +5,7 @@ status: accepted
 owners: ["@julian-cardone"]
 last_reviewed: 2026-06-02
 related: []
-tags: [frontend, mobile, react-native, expo, navigation]
+tags: [architecture, tooling]
 ---
 
 # ADR-0005: Frontend Framework, Dev Toolchain, and Navigation
