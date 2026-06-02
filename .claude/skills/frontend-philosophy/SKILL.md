@@ -3,7 +3,7 @@ name: frontend-philosophy
 description:
   Apply this repository's frontend architecture principles when designing, writing, or reviewing
   React components. Use whenever a component is being created or refactored, when deciding where
-  state should live, when extracting a feature component from a page, when introducing an
+  state should live, when extracting a feature component from a page or screen, when introducing an
   abstraction, when naming a new component, when deciding between context and prop passing, when
   writing a useEffect, when defining props or public interfaces, or when reviewing a PR for
   architectural issues. Trigger on casual phrasings too — "should this be a hook or a component",
@@ -12,13 +12,13 @@ description:
   rules here are specific about component layers (shared primitives vs. feature components), state
   ownership, the three-condition test for introducing abstractions, banned name patterns (`Manager`,
   `Handler`, `Wrapper`, `DataTable`), how effects are used, and the separation between backend and
-  frontend models. Applies to React on both web and mobile.
+  frontend models. Applies to React on both web and React Native on mobile.
 ---
 
 # Frontend Philosophy
 
-These are the architectural principles for React code in this repository. They apply whenever
-designing, writing, or reviewing components, hooks, and feature code.
+These are the architectural principles for React and React Native code in this repository. They
+apply whenever designing, writing, or reviewing components, hooks, and feature code.
 
 The full prose version lives at `docs/standards/frontend-philosophy.md` in the repository. This
 skill is the operational summary — consult the source doc for extended rationale.
@@ -26,9 +26,11 @@ skill is the operational summary — consult the source doc for extended rationa
 The architecture must remain minimal, durable, predictable, and scalable. Favor explicit structure,
 narrow ownership, and predictable refactoring over generic abstraction systems.
 
-This skill covers component architecture and ownership. For styling rules, see the CSS skill for
-your platform. For flex layout and overflow, see the layout skill for your platform. For folder
-layout, see the project structure skill.
+This skill covers component architecture and ownership. These principles are platform-agnostic — the
+same ownership, state, effect, and abstraction rules hold on web and mobile. Platform-specific
+concerns live elsewhere: for styling rules, see the styling skill for your platform; for flex layout
+and overflow, see the layout skill for your platform; for folder layout, see the project structure
+skill for your platform.
 
 ---
 
@@ -62,8 +64,9 @@ Every concern has a clear owner. Ambiguous ownership produces duplicated logic, 
 fragile behavior.
 
 A concern belongs to the lowest layer capable of managing it correctly. Each layer's ownership rules
-are defined in the document responsible for that layer — spatial and layout concerns in
-`web-layout`, folder and module boundaries in `project-structure`, styling concerns in `web-css`.
+are defined in the document responsible for that layer — spatial and layout concerns in the layout
+skill for your platform, folder and module boundaries in the project structure skill for your
+platform, styling concerns in the styling skill for your platform.
 
 ---
 
@@ -109,24 +112,28 @@ Names describe domain responsibility.
 
 ---
 
-## Pages
+## Pages and Screens
 
-Pages are route-level composition shells. They own:
+Pages (web) and screens (mobile) are the same role: route-level composition shells. On the web they
+are route components; on mobile they are the screens registered with a navigator. They own:
 
 1. Route-level layout
 2. Feature composition
-3. Page-level state
-4. Routing concerns
+3. Page- or screen-level state
+4. Routing / navigation concerns
 
-Workflow logic and section-level rendering belong in feature components, not pages.
+Workflow logic and section-level rendering belong in feature components, not in the page or screen.
 
-A block of JSX in a page must be extracted into a feature component when it:
+A block of markup in a page or screen must be extracted into a feature component when it:
 
 - Owns state
 - Manages a workflow
 - Represents a distinct visual section
 
-Pages stay composition-oriented, not content-heavy.
+Pages and screens stay composition-oriented, not content-heavy.
+
+The example below is web (`<div>` / `<button>`); on mobile the same rule holds with `<View>` /
+`<Pressable>` and an `EventScreen` composing the same feature components.
 
 ```tsx
 /* Wrong — page renders content and owns state directly. */
@@ -154,8 +161,8 @@ export default function EventPage() {
 }
 ```
 
-The page defines the surface and layout container. State, workflow, and rendering belong in the
-feature components.
+The page or screen defines the surface and layout container. State, workflow, and rendering belong
+in the feature components.
 
 ---
 
@@ -166,7 +173,7 @@ State lives at the lowest component that reasonably owns it.
 - Form values belong to the form.
 - Selection state belongs to the section managing selection.
 - Modal state belongs to the component opening the modal.
-- Route-level data belongs to the page.
+- Route-level data belongs to the page or screen.
 
 **State must not be duplicated.** Derived values are computed from source state, not copied into
 independent state variables. If a hook owns data, consuming components derive from that hook rather
@@ -195,7 +202,7 @@ If logic can be derived during render, it does not belong in an effect.
 Effects synchronize React state with:
 
 - Network requests
-- Browser APIs
+- Platform APIs (the browser DOM on web; native device modules on mobile)
 - Timers
 - External systems
 
@@ -231,7 +238,7 @@ Every component declares typed props. Implicit `any` is disallowed.
 ```tsx
 type ButtonProps = {
   variant: "primary" | "secondary";
-  onClick: () => void;
+  onPress: () => void; // onClick on web
   children: ReactNode;
 };
 ```
@@ -324,11 +331,12 @@ the parent can clear its own state in sync.
 
 ---
 
-## Tables
+## Tables and Lists
 
-Tables render rows and invoke callbacks. They do not fetch data or own workflow state.
+Tables (web) and lists (`FlatList` / `SectionList` on mobile) render rows and invoke callbacks. They
+do not fetch data or own workflow state.
 
-Tables accept:
+They accept:
 
 - Rows or items
 - Selected identifiers
@@ -382,7 +390,7 @@ through branching configuration.
 
 Recurring violations to watch for in review or when writing new code:
 
-- A page rendering content directly instead of composing feature components.
+- A page or screen rendering content directly instead of composing feature components.
 - State duplicated across a hook and a `useState` in a consuming component.
 - A `useEffect` that derives one local value from another instead of computing it in render.
 - A shared primitive accumulating feature-specific props or domain knowledge.
@@ -392,7 +400,7 @@ Recurring violations to watch for in review or when writing new code:
 - A boolean prop like `isSpecialMode` added instead of splitting the component.
 - `snake_case` field names appearing in a component file (missing mapper at the service boundary).
 - A form component navigating or making API calls itself instead of invoking parent callbacks.
-- A table component fetching its own data or owning modal state.
+- A table or list component fetching its own data or owning modal state.
 - Context used for short-distance prop passing rather than genuinely cross-cutting state.
 - Comments narrating what the code does instead of why it exists.
 
@@ -410,9 +418,10 @@ primary mechanisms by which the codebase remains maintainable as it grows.
 
 ## When to Consult the Related Standards
 
-- For styling rules, units, variants, and class naming: the CSS skill for your platform (`web-css`,
-  or the mobile equivalent when present).
-- For flex layout, scroll ownership, and constraint chains: the layout skill for your platform
-  (`web-layout`, or the mobile equivalent when present).
+- For styling rules, units, variants, and style/class naming: the styling skill for your platform —
+  `web-css` (web) or `mobile-styles` (mobile).
+- For flex layout, scroll ownership, and constraint chains: the layout skill for your platform —
+  `web-layout` (web) or `mobile-layout` (mobile).
 - For where files live, the boundary between `components/ui/` and `features/`, and the
-  public-surface import rules: `project-structure`.
+  public-surface import rules: the project structure skill for your platform —
+  `web-project-structure` (web) or `mobile-project-structure` (mobile).
