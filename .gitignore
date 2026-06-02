@@ -33,6 +33,7 @@ Icon
 CLAUDE.local.md
 .claude/settings.local.json
 .claude/worktrees/
+.claude/process-logs/
 
 # -----------------------------
 # Editor / IDE
