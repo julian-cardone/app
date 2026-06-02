@@ -1,8 +1,12 @@
 # Copilot Instructions
 
-This repository is documentation-first. No application code exists. `docs/` is the source of truth.
-Structure, frontmatter, formatting, and prose quality are enforced by CI — do not repeat those rules
-in suggestions or reviews.
+This is the Placecard repository. Placecard is a friendship-first mobile app (iOS and Android) that
+matches NYC young professionals through shared real-world plans — restaurant reservations, concert
+tickets, and event invites. Every match is tied to a verified, dated plan. Users specify Platonic or
+Romantic intent upfront. The initial launch is scoped to New York City.
+
+`docs/` is the source of truth. Structure, frontmatter, formatting, and prose quality are enforced
+by CI — do not repeat those rules in suggestions or reviews.
 
 ---
 
