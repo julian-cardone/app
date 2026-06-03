@@ -37,3 +37,8 @@ jobs:
     name: PR title validation
     needs: guard
     uses: ./.github/workflows/pr-title.yml
+
+  frontend-checks:
+    name: Frontend checks
+    needs: guard
+    uses: ./.github/workflows/frontend-checks.yml
