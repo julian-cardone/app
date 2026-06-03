@@ -1,7 +1,3 @@
 {
-  "recommendations": [
-    "GitHub.copilot",
-    "GitHub.copilot-chat",
-    "anthropics.claude-code"
-  ]
+  "recommendations": ["GitHub.copilot", "GitHub.copilot-chat", "anthropics.claude-code"]
 }

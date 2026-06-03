@@ -39,13 +39,7 @@ const VALID_DOC_TYPES = new Set([
   "onboarding",
 ]);
 
-const VALID_STATUSES = new Set([
-  "proposed",
-  "draft",
-  "accepted",
-  "deprecated",
-  "superseded",
-]);
+const VALID_STATUSES = new Set(["proposed", "draft", "accepted", "deprecated", "superseded"]);
 
 const VALID_TAGS = new Set([
   "documentation",
@@ -173,7 +167,7 @@ function validateFile(filePath) {
   // doc_type: valid value
   if (!VALID_DOC_TYPES.has(frontmatter.doc_type)) {
     errors.push(
-      `Invalid doc_type '${frontmatter.doc_type}'. Must be one of: ${[...VALID_DOC_TYPES].join(", ")}`
+      `Invalid doc_type '${frontmatter.doc_type}'. Must be one of: ${[...VALID_DOC_TYPES].join(", ")}`,
     );
   }
 
@@ -182,24 +176,20 @@ function validateFile(filePath) {
   const expectedType = FOLDER_TO_DOC_TYPE[folder];
   if (expectedType && frontmatter.doc_type !== expectedType) {
     errors.push(
-      `doc_type '${frontmatter.doc_type}' does not match expected '${expectedType}' for docs/${folder}/`
+      `doc_type '${frontmatter.doc_type}' does not match expected '${expectedType}' for docs/${folder}/`,
     );
   }
 
   // status: valid value
   if (!VALID_STATUSES.has(frontmatter.status)) {
     errors.push(
-      `Invalid status '${frontmatter.status}'. Must be one of: ${[...VALID_STATUSES].join(", ")}`
+      `Invalid status '${frontmatter.status}'. Must be one of: ${[...VALID_STATUSES].join(", ")}`,
     );
   }
 
   // owners: at least one GitHub handle
-  const owners = Array.isArray(frontmatter.owners)
-    ? frontmatter.owners
-    : [frontmatter.owners];
-  const hasHandle = owners.some(
-    (o) => typeof o === "string" && o.includes("@")
-  );
+  const owners = Array.isArray(frontmatter.owners) ? frontmatter.owners : [frontmatter.owners];
+  const hasHandle = owners.some((o) => typeof o === "string" && o.includes("@"));
   if (!hasHandle) {
     errors.push("owners must contain at least one GitHub handle (e.g. @username)");
   }
@@ -213,9 +203,7 @@ function validateFile(filePath) {
       : String(frontmatter.last_reviewed);
   const datePattern = /^\d{4}-\d{2}-\d{2}$/;
   if (!datePattern.test(lastReviewedStr)) {
-    errors.push(
-      `last_reviewed must be in YYYY-MM-DD format, got '${frontmatter.last_reviewed}'`
-    );
+    errors.push(`last_reviewed must be in YYYY-MM-DD format, got '${frontmatter.last_reviewed}'`);
   }
 
   // tags: must be an array (can be empty), approved vocabulary, max 6
@@ -228,9 +216,7 @@ function validateFile(filePath) {
   }
   for (const tag of tags) {
     if (!VALID_TAGS.has(tag)) {
-      errors.push(
-        `Invalid tag '${tag}'. Must be one of: ${[...VALID_TAGS].join(", ")}`
-      );
+      errors.push(`Invalid tag '${tag}'. Must be one of: ${[...VALID_TAGS].join(", ")}`);
     }
   }
 
@@ -239,9 +225,7 @@ function validateFile(filePath) {
   if (!h1) {
     errors.push("No H1 heading found in document body");
   } else if (frontmatter.title !== h1) {
-    errors.push(
-      `title '${frontmatter.title}' does not match H1 heading '${h1}'`
-    );
+    errors.push(`title '${frontmatter.title}' does not match H1 heading '${h1}'`);
   }
 
   // related: must be an array (can be empty)
@@ -253,9 +237,7 @@ function validateFile(filePath) {
   if (frontmatter.doc_type === "adr" && Array.isArray(frontmatter.related)) {
     for (const ref of frontmatter.related) {
       if (typeof ref === "string" && ref.startsWith("docs/") && !ref.startsWith("docs/adrs/")) {
-        errors.push(
-          `ADR related field must only reference other ADRs, got '${ref}'`
-        );
+        errors.push(`ADR related field must only reference other ADRs, got '${ref}'`);
       }
     }
   }

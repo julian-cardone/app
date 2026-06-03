@@ -8,9 +8,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <NavigationContainer>
-          <Text style={{ textAlign: "center", marginTop: 20 }}>
-            hello world
-          </Text>
+          <Text style={{ textAlign: "center", marginTop: 20 }}>hello world</Text>
         </NavigationContainer>
       </SafeAreaProvider>
     </GestureHandlerRootView>

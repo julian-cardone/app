@@ -71,6 +71,17 @@
             "command": "python3 -c \"\nimport json, sys\nd = json.load(sys.stdin)\npath = d.get('tool_input', {}).get('file_path', '')\nif '/docs/' in path and path.endswith('.md'):\n    import subprocess\n    result = subprocess.run(['npx', 'markdownlint-cli2', path], capture_output=True, text=True)\n    if result.returncode != 0:\n        print(result.stdout + result.stderr)\n        print('LINT FAILED — fix errors above before proceeding')\n        sys.exit(1)\n\""
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "description": "ESLint fix JS/TS/React files in app/ after editing",
+            "type": "command",
+            "statusMessage": "ESLint fixing...",
+            "command": "INPUT=$(cat); FILE=$(echo \"$INPUT\" | jq -r '.tool_input.file_path'); case \"$FILE\" in *.ts|*.tsx|*.js|*.jsx) REPO=$(git -C \"$(dirname \"$FILE\")\" rev-parse --show-toplevel 2>/dev/null); if [ -n \"$REPO\" ] && [ -f \"$REPO/app/eslint.config.mjs\" ]; then cd \"$REPO/app\" && npx eslint --fix \"$FILE\" 2>&1 || true; fi ;; esac"
+          }
+        ]
       }
     ]
   }
