@@ -1,9 +1,8 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { StyleSheet, Text, View } from "react-native";
 
-import { Button, Wordmark } from "@/components/ui";
+import { Button, Screen, Wordmark } from "@/components/ui";
 import type { RootStackParamList } from "@/navigation/types";
 import { colors, fontFamily, fontSize, lineHeight, spacing } from "@/styles/tokens";
 
@@ -20,21 +19,18 @@ const MIN_DIGITS = 7;
  * owns the phone value and the send action; the gradient CTA is a shared primitive.
  */
 export function PhoneEntryScreen({ navigation }: Props) {
-  const insets = useSafeAreaInsets();
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const digitCount = phoneNumber.replace(/[^0-9]/g, "").length;
   const canSend = digitCount >= MIN_DIGITS;
 
   const handleSendCode = () => {
+    if (!canSend) return;
     navigation.navigate("Verify", { phoneNumber: `${DEFAULT_COUNTRY} ${phoneNumber}`.trim() });
   };
 
   return (
-    <KeyboardAvoidingView
-      style={[styles.screen, { paddingTop: insets.top, paddingBottom: insets.bottom }]}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
+    <Screen keyboardAware>
       <View style={styles.header}>
         <Wordmark size="compact" />
       </View>
@@ -53,7 +49,7 @@ export function PhoneEntryScreen({ navigation }: Props) {
         <Button title="Send code" onPress={handleSendCode} disabled={!canSend} />
         <TermsFootnote />
       </View>
-    </KeyboardAvoidingView>
+    </Screen>
   );
 }
 
@@ -84,7 +80,6 @@ const styles = StyleSheet.create({
     color: colors.muted,
   },
   footer: {
-    paddingBottom: spacing.lg,
     gap: spacing.md,
   },
 });
