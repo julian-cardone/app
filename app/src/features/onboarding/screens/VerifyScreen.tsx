@@ -7,6 +7,7 @@ import type { RootStackParamList } from "@/navigation/types";
 import { colors, fontFamily, fontSize, lineHeight, spacing } from "@/styles/tokens";
 
 import { CodeInput } from "../components/CodeInput";
+import { AppText } from "@/components/ui";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Verify">;
 
@@ -30,8 +31,8 @@ export function VerifyScreen({ route }: Props) {
   return (
     <Screen keyboardAware>
       <View style={styles.body}>
-        <Text style={styles.headline}>Enter your code</Text>
-        <Text style={styles.subhead}>We sent a 6-digit code to {phoneNumber}</Text>
+        <AppText variant="headline">Enter your code</AppText>
+        <AppText variant="subhead">We sent a 6-digit code to {phoneNumber}</AppText>
         <CodeInput value={code} onChangeText={setCode} length={CODE_LENGTH} />
         <Pressable accessibilityRole="button" hitSlop={spacing.sm} onPress={handleResendCode}>
           <Text style={styles.resend}>Resend code</Text>
@@ -50,18 +51,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     gap: spacing.md,
-  },
-  headline: {
-    fontFamily: fontFamily.black,
-    fontSize: fontSize.h1,
-    lineHeight: lineHeight.h1,
-    color: colors.ink,
-  },
-  subhead: {
-    fontFamily: fontFamily.semibold,
-    fontSize: fontSize.body,
-    lineHeight: lineHeight.body,
-    color: colors.muted,
   },
   resend: {
     fontFamily: fontFamily.bold,

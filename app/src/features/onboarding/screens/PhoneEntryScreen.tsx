@@ -1,13 +1,14 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Button, Screen, Wordmark } from "@/components/ui";
 import type { RootStackParamList } from "@/navigation/types";
-import { colors, fontFamily, fontSize, lineHeight, spacing } from "@/styles/tokens";
+import { colors, spacing } from "@/styles/tokens";
 
 import { PhoneNumberInput } from "../components/PhoneNumberInput";
 import { TermsFootnote } from "../components/TermsFootnote";
+import { AppText } from "@/components/ui";
 
 type Props = NativeStackScreenProps<RootStackParamList, "PhoneEntry">;
 
@@ -36,8 +37,8 @@ export function PhoneEntryScreen({ navigation }: Props) {
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.headline}>Your next great night starts here</Text>
-        <Text style={styles.subhead}>Enter your number and we&apos;ll text you a code.</Text>
+        <AppText variant="headline">Your next great night starts here</AppText>
+        <AppText variant="subhead">Enter your number and we&apos;ll text you a code.</AppText>
         <PhoneNumberInput
           value={phoneNumber}
           onChangeText={setPhoneNumber}
@@ -66,18 +67,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     gap: spacing.md,
-  },
-  headline: {
-    fontFamily: fontFamily.black,
-    fontSize: fontSize.h1,
-    lineHeight: lineHeight.h1,
-    color: colors.ink,
-  },
-  subhead: {
-    fontFamily: fontFamily.semibold,
-    fontSize: fontSize.body,
-    lineHeight: lineHeight.body,
-    color: colors.muted,
   },
   footer: {
     gap: spacing.md,
