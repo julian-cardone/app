@@ -1,10 +1,10 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useRef } from "react";
-import { Animated, StyleSheet, View } from "react-native";
+import { Animated, StyleSheet } from "react-native";
 
-import { Wordmark } from "@/components/ui";
+import { Screen, Wordmark } from "@/components/ui";
 import type { RootStackParamList } from "@/navigation/types";
-import { animation, colors } from "@/styles/tokens";
+import { animation } from "@/styles/tokens";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Splash">;
 
@@ -35,19 +35,22 @@ export function SplashScreen({ navigation }: Props) {
     outputRange: [0.92, 1],
   });
 
+  const animatedStyle = {
+    opacity: progress,
+    transform: [{ scale }],
+  };
+
   return (
-    <View style={styles.screen}>
-      <Animated.View style={{ opacity: progress, transform: [{ scale }] }}>
+    <Screen style={styles.screen}>
+      <Animated.View style={animatedStyle}>
         <Wordmark size="splash" />
       </Animated.View>
-    </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    backgroundColor: colors.surface,
     alignItems: "center",
     justifyContent: "center",
   },
