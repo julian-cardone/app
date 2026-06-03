@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { Button, Screen } from "@/components/ui";
 import type { RootStackParamList } from "@/navigation/types";
-import { colors, fontFamily, fontSize, lineHeight, spacing } from "@/styles/tokens";
+import { colors, fontFamily, fontSize, spacing } from "@/styles/tokens";
 
 import { CodeInput } from "../components/CodeInput";
 import { AppText } from "@/components/ui";

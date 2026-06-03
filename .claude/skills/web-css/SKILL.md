@@ -1,16 +1,16 @@
 ---
 name: web-css
 description:
-  Apply this repository's web CSS conventions when writing or editing styles for React web components.
-  Use whenever a `.module.css` file is being created or modified, when adding or changing component
-  styling, when introducing variants, when deciding between global and scoped CSS, or when reviewing
-  styles for compliance. Trigger this skill even when the user phrases the request casually — "style
-  this button", "add a new variant", "fix the spacing on the card", "this component looks wrong" —
-  because the conventions here govern unit choice, design tokens, selectors, class naming, variants,
-  and where styles are allowed to live. Do not rely on general CSS knowledge for this codebase; the
-  rules here override common practice in several places (rem-only units, CSS Modules only, no BEM,
-  shallow selectors, no inline styles). Applies to web React components. Mobile has its own
-  conventions.
+  Apply this repository's web CSS conventions when writing or editing styles for React web
+  components. Use whenever a `.module.css` file is being created or modified, when adding or
+  changing component styling, when introducing variants, when deciding between global and scoped
+  CSS, or when reviewing styles for compliance. Trigger this skill even when the user phrases the
+  request casually — "style this button", "add a new variant", "fix the spacing on the card", "this
+  component looks wrong" — because the conventions here govern unit choice, design tokens,
+  selectors, class naming, variants, and where styles are allowed to live. Do not rely on general
+  CSS knowledge for this codebase; the rules here override common practice in several places
+  (rem-only units, CSS Modules only, no BEM, shallow selectors, no inline styles). Applies to web
+  React components. Mobile has its own conventions.
 ---
 
 # Web CSS Standards
