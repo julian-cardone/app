@@ -62,14 +62,16 @@ src/
   navigation/                  # Navigator tree + route param types
 
   services/                    # Backend integrations
-  providers/                   # Context providers
-  hooks/                       # Cross-feature hooks
+  providers/
+    AppProviders.tsx           # Provider tree: GestureHandler, SafeArea, Navigation
+  hooks/
+    useAppBootstrap.ts         # Async init gate: fonts, auth, remote config
   lib/                         # Cross-feature pure utilities
 
   styles/
     tokens.ts                  # Colors, spacing, radii, typography, shadows
 
-  App.tsx                      # Root shell: providers, navigation container
+  App.tsx                      # Thin shell: useAppBootstrap + AppProviders, nothing else
 ```
 
 **Folders are not created before they contain files.** Structure emerges from real complexity, not
@@ -82,14 +84,30 @@ from speculative scaffolding.
 React Native has no DOM, no HTML document, and no global stylesheet to import — so the web's
 `index.tsx` / `router.tsx` / `App.tsx` triad does not apply. The mobile entry has two pieces:
 
-| File / dir        | Responsibility                                                                                                                   |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `index.js` (root) | The entry. Registers the root component: `registerRootComponent(App)`. No DOM render.                                            |
-| `App.tsx`         | Root shell. Sets up providers, `SafeAreaProvider`, `GestureHandlerRootView`, the `NavigationContainer`, theme, and font loading. |
-| `navigation/`     | The navigator tree (stack and tab navigators) and route param types. **Not** a route-config table.                               |
+| File / dir                          | Responsibility                                                                                                      |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `index.js` (root)                   | The entry. Registers the root component: `registerRootComponent(App)`. No DOM render.                              |
+| `App.tsx`                           | Thin shell. Calls `useAppBootstrap`, gates on readiness, renders `AppProviders`. Zero business logic.              |
+| `src/hooks/useAppBootstrap.ts`      | Async init gate. Owns font loading, splash coordination, and any future blocking init (auth, remote config, flags). Returns `boolean`. |
+| `src/providers/AppProviders.tsx`    | Provider tree. Owns `GestureHandlerRootView`, `SafeAreaProvider`, `NavigationContainer`, and the navigator.        |
+| `navigation/`                       | The navigator tree (stack and tab navigators) and route param types. **Not** a route-config table.                 |
 
-`App.tsx` is the **only** top-level `.tsx` file under `src/`. It stays a thin shell — it wires up
-providers and hands rendering to the navigator. It does not own screen content or feature logic.
+`App.tsx` is the **only** top-level `.tsx` file under `src/`. It is a thin shell — three lines of
+logic: call `useAppBootstrap`, gate on readiness, render `AppProviders`. It must never accumulate
+initialization logic or provider composition.
+
+**`useAppBootstrap` is the extension point for async initialization.** Any work that must complete
+before the first frame — font loading, auth token rehydration, remote config fetches, feature flag
+hydration — belongs here. The hook returns `boolean`; `App.tsx` renders `null` (keeping the native
+splash visible) until it returns `true`. Adding new bootstrap behavior requires only editing this
+hook.
+
+**`AppProviders` is the extension point for the provider tree.** New context providers are added
+here by wrapping inside the existing tree. Provider ordering is documented inline when dependencies
+between providers make nesting non-obvious.
+
+**The scalability principle: `App.tsx` never grows.** All growth lands in `useAppBootstrap`
+(blocking init) or `AppProviders` (provider tree).
 
 There is no `router.tsx`. Navigation is expressed as a tree of navigator components (e.g.
 `RootNavigator` composing a tab navigator and stack navigators), not as a flat route configuration
@@ -185,7 +203,7 @@ content themselves — a navigator file wires routes to screens and nothing more
 workflow stays in the screen and its feature components, never in the navigator.
 
 Cross-cutting navigation concerns (deep-link config, the `NavigationContainer`, theme) are set up in
-`App.tsx`, not scattered across feature navigators.
+`AppProviders`, not scattered across feature navigators.
 
 ---
 
@@ -237,7 +255,7 @@ reuse.
 ## Providers
 
 Context providers live in `src/providers/`. Providers own cross-cutting state and application-wide
-concerns (auth, theme, current user). They are mounted in `App.tsx`.
+concerns (auth, theme, current user). They are composed in `AppProviders`.
 
 Hooks that consume a provider's state live alongside the provider itself. Providers stay narrowly
 scoped — a provider accumulating unrelated concerns should be split.
@@ -260,7 +278,7 @@ radii, typography, and shadows. All other styling is co-located with its compone
 Bundled assets live under `assets/` at the project root:
 
 - `assets/fonts/` — font files loaded via `expo-font` (or `@expo-google-fonts`). Fonts are loaded
-  once during app bootstrap in `App.tsx`.
+  once during app bootstrap in `src/hooks/useAppBootstrap.ts`.
 - `assets/images/` — bundled images, plus the source images for the app icon and splash screen.
 
 The app icon, splash screen, name, and native plugin configuration are declared in the Expo config
@@ -374,6 +392,8 @@ Recurring violations to watch for when adding files or reviewing structure:
   `lib/format/`, etc.
 - A type-only import without `import type`.
 - A provider accumulating unrelated cross-cutting concerns instead of being split.
+- Any initialization logic in `App.tsx` beyond `useAppBootstrap()` and `<AppProviders />` — blocking
+  init belongs in `useAppBootstrap`, provider composition belongs in `AppProviders`.
 
 ---
 
