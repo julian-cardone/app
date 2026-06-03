@@ -1,23 +1,21 @@
 import { StyleSheet, Text } from "react-native";
 
 import { colors, fontFamily, fontSize } from "@/styles/tokens";
+import type { StyleProp, TextStyle } from "react-native";
 
 type WordmarkProps = {
   /** `splash` is the large centered brand moment; `compact` sits at the top of a screen. */
   size?: "splash" | "compact";
+  style?: StyleProp<TextStyle>;
 };
 
 /**
  * The Placecard brand wordmark, rendered as text (per the brand spec — no logo image).
  * A domain-agnostic primitive: it owns only how the name looks, never layout or position.
  */
-export function Wordmark({ size = "compact" }: WordmarkProps) {
+export function Wordmark({ size = "compact", style }: WordmarkProps) {
   const sizeStyle = size === "splash" ? styles.splash : styles.compact;
-  return (
-    <Text style={[styles.base, sizeStyle]} accessibilityRole="header">
-      placecard
-    </Text>
-  );
+  return <Text style={[styles.base, sizeStyle, style]}>placecard</Text>;
 }
 
 const styles = StyleSheet.create({

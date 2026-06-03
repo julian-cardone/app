@@ -1,14 +1,13 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text, type StyleProp, type ViewStyle } from "react-native";
 
 import { colors, fontFamily, fontSize, radii, shadows, spacing } from "@/styles/tokens";
 
 type ButtonProps = {
   title: string;
   onPress: () => void;
-  /** Only the brand teal-gradient variant exists today; add variants when a second is proven. */
-  variant?: "primary";
   disabled?: boolean;
+  style?: StyleProp<ViewStyle>;
 };
 
 /**
@@ -16,19 +15,22 @@ type ButtonProps = {
  * states (pressed, disabled) and nothing else — callers pass `onPress`, so navigation and
  * workflow stay with the feature that uses it.
  */
-export function Button({ title, onPress, variant = "primary", disabled = false }: ButtonProps) {
-  // `variant` selects the gradient palette; today there is a single primary treatment.
-  void variant;
+export function Button({ title, onPress, disabled = false, style }: ButtonProps) {
+  const handlePress = () => {
+    if (disabled) return;
+    onPress();
+  };
 
   return (
     <Pressable
-      onPress={onPress}
+      onPress={handlePress}
       disabled={disabled}
       accessibilityRole="button"
       accessibilityState={{ disabled }}
       style={({ pressed }) => [
         styles.pressable,
         shadows.buttonTeal,
+        style,
         disabled && styles.disabled,
         pressed && !disabled && styles.pressed,
       ]}
