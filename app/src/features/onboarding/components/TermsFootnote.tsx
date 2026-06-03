@@ -1,10 +1,15 @@
 import { Linking, StyleSheet, Text } from "react-native";
 
 import { colors, fontFamily, fontSize, lineHeight } from "@/styles/tokens";
+import { externalLinks } from "@/constants/links";
 
-// Placeholder destinations until the real legal pages exist.
-const TERMS_URL = "https://placecard.app/terms";
-const PRIVACY_URL = "https://placecard.app/privacy";
+const handleTermsPress = () => {
+  void Linking.openURL(externalLinks.terms);
+};
+
+const handlePrivacyPress = () => {
+  void Linking.openURL(externalLinks.privacy);
+};
 
 /**
  * The fine print beneath the phone-entry CTA. Owns opening the legal links, which is why
@@ -14,11 +19,11 @@ export function TermsFootnote() {
   return (
     <Text style={styles.text}>
       By continuing you agree to our{" "}
-      <Text style={styles.link} onPress={() => Linking.openURL(TERMS_URL)}>
+      <Text accessibilityRole="link" style={styles.link} onPress={handleTermsPress}>
         Terms
       </Text>{" "}
       and{" "}
-      <Text style={styles.link} onPress={() => Linking.openURL(PRIVACY_URL)}>
+      <Text accessibilityRole="link" style={styles.link} onPress={handlePrivacyPress}>
         Privacy Policy
       </Text>
       .
