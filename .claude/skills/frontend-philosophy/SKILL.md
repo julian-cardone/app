@@ -2,312 +2,107 @@
 name: frontend-philosophy
 description:
   Apply this repository's frontend architecture principles when designing, writing, or reviewing
-  React components. Use whenever a component is being created or refactored, when deciding where
-  state should live, when extracting a feature component from a page or screen, when introducing an
-  abstraction, when naming a new component, when deciding between context and prop passing, when
-  writing a useEffect, when defining props or public interfaces, or when reviewing a PR for
-  architectural issues. Trigger on casual phrasings too — "should this be a hook or a component",
-  "where does this state go", "is this the right place for this logic", "this component is getting
-  big", "should I make this generic". Do not rely on general React intuition for this codebase; the
-  rules here are specific about component layers (shared primitives vs. feature components), state
-  ownership, the three-condition test for introducing abstractions, banned name patterns (`Manager`,
-  `Handler`, `Wrapper`, `DataTable`), how effects are used, and the separation between backend and
-  frontend models. Applies to React on both web and React Native on mobile.
+  React or React Native components, hooks, screens/pages, feature code, props, state ownership,
+  effects, abstractions, or public interfaces. Trigger on questions like "where does this logic go",
+  "should this be shared", "should this be a hook", "is this component too big", "should I make this
+  generic", or when reviewing PRs for ownership and coupling. Platform-specific folder, styling, and
+  layout rules live in the relevant project-structure, styles, and layout skills.
 ---
 
 # Frontend Philosophy
 
-These are the architectural principles for React and React Native code in this repository. They
-apply whenever designing, writing, or reviewing components, hooks, and feature code.
+Frontend code must stay minimal, explicit, predictable, and scalable. Favor narrow ownership,
+composition, and local reasoning over generic abstraction systems.
 
-The full prose version lives at `docs/standards/frontend-philosophy.md` in the repository. This
-skill is the operational summary — consult the source doc for extended rationale.
-
-The architecture must remain minimal, durable, predictable, and scalable. Favor explicit structure,
-narrow ownership, and predictable refactoring over generic abstraction systems.
-
-This skill covers component architecture and ownership. These principles are platform-agnostic — the
-same ownership, state, effect, and abstraction rules hold on web and mobile. Platform-specific
-concerns live elsewhere: for styling rules, see the styling skill for your platform; for flex layout
-and overflow, see the layout skill for your platform; for folder layout, see the project structure
-skill for your platform.
+This skill owns architecture and component responsibility. It does not own platform-specific folder
+structure, CSS/StyleSheet rules, flex layout, scrolling, or safe areas. Use the platform-specific
+skills for those details.
 
 ---
 
-## Guiding Principles
+## Core Principles
 
-Frontend systems must remain understandable as the application grows. A future engineer or AI agent
-must be able to:
+A future engineer or coding agent must be able to answer quickly:
 
-- Locate ownership quickly
-- Modify behavior confidently
-- Refactor features predictably
-- Introduce new functionality without fragile coupling
+- What owns this concern?
+- Where does state live?
+- Which interface is public?
+- Is this feature-specific or domain-agnostic?
+- Can this be refactored without touching unrelated features?
 
-The architecture favors:
-
-- Explicit structure over hidden abstraction
-- Composition over inheritance-like systems
-- Narrow ownership boundaries
-- Local reasoning
-- Predictable data flow
-- Stable public interfaces
-
-Complexity is introduced deliberately. Abstraction exists to reduce complexity, not to centralize
-it.
-
----
-
-## Ownership
-
-Every concern has a clear owner. Ambiguous ownership produces duplicated logic, diverging state, and
-fragile behavior.
-
-A concern belongs to the lowest layer capable of managing it correctly. Each layer's ownership rules
-are defined in the document responsible for that layer — spatial and layout concerns in the layout
-skill for your platform, folder and module boundaries in the project structure skill for your
-platform, styling concerns in the styling skill for your platform.
+Optimize for clear ownership and predictable refactoring, not maximum reuse.
 
 ---
 
 ## Component Layers
 
-Components fall into two categories. Preserve the boundary.
-
 ### Shared UI Primitives
 
-Reusable, domain-agnostic building blocks. They own:
+Shared primitives are reusable, domain-agnostic building blocks. They own:
 
-- Structure
+- Internal structure
 - Visual states
-- Variants
-- Accessibility behavior
+- Stable variants
+- Basic accessibility behavior
+- Small layout-internal details needed for their own shape
 
 They must not own:
 
 - Workflow logic
-- Backend integration
+- Navigation/routing decisions
+- Backend/API calls
 - Domain models
-- Feature-specific behavior
+- Feature-specific text or behavior
+- Screen-level layout, scroll boundaries, or safe-area behavior
 
-Spatial concerns — scroll boundaries, viewport assumptions, overflow behavior, and external sizing —
-are a separate category. Those rules live in the layout skill for your platform, not here.
-
-Narrowly scoped, broadly reusable.
+Examples: `Button`, `AppText`, `Screen`, generic form fields, brand-only components when placed in a
+branding boundary.
 
 ### Feature Components
 
-Live in `features/<feature>/components/`. They compose shared primitives into domain workflows.
-Examples: `EventCoverPicker`, `RsvpButton`, `EventCard`.
+Feature components live inside `features/<feature>/components/`. They compose primitives into a
+product workflow and may own:
 
-Feature components may:
+- Domain-specific rendering
+- Feature-specific interactions
+- Local workflow state
+- Loading/error states for that feature
+- Composition of multiple primitives
 
-- Reference domain models
-- Own workflow state
-- Manage loading and error states
-- Coordinate multiple primitives
-- Own feature-specific interactions
+A component used by one feature stays feature-local until reuse is proven.
 
-Names describe domain responsibility.
+### Pages and Screens
 
----
-
-## Pages and Screens
-
-Pages (web) and screens (mobile) are the same role: route-level composition shells. On the web they
-are route components; on mobile they are the screens registered with a navigator. They own:
+Pages on web and screens on mobile are route-level composition shells. They own:
 
 1. Route-level layout
 2. Feature composition
-3. Page- or screen-level state
-4. Routing / navigation concerns
+3. Route/screen-level state
+4. Routing or navigation consequences
 
-Workflow logic and section-level rendering belong in feature components, not in the page or screen.
-
-A block of markup in a page or screen must be extracted into a feature component when it:
-
-- Owns state
-- Manages a workflow
-- Represents a distinct visual section
-
-Pages and screens stay composition-oriented, not content-heavy.
-
-The example below is web (`<div>` / `<button>`); on mobile the same rule holds with `<View>` /
-`<Pressable>` and an `EventScreen` composing the same feature components.
-
-```tsx
-/* Wrong — page renders content and owns state directly. */
-export default function EventPage() {
-  const [rsvpOpen, setRsvpOpen] = useState(false);
-  return (
-    <div className={styles.page}>
-      <h1>{event.title}</h1>
-      <p>{event.description}</p>
-      <button onClick={() => setRsvpOpen(true)}>RSVP</button>
-    </div>
-  );
-}
-
-/* Right — page composes feature components. */
-export default function EventPage() {
-  return (
-    <div className={styles.page}>
-      <div className={styles.layout}>
-        <EventDetails />
-        <EventActions />
-      </div>
-    </div>
-  );
-}
-```
-
-The page or screen defines the surface and layout container. State, workflow, and rendering belong
-in the feature components.
+They should not become content-heavy. Extract markup into feature components when a section owns
+state, manages a workflow, or represents a distinct visual/product section.
 
 ---
 
 ## State Ownership
 
-State lives at the lowest component that reasonably owns it.
+State lives at the lowest component that can own it correctly.
 
-- Form values belong to the form.
+- Form values belong to the form or screen that submits them.
 - Selection state belongs to the section managing selection.
 - Modal state belongs to the component opening the modal.
-- Route-level data belongs to the page or screen.
+- Route-level data belongs to the page/screen or a route-level hook.
+- Shared application state belongs in a focused provider only when it genuinely spans branches.
 
-**State must not be duplicated.** Derived values are computed from source state, not copied into
-independent state variables. If a hook owns data, consuming components derive from that hook rather
-than shadowing the same state locally.
-
-Independent state is justified only when ownership genuinely differs.
-
----
-
-## Context
-
-Context exists for cross-cutting concerns: authentication, theme, current user, application-wide
-preferences.
-
-Context is not a substitute for ordinary composition or short-distance prop passing. Lift state only
-when ownership genuinely spans multiple branches of the tree.
-
----
-
-## Effects
-
-Effects are synchronization boundaries, not general-purpose lifecycle hooks.
-
-If logic can be derived during render, it does not belong in an effect.
-
-Effects synchronize React state with:
-
-- Network requests
-- Platform APIs (the browser DOM on web; native device modules on mobile)
-- Timers
-- External systems
-
-An effect that only derives local values from other local values is a signal of misplaced state or
-unnecessary synchronization. Move the logic into render, or move the state to its proper owner.
+Do not duplicate source state. Derived values are computed during render:
 
 ```tsx
-/* Wrong — derived value implemented as an effect */
-const [fullName, setFullName] = useState("");
-useEffect(() => {
-  setFullName(`${firstName} ${lastName}`);
-}, [firstName, lastName]);
-
-/* Right — derived during render */
-const fullName = `${firstName} ${lastName}`;
+const digitCount = phoneNumber.replace(/[^0-9]/g, "").length;
+const canSend = digitCount >= MIN_DIGITS;
 ```
 
----
-
-## Controlled vs. Uncontrolled State
-
-Reusable primitives prefer controlled APIs when external workflow state matters. Feature components
-may use uncontrolled internal state for ephemeral UI concerns that do not affect external workflows.
-
-Controlled ownership stays explicit.
-
----
-
-## Props and Interfaces
-
-Every component declares typed props. Implicit `any` is disallowed.
-
-```tsx
-type ButtonProps = {
-  variant: "primary" | "secondary";
-  onPress: () => void; // onClick on web
-  children: ReactNode;
-};
-```
-
-Component interfaces stay narrow and explicit. A component accumulating many unrelated props or
-feature flags usually indicates excessive responsibility.
-
-Reusable components expose stable public interfaces rather than leaking implementation details.
-
----
-
-## Public Interfaces
-
-Components, services, and features expose stable public interfaces. Internal implementation details
-stay private so modules can be refactored without breaking external consumers.
-
-See the project structure skill for the public-surface and import rules that enforce this.
-
----
-
-## Abstraction — The Three-Condition Test
-
-Before introducing an abstraction, all three must be true:
-
-1. The repeated structure is stable.
-2. The abstraction is simpler than the duplication it replaces.
-3. The abstraction makes future work easier.
-
-If any condition fails, duplication is preferred.
-
-**Appropriate abstractions:**
-
-- Shared UI primitives
-- Stable visual variants
-- Pure mappers
-- Reusable structural wrappers
-
-**Inappropriate abstractions:**
-
-- Universal `DataTable` systems
-- Generic workflow engines
-- Single abstractions covering unrelated behavior
-- Generic `Manager` or `Handler` systems
-
-**The rule of three:** two similar implementations are acceptable. Three is the threshold at which
-shared structure should be evaluated — not automatically extracted, but evaluated against the three
-conditions above.
-
----
-
-## Naming
-
-Names describe responsibility.
-
-Generic names are reserved for shared primitives. Feature components use domain-specific names.
-
-A name that describes a generic role rather than a domain concept typically indicates unclear
-ownership or excessive responsibility. If a name could apply to multiple unrelated features, it is
-too generic.
-
-**Common examples to avoid:**
-
-- `Manager`
-- `Handler`
-- `Wrapper`
-- `DataTable`
-
-When tempted to reach for one of these, rename the component after the domain concept it actually
-represents, or split it into narrower components that can be named precisely.
+Do not copy derived values into separate `useState` variables.
 
 ---
 
@@ -326,102 +121,157 @@ Parents own:
 - Navigation
 - Success workflows
 
-A reset action clears both form state and any derived parent state — the form invokes a callback so
-the parent can clear its own state in sync.
+For mobile auth/onboarding flows, a screen may hold a simple controlled value and pass it into a
+feature input. When the form grows beyond a few fields or begins owning validation/workflow, extract
+a feature form component.
 
 ---
 
-## Tables and Lists
+## Effects
 
-Tables (web) and lists (`FlatList` / `SectionList` on mobile) render rows and invoke callbacks. They
-do not fetch data or own workflow state.
+Effects synchronize React with external systems. They are not a place for ordinary derived logic.
 
-They accept:
+Use effects for:
 
-- Rows or items
-- Selected identifiers
-- Callbacks for row actions
+- Network requests
+- Native/browser APIs
+- Timers
+- Subscriptions
+- Imperative animation starts
+- Synchronization with external state
 
-The surrounding feature component owns loading, selection, modals, and workflow behavior.
+Do not use effects to derive one local value from another.
+
+Timers and subscriptions must clean up after themselves:
+
+```tsx
+useEffect(() => {
+  const timer = setTimeout(run, delayMs);
+  return () => clearTimeout(timer);
+}, [delayMs]);
+```
+
+---
+
+## Props and Public Interfaces
+
+Every component declares typed props. Interfaces stay narrow and explicit.
+
+Reusable components should expose:
+
+- Stable behavior props
+- Stable variants only after a second variant is real
+- `style` for parent layout overrides when useful
+- Targeted style props only when there is a proven need, such as `contentContainerStyle`
+
+Do not expose deep internal styling hooks like `headerTitleTextWrapperInnerStyle`. That leaks the
+component's internals and makes refactors fragile.
+
+Use `style` mostly for parent-owned layout concerns such as margin, width, alignment, and local
+placement. Component appearance should come from the component's own styles, tokens, and stable
+variants.
+
+---
+
+## Shared Text Primitive
+
+Use a shared app text primitive when the project has custom fonts or typography tokens.
+
+The text primitive should stay small:
+
+```tsx
+type AppTextProps = TextProps & {
+  variant?: "body" | "headline" | "caption";
+};
+```
+
+Avoid creating a prop matrix such as `size`, `weight`, `tone`, `italic`, `muted`, `centered`, and
+`specialMode` before those variants are proven. Typography consistency is the goal; a generic text
+configuration system is not.
+
+Branding text, such as a wordmark, may live in a branding component and use the same typography
+tokens or text primitive internally.
+
+---
+
+## Abstraction Rules
+
+Before introducing an abstraction, all three must be true:
+
+1. The repeated structure is stable.
+2. The abstraction is simpler than the duplication it replaces.
+3. The abstraction makes future work easier.
+
+The rule of three applies: two similar implementations are acceptable. At the third occurrence,
+evaluate the pattern against the three-condition test. Do not automatically extract.
+
+Appropriate abstractions:
+
+- Shared UI primitives
+- Stable visual variants
+- Pure mappers
+- Reusable screen/layout wrappers
+- Small focused hooks
+
+Avoid:
+
+- Generic workflow engines
+- Universal table/list systems
+- `Manager`, `Handler`, or `Wrapper` components
+- Shared primitives created from a single feature use
+- Boolean-flag components that should be split
+
+---
+
+## Naming
+
+Names describe responsibility.
+
+- Shared primitives may use generic names: `Button`, `AppText`, `Screen`.
+- Feature components use domain names: `PhoneNumberInput`, `TermsFootnote`, `EventCoverPicker`.
+- Avoid `Manager`, `Handler`, `Wrapper`, and generic `DataTable` names.
+
+A component name that could apply to many unrelated features is usually too generic unless it is a
+true shared primitive.
 
 ---
 
 ## Backend and Frontend Separation
 
-Backend and frontend models stay separate and serve distinct purposes.
+Components do not consume raw backend shapes.
 
-**API types** live in `services/<x>/*.types.ts` — raw backend shapes, `snake_case`, used only within
-the service layer.
+- API types live in `services/<x>/*.types.ts`.
+- Domain models live in `features/<feature>/models/`.
+- Mappers translate backend shapes into frontend models at the service boundary.
 
-**Domain models** live in `features/<feature>/models/` — the application-facing representation,
-`camelCase`, consumed by components and hooks.
-
-**Mappers** in `services/<x>/*.mappers.ts` translate between the two at the service boundary.
-
-Raw backend shapes must not appear in component code. A `snake_case` field name inside a component
-file is a signal of a missing or misplaced mapper.
+A `snake_case` field in component code usually means the mapper is missing or misplaced.
 
 ---
 
 ## Comments
 
-Comments explain:
+Comments explain why a constraint exists, not what obvious code does.
 
-- Why code exists
-- What invariant is being preserved
-- Why a constraint matters
+Good comments preserve reasoning:
 
-Comments do not narrate obvious behavior. Good comments preserve architectural reasoning, not
-implementation details.
+- why a splash uses `replace`
+- why a hidden input drives verification boxes
+- why a form is inert until backend work exists
+- why a native driver is safe for opacity/transform
 
----
-
-## Component Scope
-
-Components stay narrow in responsibility.
-
-A component accumulating boolean flags like `isSpecialMode`, `alternateLayout`, or
-`useLegacyBehavior` is a signal of a missed split. Divide the component rather than extending it
-through branching configuration.
+Remove comments that merely narrate implementation.
 
 ---
 
 ## Common Mistakes to Avoid
 
-Recurring violations to watch for in review or when writing new code:
-
-- A page or screen rendering content directly instead of composing feature components.
-- State duplicated across a hook and a `useState` in a consuming component.
-- A `useEffect` that derives one local value from another instead of computing it in render.
-- A shared primitive accumulating feature-specific props or domain knowledge.
-- A new abstraction introduced on the second occurrence of a pattern (the threshold is three, and
-  only after the three-condition test).
-- A component named `XManager`, `XHandler`, `XWrapper`, or a generic `DataTable`.
-- A boolean prop like `isSpecialMode` added instead of splitting the component.
-- `snake_case` field names appearing in a component file (missing mapper at the service boundary).
-- A form component navigating or making API calls itself instead of invoking parent callbacks.
-- A table or list component fetching its own data or owning modal state.
-- Context used for short-distance prop passing rather than genuinely cross-cutting state.
-- Comments narrating what the code does instead of why it exists.
-
----
-
-## Predictable Refactoring
-
-The architecture optimizes for safe, predictable change. A feature must be modifiable without
-requiring broad knowledge of unrelated systems.
-
-Strong ownership boundaries, explicit composition, stable interfaces, and localized concerns are the
-primary mechanisms by which the codebase remains maintainable as it grows.
-
----
-
-## When to Consult the Related Standards
-
-- For styling rules, units, variants, and style/class naming: the styling skill for your platform —
-  `web-css` (web) or `mobile-styles` (mobile).
-- For flex layout, scroll ownership, and constraint chains: the layout skill for your platform —
-  `web-layout` (web) or `mobile-layout` (mobile).
-- For where files live, the boundary between `components/ui/` and `features/`, and the
-  public-surface import rules: the project structure skill for your platform —
-  `web-project-structure` (web) or `mobile-project-structure` (mobile).
+- A screen/page rendering large content blocks instead of composing feature components.
+- State duplicated between a hook and local component state.
+- A `useEffect` that only derives local values.
+- A shared primitive containing feature-specific text, workflow, or domain assumptions.
+- A fake prop such as `variant?: "primary"` before a second variant exists.
+- A component promoted to shared after one use.
+- A component accumulating boolean flags instead of being split.
+- A form navigating or calling APIs directly when those consequences belong to the parent.
+- Context used for short-distance prop passing.
+- Comments that explain obvious behavior instead of constraints or intent.

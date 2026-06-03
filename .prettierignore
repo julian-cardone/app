@@ -1,6 +1,5 @@
 # Dependencies
 node_modules/
-app/node_modules/
 
 # Git
 .git/
@@ -14,19 +13,6 @@ package-lock.json
 # Scripts generated artifacts
 scripts/output/
 scripts/dist/
-
-# React Native / Expo
-app/.expo/
-app/dist/
-app/build/
-
-# Native projects
-app/ios/
-app/android/
-
-# Coverage
-coverage/
-app/coverage/
 
 # Misc
 .DS_Store
