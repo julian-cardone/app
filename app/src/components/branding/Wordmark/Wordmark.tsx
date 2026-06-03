@@ -1,7 +1,8 @@
 import { StyleSheet, Text } from "react-native";
 
-import { colors, fontFamily, fontSize } from "@/styles/tokens";
 import type { StyleProp, TextStyle } from "react-native";
+
+import { colors, fontFamily, fontSize } from "@/styles/tokens";
 
 type WordmarkProps = {
   /** `splash` is the large centered brand moment; `compact` sits at the top of a screen. */

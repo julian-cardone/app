@@ -1,4 +1,6 @@
-import { StyleSheet, Text, TextProps } from "react-native";
+import { StyleSheet, Text } from "react-native";
+
+import type { TextProps } from "react-native";
 
 import { colors, fontFamily, fontSize, lineHeight } from "@/styles/tokens";
 

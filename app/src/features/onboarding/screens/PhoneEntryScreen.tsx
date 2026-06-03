@@ -1,14 +1,15 @@
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+
 import { Button, Screen, Wordmark } from "@/components/ui";
+import { AppText } from "@/components/ui";
 import type { RootStackParamList } from "@/navigation/types";
 import { colors, spacing } from "@/styles/tokens";
 
 import { PhoneNumberInput } from "../components/PhoneNumberInput";
 import { TermsFootnote } from "../components/TermsFootnote";
-import { AppText } from "@/components/ui";
 
 type Props = NativeStackScreenProps<RootStackParamList, "PhoneEntry">;
 

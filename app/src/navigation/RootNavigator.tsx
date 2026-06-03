@@ -1,7 +1,9 @@
 import React from "react";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { PhoneEntryScreen, SplashScreen, VerifyScreen } from "@/features/onboarding";
+
 import type { RootStackParamList } from "./types";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
