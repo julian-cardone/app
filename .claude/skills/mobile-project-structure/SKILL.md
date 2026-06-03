@@ -196,11 +196,16 @@ the public surface is missing something — fix the surface, don't bypass it.
 Navigation lives in `src/navigation/`. It owns:
 
 - The navigator tree — a root navigator composing tab and stack navigators.
-- Route param type definitions, co-located with the navigator that declares the routes.
+- Route param types in `navigation/types.ts` — the shared contract for all routes.
 
 Navigators register screens imported from feature public surfaces. They do not contain screen
 content themselves — a navigator file wires routes to screens and nothing more. Feature-specific
 workflow stays in the screen and its feature components, never in the navigator.
+
+Route param types live in `navigation/types.ts`, not inline in the navigator file. They are a
+shared contract consumed by navigators, screens, and providers alike, and they grow with every new
+screen. Keeping them in the navigator file couples the contract to the implementation and forces
+every consumer to import from a file that owns the wrong concern.
 
 Cross-cutting navigation concerns (deep-link config, the `NavigationContainer`, theme) are set up in
 `AppProviders`, not scattered across feature navigators.
@@ -322,6 +327,11 @@ default, extracted to `EventCard.styles.ts` only when size justifies it. Additio
 introduced only when complexity justifies the split. Small components stay compact — a single `.tsx`
 is fine until it isn't.
 
+**Extract type files proactively** when a type is already consumed by more than one module, or when
+it represents a contract that will grow with the product (e.g., route param lists, domain event
+unions, API response discriminated unions). Co-location is the default; shared contracts that span
+module boundaries are the exception that justifies early extraction.
+
 ---
 
 ## Import Rules
@@ -394,6 +404,8 @@ Recurring violations to watch for when adding files or reviewing structure:
 - A provider accumulating unrelated cross-cutting concerns instead of being split.
 - Any initialization logic in `App.tsx` beyond `useAppBootstrap()` and `<AppProviders />` — blocking
   init belongs in `useAppBootstrap`, provider composition belongs in `AppProviders`.
+- Route param types defined inline in a navigator file instead of `navigation/types.ts` — they are
+  a shared contract consumed by screens and providers, not an implementation detail of the navigator.
 
 ---
 

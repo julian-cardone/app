@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { NavigationContainerRef } from "@react-navigation/native";
 
-import type { RootStackParamList } from "./RootNavigator";
+import type { RootStackParamList } from "./types";
 
 type Props = {
   navigationRef: NavigationContainerRef<RootStackParamList>;

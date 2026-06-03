@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 
 import { Wordmark } from "@/components/ui";
-import type { RootStackParamList } from "@/navigation/RootNavigator";
+import type { RootStackParamList } from "@/navigation/types";
 import { animation, colors } from "@/styles/tokens";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Splash">;

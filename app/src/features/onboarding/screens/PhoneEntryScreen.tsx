@@ -4,7 +4,7 @@ import { KeyboardAvoidingView, Platform, StyleSheet, Text, View } from "react-na
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button, Wordmark } from "@/components/ui";
-import type { RootStackParamList } from "@/navigation/RootNavigator";
+import type { RootStackParamList } from "@/navigation/types";
 import { colors, fontFamily, fontSize, lineHeight, spacing } from "@/styles/tokens";
 
 import { PhoneNumberInput } from "../components/PhoneNumberInput";

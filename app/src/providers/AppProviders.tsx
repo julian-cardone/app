@@ -4,7 +4,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { DevBar } from "@/navigation/DevBar";
 import { RootNavigator } from "@/navigation/RootNavigator";
-import type { RootStackParamList } from "@/navigation/RootNavigator";
+import type { RootStackParamList } from "@/navigation/types";
 
 const navigationRef = createNavigationContainerRef<RootStackParamList>();
 

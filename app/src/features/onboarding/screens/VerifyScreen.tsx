@@ -4,7 +4,7 @@ import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View } fro
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button } from "@/components/ui";
-import type { RootStackParamList } from "@/navigation/RootNavigator";
+import type { RootStackParamList } from "@/navigation/types";
 import { colors, fontFamily, fontSize, lineHeight, spacing } from "@/styles/tokens";
 
 import { CodeInput } from "../components/CodeInput";
