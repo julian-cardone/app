@@ -10,26 +10,26 @@ type PhoneNumberInputProps = {
   onCountryPress?: () => void;
 };
 
-/**
- * Controlled phone-entry field for onboarding: a country-code chip beside the number input.
- * The owning screen holds the value so it can pass the number on to verification.
- */
 export function PhoneNumberInput({
   value,
   onChangeText,
   countryCode,
   onCountryPress,
 }: PhoneNumberInputProps) {
+  const isCountrySelectable = Boolean(onCountryPress);
+
   return (
     <View style={styles.row}>
       <Pressable
         style={styles.country}
         onPress={onCountryPress}
-        accessibilityRole="button"
-        accessibilityLabel="Select country code"
+        disabled={!isCountrySelectable}
+        accessibilityRole={isCountrySelectable ? "button" : undefined}
+        accessibilityLabel={isCountrySelectable ? "Select country code" : "Country code"}
       >
         <Text style={styles.countryText}>{countryCode}</Text>
       </Pressable>
+
       <View style={styles.field}>
         <TextInput
           style={styles.input}
@@ -41,6 +41,7 @@ export function PhoneNumberInput({
           autoComplete="tel"
           textContentType="telephoneNumber"
           returnKeyType="done"
+          maxLength={16}
         />
       </View>
     </View>

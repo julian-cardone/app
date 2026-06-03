@@ -6,7 +6,7 @@ import { colors, fontFamily, fontSize, radii, spacing } from "@/styles/tokens";
 type CodeInputProps = {
   value: string;
   onChangeText: (value: string) => void;
-  length?: number;
+  length: number;
 };
 
 /**
@@ -14,7 +14,7 @@ type CodeInputProps = {
  * A single input keeps OS autofill, paste, and the keyboard working correctly while the
  * boxes are purely presentational.
  */
-export function CodeInput({ value, onChangeText, length = 6 }: CodeInputProps) {
+export function CodeInput({ value, onChangeText, length }: CodeInputProps) {
   const inputRef = useRef<TextInput>(null);
   const digits = Array.from({ length }, (_, i) => value[i] ?? "");
 
@@ -27,14 +27,15 @@ export function CodeInput({ value, onChangeText, length = 6 }: CodeInputProps) {
     <Pressable
       style={styles.row}
       onPress={() => inputRef.current?.focus()}
+      accessibilityRole="button"
       accessibilityLabel="Verification code"
     >
-      {digits.map((digit, i) => (
+      {digits.map((digit, index) => (
         <View
-          key={i}
+          key={index}
           style={[
             styles.box,
-            value.length === i && styles.boxActive,
+            value.length === index && styles.boxActive,
             digit !== "" && styles.boxFilled,
           ]}
         >
@@ -49,8 +50,9 @@ export function CodeInput({ value, onChangeText, length = 6 }: CodeInputProps) {
         keyboardType="number-pad"
         maxLength={length}
         autoFocus
+        autoComplete="one-time-code"
         textContentType="oneTimeCode"
-        // The visible boxes render the value; this input only captures keystrokes.
+        returnKeyType="done"
         caretHidden
         accessibilityElementsHidden
         importantForAccessibility="no"
