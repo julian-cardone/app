@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import * as SplashScreen from "expo-splash-screen";
 import {
   Nunito_400Regular,
   Nunito_600SemiBold,
@@ -7,7 +8,6 @@ import {
   Nunito_900Black,
   useFonts,
 } from "@expo-google-fonts/nunito";
-import * as SplashScreen from "expo-splash-screen";
 
 // Must run before the component tree mounts so the native splash stays visible during init.
 void SplashScreen.preventAutoHideAsync();

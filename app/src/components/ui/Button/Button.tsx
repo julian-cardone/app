@@ -1,5 +1,5 @@
+import { Pressable, type StyleProp, StyleSheet, Text, type ViewStyle } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Pressable, StyleSheet, Text, type StyleProp, type ViewStyle } from "react-native";
 
 import { colors, fontFamily, fontSize, radii, shadows, spacing } from "@/styles/tokens";
 

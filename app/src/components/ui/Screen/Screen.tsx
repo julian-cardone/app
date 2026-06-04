@@ -1,13 +1,14 @@
-import type { PropsWithChildren } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  type StyleProp,
   StyleSheet,
   View,
-  type StyleProp,
   type ViewStyle,
 } from "react-native";
+
+import type { PropsWithChildren } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { colors, spacing } from "@/styles/tokens";

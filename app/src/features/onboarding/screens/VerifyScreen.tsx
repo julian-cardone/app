@@ -1,13 +1,13 @@
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { Button, Screen } from "@/components/ui";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+import { AppText, Button, Screen } from "@/components/ui";
 import type { RootStackParamList } from "@/navigation/types";
 import { colors, fontFamily, fontSize, spacing } from "@/styles/tokens";
 
 import { CodeInput } from "../components/CodeInput";
-import { AppText } from "@/components/ui";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Verify">;
 

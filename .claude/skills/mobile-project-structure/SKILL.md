@@ -23,7 +23,7 @@ rules live in `mobile-styles`. Flex, scroll, keyboard, and safe-area rules live 
 ## Reference Structure
 
 ```text
-app.json or app.config.ts          # Expo config: name, icon, splash, plugins
+app.config.ts                      # Expo config: name, icon, splash, plugins, env-specific overrides
 index.js                          # registerRootComponent(App)
 assets/
   fonts/                          # bundled fonts if not using @expo-google-fonts

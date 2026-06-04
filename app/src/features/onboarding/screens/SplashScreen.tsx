@@ -1,6 +1,7 @@
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useRef } from "react";
 import { Animated, StyleSheet } from "react-native";
+
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { Screen, Wordmark } from "@/components/ui";
 import type { RootStackParamList } from "@/navigation/types";

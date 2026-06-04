@@ -1,7 +1,7 @@
 import { Linking, StyleSheet, Text } from "react-native";
 
-import { colors, fontFamily, fontSize, lineHeight } from "@/styles/tokens";
 import { externalLinks } from "@/constants/links";
+import { colors, fontFamily, fontSize, lineHeight } from "@/styles/tokens";
 
 const handleTermsPress = () => {
   void Linking.openURL(externalLinks.terms);
