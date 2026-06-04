@@ -9,16 +9,20 @@ export type OnboardingStackParamList = {
 };
 
 /**
- * The signed-in app. A native stack for now (Discover only); it becomes a tab navigator
- * once Chat/Profile arrive. The profile-completion banner lives in the Main shell above
- * this navigator, not in any single screen here.
+ * The signed-in app: a bottom-tab navigator modelled on the product prototype. `PostPlan` is the
+ * centre action, raised into a FAB by the custom tab bar. The profile-completion banner is shared
+ * via a provider around this navigator and rendered by screens themselves, not threaded here.
  */
-export type MainStackParamList = {
+export type MainTabParamList = {
+  Messages: undefined;
+  Explore: undefined;
+  PostPlan: undefined;
   Discover: undefined;
+  Profile: undefined;
 };
 
 /** Top-level split: the onboarding flow versus the signed-in app. */
 export type RootStackParamList = {
   Onboarding: NavigatorScreenParams<OnboardingStackParamList>;
-  Main: NavigatorScreenParams<MainStackParamList>;
+  Main: NavigatorScreenParams<MainTabParamList>;
 };

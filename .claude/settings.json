@@ -25,7 +25,13 @@
       "Bash(gh api*)",
       "Bash(npm run lint:md*)",
       "Bash(npm run format:md*)",
-      "Bash(npx markdownlint-cli2 *)"
+      "Bash(npx markdownlint-cli2 *)",
+      "Bash(npx tsc *)",
+      "Bash(npx eslint *)",
+      "Bash(npx prettier *)",
+      "Bash(echo \"=== TSC: $? ===\")",
+      "Bash(echo \"=== ESLINT: $? ===\")",
+      "Bash(echo \"EXIT: $?\")"
     ],
     "deny": [
       "Bash(git rebase*)",
