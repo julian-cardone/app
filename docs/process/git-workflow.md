@@ -172,7 +172,7 @@ When two worktrees both target the same branch, merge them sequentially:
 
 The second merge needs the first committed to reconcile both sets of changes correctly.
 
-**Merge conflicts**
+### Merge conflicts
 
 The script aborts before cleanup when a conflict occurs. Resolve the conflicted files, commit the
 merge, then clean up manually:
