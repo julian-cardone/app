@@ -1,26 +1,40 @@
 import React from "react";
 
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { DiscoverScreen } from "@/features/discover";
-import { ProfileCompletionProvider } from "@/features/profile";
+import { ExploreScreen } from "@/features/explore";
+import { MessagesScreen } from "@/features/messages";
+import { PostPlanScreen } from "@/features/postPlan";
+import { ProfileCompletionProvider, ProfileScreen } from "@/features/profile";
 
-import type { MainStackParamList } from "./types";
+import { MainTabBar } from "./MainTabBar";
+import type { MainTabParamList } from "./types";
 
-const Stack = createNativeStackNavigator<MainStackParamList>();
+const Tab = createBottomTabNavigator<MainTabParamList>();
 
 /**
- * The signed-in app. A native stack for now (Discover only); it becomes a tab navigator once
- * Chat/Profile arrive, with no change here. `ProfileCompletionProvider` wraps the navigator so the
- * profile-completion banner's state is shared across every main-app screen — screens render the
- * banner themselves and own their own safe area; this stays pure route wiring plus shared state.
+ * The signed-in app: a bottom-tab navigator with a custom tab bar (`MainTabBar`) modelled on the
+ * product prototype — Messages, Explore, the central Post-a-plan FAB, Discover, and Profile, with
+ * Discover as the landing tab. Screens are registered left-to-right so `PostPlan` falls in the
+ * centre slot the FAB occupies. `ProfileCompletionProvider` wraps the navigator so the
+ * profile-completion banner's state is shared across tabs; screens render the banner themselves and
+ * own their own safe area, keeping this pure route wiring plus shared state.
  */
 export function MainNavigator() {
   return (
     <ProfileCompletionProvider>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Discover" component={DiscoverScreen} />
-      </Stack.Navigator>
+      <Tab.Navigator
+        initialRouteName="Discover"
+        screenOptions={{ headerShown: false }}
+        tabBar={(props) => <MainTabBar {...props} />}
+      >
+        <Tab.Screen name="Messages" component={MessagesScreen} />
+        <Tab.Screen name="Explore" component={ExploreScreen} />
+        <Tab.Screen name="PostPlan" component={PostPlanScreen} />
+        <Tab.Screen name="Discover" component={DiscoverScreen} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
+      </Tab.Navigator>
     </ProfileCompletionProvider>
   );
 }

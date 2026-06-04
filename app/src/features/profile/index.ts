@@ -3,3 +3,4 @@ export {
   ProfileCompletionProvider,
   useProfileCompletion,
 } from "./providers/ProfileCompletionProvider";
+export { ProfileScreen } from "./screens/ProfileScreen";
