@@ -3,8 +3,7 @@ import { StyleSheet, View } from "react-native";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { Button, Screen, Wordmark } from "@/components/ui";
-import { AppText } from "@/components/ui";
+import { AppText, Button, Screen, Wordmark } from "@/components/ui";
 import type { RootStackParamList } from "@/navigation/types";
 import { colors, spacing } from "@/styles/tokens";
 

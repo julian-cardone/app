@@ -67,6 +67,7 @@ export default tseslint.config(
       ],
 
       "simple-import-sort/exports": "error",
+      "no-duplicate-imports": "error",
     },
   },
 
