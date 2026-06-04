@@ -24,6 +24,7 @@ export function DevBar({ navigationRef }: Props) {
       label: "Verify",
       onPress: () => go(() => navigationRef.navigate("Verify", { phoneNumber: "+15551234567" })),
     },
+    { label: "Profile", onPress: () => go(() => navigationRef.navigate("ProfileSetup")) },
   ];
 
   return (

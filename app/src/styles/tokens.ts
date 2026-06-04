@@ -33,6 +33,9 @@ export const colors = {
 
   // Lines
   border: "#E5E5E5",
+
+  // Feedback
+  danger: "#D64545", // validation errors and destructive states
 } as const;
 
 export const spacing = {
