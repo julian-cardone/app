@@ -13,7 +13,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "Verify">;
 
 const CODE_LENGTH = 6;
 
-export function VerifyScreen({ route }: Props) {
+export function VerifyScreen({ navigation, route }: Props) {
   const { phoneNumber } = route.params;
   const [code, setCode] = useState("");
 
@@ -21,7 +21,10 @@ export function VerifyScreen({ route }: Props) {
 
   const handleVerify = () => {
     if (!canVerify) return;
-    // TODO: verify code once backend exists.
+    // No real check yet: any 6-digit code advances to signup. Backend verification is a
+    // later issue. New numbers go through fast signup; returning users will skip it once
+    // account lookup exists.
+    navigation.navigate("ProfileSetup");
   };
 
   const handleResendCode = () => {

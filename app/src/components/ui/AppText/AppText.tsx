@@ -3,7 +3,7 @@ import { StyleSheet, Text, type TextProps } from "react-native";
 import { colors, fontFamily, fontSize, lineHeight } from "@/styles/tokens";
 
 type AppTextProps = TextProps & {
-  variant?: "headline" | "subhead";
+  variant?: "headline" | "subhead" | "label";
 };
 
 export function AppText({ variant = "subhead", style, ...props }: AppTextProps) {
@@ -26,5 +26,12 @@ const styles = StyleSheet.create({
     fontSize: fontSize.body,
     lineHeight: lineHeight.body,
     color: colors.muted,
+  },
+
+  label: {
+    fontFamily: fontFamily.bold,
+    fontSize: fontSize.body,
+    lineHeight: lineHeight.body,
+    color: colors.ink,
   },
 });
