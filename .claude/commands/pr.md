@@ -18,11 +18,10 @@ Copy all `type:*` and `scope:*` labels from the issue directly onto the PR.
 
 Also add these based on `git diff main...HEAD --name-only`:
 
-| If diff contains         | Add label        |
-| ------------------------ | ---------------- |
-| `package.json`/lockfile  | `dependencies`   |
-| `.github/workflows/`     | `github_actions` |
-| `.js`/`.ts`/`.tsx` files | `javascript`     |
+| If diff contains        | Add label        |
+| ----------------------- | ---------------- |
+| `package.json`/lockfile | `dependencies`   |
+| `.github/workflows/`    | `github_actions` |
 
 ## Title
 
