@@ -4,12 +4,12 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { AppText, Button, Screen } from "@/components/ui";
-import type { RootStackParamList } from "@/navigation/types";
+import type { OnboardingStackParamList } from "@/navigation/types";
 import { colors, fontFamily, fontSize, spacing } from "@/styles/tokens";
 
 import { CodeInput } from "../components/CodeInput";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Verify">;
+type Props = NativeStackScreenProps<OnboardingStackParamList, "Verify">;
 
 const CODE_LENGTH = 6;
 

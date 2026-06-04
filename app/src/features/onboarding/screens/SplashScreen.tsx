@@ -4,10 +4,10 @@ import { Animated, StyleSheet } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { Screen, Wordmark } from "@/components/ui";
-import type { RootStackParamList } from "@/navigation/types";
+import type { OnboardingStackParamList } from "@/navigation/types";
 import { animation } from "@/styles/tokens";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Splash">;
+type Props = NativeStackScreenProps<OnboardingStackParamList, "Splash">;
 
 /**
  * The brand moment. The wordmark fades and scales in while the app finishes booting, then
