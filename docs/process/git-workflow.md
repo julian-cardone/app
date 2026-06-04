@@ -119,6 +119,16 @@ Naming rules: lowercase, hyphen-separated, a type prefix followed by a short des
 four words. The prefix matches the intended pull request title so the branch purpose is unambiguous
 across sessions.
 
+A session can also be given the full task in the opening prompt and run autonomously:
+
+```text
+Spin up a worktree called feat-user-auth, implement user authentication in src/auth/,
+and when done notify me that the worktree is ready to merge.
+```
+
+Claude Code will complete the work and stop, leaving the merge as a deliberate human step. Do not
+instruct a session to merge autonomously — that step warrants human review.
+
 ### Scope discipline
 
 Each session is given an explicit scope at start: the directories or files it is permitted to read
@@ -129,29 +139,73 @@ If a session encounters build errors in files it did not edit, it must not attem
 correct response is to wait and retry — another session is likely mid-edit. Cascading fix attempts
 across sessions are the primary cause of parallel failures.
 
-### Ownership and merging
+### Merging
 
-Each worktree is one pull request with one owner. The session assigned to a branch owns it from
-start to finish. Merging is a separate orchestration step and is never performed by a running
-session. A session must not merge, rebase, or pull from other worktree branches while active.
+Each worktree is one pull request with one owner. A running session must not merge, rebase, or pull
+from other worktree branches — merging is always a separate orchestration step performed after the
+session completes.
 
-### Cleanup
-
-When a session exits cleanly with no uncommitted changes and no new commits, the worktree and its
-branch are removed automatically. When changes exist, Claude Code prompts to keep or remove.
-Worktrees created with `--worktree` are not removed by the automatic sweep.
-
-Review and prune stale worktrees periodically:
+Use the `/merge-worktree` slash command as the default:
 
 ```text
-git worktree list
-git worktree remove <path>
+/merge-worktree <name> <target-branch>
+```
+
+The command reads the diff, generates a conventional-commit message, calls
+`scripts/worktree-merge.sh`, and reports what was merged and cleaned up. When the commit message is
+already known, call the script directly to avoid the token cost:
+
+```text
+bash scripts/worktree-merge.sh <name> <target-branch> "<commit message>"
+```
+
+The script commits any pending changes in the worktree, merges into the target, and removes the
+worktree and branch on success. It will not proceed if the main working tree is dirty, and it will
+not delete a branch that has not been fully merged.
+
+When two worktrees both target the same branch, merge them sequentially:
+
+```text
+/merge-worktree feat-user-auth main
+/merge-worktree feat-api-endpoints main
+```
+
+The second merge needs the first committed to reconcile both sets of changes correctly.
+
+**Merge conflicts**
+
+The script aborts before cleanup when a conflict occurs. Resolve the conflicted files, commit the
+merge, then clean up manually:
+
+```text
+git worktree remove .claude/worktrees/<name>
+git branch -d worktree-<name>
 git worktree prune
 ```
 
+A branch checked out by a worktree cannot be checked out elsewhere. If merging directly is
+necessary, do not attempt `git checkout worktree-<name>` — it will fail with
+`fatal: '<branch>' is already used by worktree`. Merge the branch without checking it out.
+
+### Cleanup
+
+The merge script handles cleanup automatically on a successful merge. For periodic housekeeping or
+abandoned worktrees, review what is active:
+
+```text
+git worktree list
+```
+
+Before removing a branch manually, verify it has been fully merged:
+
+```text
+git log --oneline <target-branch>..worktree-<name>
+```
+
+If no commits are shown, the branch can be safely removed.
+
 ### Token discipline
 
-The primary token benefit of worktrees is keeping each session context small and scoped. One task
-per worktree. End and replace sessions rather than extending them indefinitely. A scoped session
-that finishes cleanly costs far fewer tokens than a long-running session that accumulates context
-drift.
+Keep each session scoped to one task. End and replace sessions rather than extending them
+indefinitely. A scoped session that finishes cleanly costs far fewer tokens than a long-running
+session that accumulates context drift.
