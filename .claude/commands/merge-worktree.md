@@ -22,7 +22,7 @@ Steps:
    user with the exact output from the script, then output these manual resolution steps verbatim
    and wait:
 
-   ```
+   ```text
    MERGE CONFLICT — manual resolution required.
 
    1. Resolve the conflicted files in your editor.

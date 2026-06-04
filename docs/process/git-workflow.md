@@ -126,8 +126,8 @@ Spin up a worktree called feat-user-auth, implement user authentication in src/a
 and when done notify me that the worktree is ready to merge.
 ```
 
-Claude Code will complete the work and stop, leaving the merge as a deliberate human step. Do not
-instruct a session to merge autonomously — that step warrants human review.
+Claude Code completes the work and stops, leaving the merge as a deliberate human step. Do not
+instruct a session to merge autonomously — that step requires human review.
 
 ### Scope discipline
 
