@@ -1,12 +1,20 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
+import type {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
+
 import { AppText, Button, Screen, TextField } from "@/components/ui";
+import type { OnboardingStackParamList, RootStackParamList } from "@/navigation/types";
 import { spacing } from "@/styles/tokens";
 
 import { DateOfBirthField } from "../components/DateOfBirthField";
 import { type GenderIdentity, GenderSelect } from "../components/GenderSelect";
 import { MIN_AGE, validateDob } from "../lib/dob";
+
+type Props = NativeStackScreenProps<OnboardingStackParamList, "ProfileSetup">;
 
 const MAX_NAME_LENGTH = 50;
 
@@ -16,7 +24,7 @@ const MAX_NAME_LENGTH = 50;
  * via the profile completion flow. The screen owns its form state and derives validity during
  * render; account creation is the parent's job once the backend exists.
  */
-export function ProfileSetupScreen() {
+export function ProfileSetupScreen({ navigation }: Props) {
   const [firstName, setFirstName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [gender, setGender] = useState<GenderIdentity | null>(null);
@@ -32,7 +40,11 @@ export function ProfileSetupScreen() {
   const handleSubmit = () => {
     if (!canSubmit) return;
     // TODO: create the account with { firstName, dateOfBirth, gender } plus the verified
-    // phone number and route into the app once the backend and home screen exist.
+    // phone number once the backend exists. Replacing the root Onboarding route with Main
+    // discards the whole onboarding stack so the member can't swipe back into signup.
+    navigation
+      .getParent<NativeStackNavigationProp<RootStackParamList>>()
+      ?.replace("Main", { screen: "Discover" });
   };
 
   return (

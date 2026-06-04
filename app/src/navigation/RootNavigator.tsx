@@ -2,28 +2,22 @@ import React from "react";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import {
-  PhoneEntryScreen,
-  ProfileSetupScreen,
-  SplashScreen,
-  VerifyScreen,
-} from "@/features/onboarding";
-
+import { MainNavigator } from "./MainNavigator";
+import { OnboardingNavigator } from "./OnboardingNavigator";
 import type { RootStackParamList } from "./types";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 /**
- * The onboarding entry stack: Splash → Phone Entry → Verify → Profile Setup. Headers are hidden so each
- * screen owns its own chrome. This navigator only wires routes to screens.
+ * The top-level split between the pre-account onboarding flow and the signed-in app. Headers are
+ * hidden; each nested navigator owns its own chrome. Onboarding replaces itself with Main on
+ * completion, so the onboarding stack does not linger on the back stack.
  */
 export function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Splash" component={SplashScreen} />
-      <Stack.Screen name="PhoneEntry" component={PhoneEntryScreen} />
-      <Stack.Screen name="Verify" component={VerifyScreen} />
-      <Stack.Screen name="ProfileSetup" component={ProfileSetupScreen} />
+    <Stack.Navigator initialRouteName="Onboarding" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
+      <Stack.Screen name="Main" component={MainNavigator} />
     </Stack.Navigator>
   );
 }

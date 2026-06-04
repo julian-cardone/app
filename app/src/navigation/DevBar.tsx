@@ -18,13 +18,32 @@ export function DevBar({ navigationRef }: Props) {
   };
 
   const buttons = [
-    { label: "Splash", onPress: () => go(() => navigationRef.navigate("Splash")) },
-    { label: "Phone", onPress: () => go(() => navigationRef.navigate("PhoneEntry")) },
+    {
+      label: "Splash",
+      onPress: () => go(() => navigationRef.navigate("Onboarding", { screen: "Splash" })),
+    },
+    {
+      label: "Phone",
+      onPress: () => go(() => navigationRef.navigate("Onboarding", { screen: "PhoneEntry" })),
+    },
     {
       label: "Verify",
-      onPress: () => go(() => navigationRef.navigate("Verify", { phoneNumber: "+15551234567" })),
+      onPress: () =>
+        go(() =>
+          navigationRef.navigate("Onboarding", {
+            screen: "Verify",
+            params: { phoneNumber: "+15551234567" },
+          }),
+        ),
     },
-    { label: "Profile", onPress: () => go(() => navigationRef.navigate("ProfileSetup")) },
+    {
+      label: "Profile",
+      onPress: () => go(() => navigationRef.navigate("Onboarding", { screen: "ProfileSetup" })),
+    },
+    {
+      label: "Discover",
+      onPress: () => go(() => navigationRef.navigate("Main", { screen: "Discover" })),
+    },
   ];
 
   return (

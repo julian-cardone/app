@@ -4,13 +4,13 @@ import { StyleSheet, View } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { AppText, Button, Screen, Wordmark } from "@/components/ui";
-import type { RootStackParamList } from "@/navigation/types";
+import type { OnboardingStackParamList } from "@/navigation/types";
 import { colors, spacing } from "@/styles/tokens";
 
 import { PhoneNumberInput } from "../components/PhoneNumberInput";
 import { TermsFootnote } from "../components/TermsFootnote";
 
-type Props = NativeStackScreenProps<RootStackParamList, "PhoneEntry">;
+type Props = NativeStackScreenProps<OnboardingStackParamList, "PhoneEntry">;
 
 const DEFAULT_COUNTRY = "🇺🇸 +1";
 const MIN_DIGITS = 7;
