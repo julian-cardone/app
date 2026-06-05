@@ -11,34 +11,29 @@ import { colors, fontFamily, radii, shadows } from "@/styles/tokens";
 import type { MainTabParamList } from "./types";
 
 /**
- * The signed-in app's bottom navigation, modelled on the product prototype: four labelled
- * tabs with the central "Post a plan" action raised into a teal gradient FAB. It owns its own
- * bottom safe-area inset because it is the chrome that sits against the home indicator — the
- * tab bar owning its internal layout, not the navigator shell reaching into insets. Per-screen
- * top/bottom insets remain with the `Screen` primitive.
+ * Custom bottom tab bar for the signed-in app.
  */
-
 const BAR_HEIGHT = 60;
 const ICON_SIZE = 22;
 const LABEL_SIZE = 10;
 const FAB_SIZE = 44;
 const FAB_ICON_SIZE = 24;
 
+type MainTabName = keyof MainTabParamList;
 type FeatherName = React.ComponentProps<typeof Feather>["name"];
 
-const TAB_ICON: Record<Exclude<keyof MainTabParamList, "PostPlan">, FeatherName> = {
-  Messages: "message-circle",
-  Explore: "compass",
-  Discover: "layers",
-  Profile: "user",
+type TabConfigItem = {
+  label: string;
+  icon: FeatherName;
+  isFab: boolean;
 };
 
-const TAB_LABEL: Record<keyof MainTabParamList, string> = {
-  Messages: "Messages",
-  Explore: "Explore",
-  PostPlan: "Post a plan",
-  Discover: "Discover",
-  Profile: "Profile",
+const TAB_CONFIG: Record<MainTabName, TabConfigItem> = {
+  Messages: { label: "Messages", icon: "message-circle", isFab: false },
+  Explore: { label: "Explore", icon: "compass", isFab: false },
+  Discover: { label: "Discover", icon: "layers", isFab: false },
+  Profile: { label: "Profile", icon: "user", isFab: false },
+  PostPlan: { label: "Post a plan", icon: "plus", isFab: true },
 };
 
 export function MainTabBar({ state, navigation }: BottomTabBarProps) {
@@ -50,7 +45,7 @@ export function MainTabBar({ state, navigation }: BottomTabBarProps) {
     >
       {state.routes.map((route, index) => {
         const focused = state.index === index;
-        const label = TAB_LABEL[route.name as keyof MainTabParamList];
+        const tab = TAB_CONFIG[route.name as MainTabName];
 
         const onPress = () => {
           const event = navigation.emit({
@@ -58,18 +53,19 @@ export function MainTabBar({ state, navigation }: BottomTabBarProps) {
             target: route.key,
             canPreventDefault: true,
           });
+
           if (!focused && !event.defaultPrevented) {
             navigation.navigate(route.name);
           }
         };
 
-        if (route.name === "PostPlan") {
+        if (tab.isFab) {
           return (
             <Pressable
               key={route.key}
               onPress={onPress}
               accessibilityRole="button"
-              accessibilityLabel={label}
+              accessibilityLabel={tab.label}
               style={({ pressed }) => [styles.fabWrap, pressed && styles.fabPressed]}
             >
               <LinearGradient
@@ -78,13 +74,12 @@ export function MainTabBar({ state, navigation }: BottomTabBarProps) {
                 end={{ x: 1, y: 1 }}
                 style={[styles.fab, shadows.buttonTeal]}
               >
-                <Feather name="plus" size={FAB_ICON_SIZE} color={colors.onTeal} />
+                <Feather name={tab.icon} size={FAB_ICON_SIZE} color={colors.onTeal} />
               </LinearGradient>
             </Pressable>
           );
         }
 
-        const iconName = TAB_ICON[route.name as Exclude<keyof MainTabParamList, "PostPlan">];
         const iconColor = focused ? colors.tealPrimary : colors.muted;
 
         return (
@@ -93,11 +88,11 @@ export function MainTabBar({ state, navigation }: BottomTabBarProps) {
             onPress={onPress}
             accessibilityRole="button"
             accessibilityState={{ selected: focused }}
-            accessibilityLabel={label}
+            accessibilityLabel={tab.label}
             style={styles.navBtn}
           >
-            <Feather name={iconName} size={ICON_SIZE} color={iconColor} />
-            <AppText style={[styles.label, focused && styles.labelActive]}>{label}</AppText>
+            <Feather name={tab.icon} size={ICON_SIZE} color={iconColor} />
+            <AppText style={[styles.label, focused && styles.labelActive]}>{tab.label}</AppText>
           </Pressable>
         );
       })}
