@@ -250,7 +250,7 @@ A `snake_case` field in component code usually means the mapper is missing or mi
 
 ## Comments
 
-Comments explain why a constraint exists, not what obvious code does.
+Comments explain intent, ownership, or constraints. Keep them short enough to survive refactors.
 
 Good comments preserve reasoning:
 
@@ -259,7 +259,57 @@ Good comments preserve reasoning:
 - why a form is inert until backend work exists
 - why a native driver is safe for opacity/transform
 
-Remove comments that merely narrate implementation.
+Avoid comments that:
+
+- Narrate obvious implementation.
+- Preserve prototype history.
+- Explain details that are already clear from names and structure.
+- Require frequent updates when nearby code changes.
+
+Prefer concise component comments:
+
+```tsx
+/**
+ * Custom bottom tab bar for the signed-in app.
+ */
+```
+
+Do not use long comments to compensate for unclear code. Rename, extract, or simplify first.
+
+---
+
+## TypeScript Assertions
+
+Prefer type-safe code without `as` or `any`.
+
+Use `satisfies`, narrow explicit prop types, discriminated unions, small helper types, and clear
+domain models before reaching for assertions.
+
+Accept a localized `as` only when all of these are true:
+
+1. The input is already strictly controlled by nearby code or a typed framework boundary.
+2. The assertion corrects a type that is broader than the real domain.
+3. The assertion is smaller and clearer than complex type machinery.
+4. The assertion does not hide unvalidated external data.
+
+Acceptable example:
+
+```tsx
+const tab = TAB_CONFIG[route.name as MainTabName];
+```
+
+This is reasonable when `route.name` comes from a navigator whose screens are registered from
+`MainTabParamList`, but the library exposes it as `string`.
+
+Avoid assertions for uncertain data:
+
+```tsx
+const user = response as User;
+```
+
+External data must be validated, mapped, or parsed at the service boundary instead.
+
+Avoid `any`. Use `unknown` at unsafe boundaries, then narrow before use.
 
 ---
 
@@ -275,3 +325,5 @@ Remove comments that merely narrate implementation.
 - A form navigating or calling APIs directly when those consequences belong to the parent.
 - Context used for short-distance prop passing.
 - Comments that explain obvious behavior instead of constraints or intent.
+- `as` used to silence uncertain external data instead of validating or mapping it.
+- `any` used where `unknown`, a generic, or a narrow domain type would preserve safety.

@@ -302,6 +302,9 @@ Do not use only `elevation` or only iOS `shadow*` props.
 
 ## File Placement
 
+This section owns style file placement only. General component/type/helper placement lives in
+`mobile-project-structure`.
+
 Keep styles co-located by default:
 
 ```text

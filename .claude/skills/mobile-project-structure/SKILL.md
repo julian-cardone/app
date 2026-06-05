@@ -105,7 +105,8 @@ business logic, screen logic, navigation decisions, or provider composition dire
 
 Navigation lives in `src/navigation/`.
 
-- `types.ts` owns route param types such as `RootStackParamList`.
+- `types.ts` owns route param contracts for the navigation folder, such as `RootStackParamList`,
+  `OnboardingStackParamList`, and `MainTabParamList`.
 - Navigator files wire route names to screen components.
 - Navigators import screens from feature public surfaces.
 - Navigators do not contain screen content, feature workflows, or dev menu content beyond minimal
@@ -228,30 +229,45 @@ near the provider they consume. Split providers that accumulate unrelated concer
 There are no CSS files on mobile. No `reset.css`, `globals.css`, `variables.css`, or `.module.css`.
 
 - Shared visual values live in `src/styles/tokens.ts`.
-- Component styles are co-located in `StyleSheet.create` blocks by default.
-- Extract `*.styles.ts` only when the component file becomes large enough that readability suffers.
 - Fonts/images live under `assets/` at the project root.
 - App icon and splash configuration live in the Expo config, not in component code.
+- Style co-location and style extraction rules live in `mobile-styles`.
 
 ---
 
 ## File Co-location
 
-Default to one component per `.tsx` file with its `StyleSheet.create` at the bottom.
+Default to one component per `.tsx` file. Keep implementation-only types, constants, and helpers
+local to that file.
 
-Create extra files only when complexity justifies it:
+Create extra files only when reuse or readability justifies it:
 
 ```text
 CodeInput.tsx                  # fine while small
+
 EventCard/
   EventCard.tsx
-  EventCard.styles.ts          # only when styles are large
-  EventCard.types.ts           # when types are shared or growing
+  types.ts                     # folder-scoped types, when shared or growing
   index.ts
+
+MainTabBar.tsx
+MainTabBar.types.ts            # flat-file companion when no parent folder owns the context
 ```
 
-Extract type files early only for contracts consumed by multiple modules or expected to grow, such
-as route param lists, domain unions, and API response types.
+Type extraction rules:
+
+- Keep types local when they are used by one file and the file remains easy to navigate.
+- Extract types when they are shared across modules.
+- Extract types when the file becomes difficult to scan.
+- Extract contract types early when they are intentionally consumed across a boundary, such as route
+  param lists, domain unions, and API response types.
+
+Naming rules:
+
+- Use `types.ts` when the parent folder already provides the context, such as `navigation/types.ts`
+  or `EventCard/types.ts`.
+- Use `<FileName>.types.ts` for a flat companion file, such as `MainTabBar.types.ts`.
+- Do not create `*.types.ts`, `*.constants.ts`, or `*.utils.ts` files preemptively.
 
 ---
 
@@ -293,7 +309,7 @@ lib/string/
 
 - Adding any `.tsx` file directly under `src/` other than `App.tsx`.
 - Putting initialization or provider composition in `App.tsx`.
-- Defining route param types inline in a navigator file.
+- Defining shared route param contracts inline in a navigator file.
 - Putting screen content inside a navigator.
 - Creating a mobile `router.tsx` route table.
 - Creating CSS files or `.module.css` files.
@@ -302,3 +318,4 @@ lib/string/
 - Keeping app-wide legal URLs inside one feature once multiple screens use them.
 - Importing from internal implementation paths across boundaries.
 - Creating `shared/` or `utils/` dumping grounds.
+- Extracting local types, constants, helpers, or styles before reuse or readability requires it.
