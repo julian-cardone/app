@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+
 import { createNavigationContainerRef, NavigationContainer } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
