@@ -1,7 +1,9 @@
 import { useRef } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
-import { colors, fontFamily, fontSize, radii, spacing } from "@/styles/tokens";
+import { borders, colors, fontFamily, fontSize, radii, spacing } from "@/styles/tokens";
+
+const BOX_MAX_SIZE = 52;
 
 type CodeInputProps = {
   value: string;
@@ -69,8 +71,8 @@ const styles = StyleSheet.create({
   box: {
     flex: 1,
     aspectRatio: 1,
-    maxWidth: 52,
-    borderWidth: 1.5,
+    maxWidth: BOX_MAX_SIZE,
+    borderWidth: borders.input,
     borderColor: colors.border,
     borderRadius: radii.input,
     backgroundColor: colors.white,

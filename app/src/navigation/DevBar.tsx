@@ -6,6 +6,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { RootStackParamList } from "./types";
 
+const BAR_BG = "rgba(0,0,0,0.75)";
+const BTN_BG = "rgba(255,255,255,0.12)";
+const LABEL_COLOR = "#ff6b6b";
+const TEXT_COLOR = "#fff";
+const MIN_TOP_INSET = 8;
+
 type Props = {
   navigationRef: NavigationContainerRef<RootStackParamList>;
 };
@@ -47,7 +53,7 @@ export function DevBar({ navigationRef }: Props) {
   ];
 
   return (
-    <View style={[styles.bar, { paddingTop: Math.max(insets.top, 8) }]}>
+    <View style={[styles.bar, { paddingTop: Math.max(insets.top, MIN_TOP_INSET) }]}>
       <Text style={styles.label}>DEV</Text>
       {buttons.map(({ label, onPress }) => (
         <TouchableOpacity key={label} onPress={onPress} style={styles.button}>
@@ -69,10 +75,10 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingHorizontal: 12,
     paddingBottom: 8,
-    backgroundColor: "rgba(0,0,0,0.75)",
+    backgroundColor: BAR_BG,
   },
   label: {
-    color: "#ff6b6b",
+    color: LABEL_COLOR,
     fontSize: 10,
     fontWeight: "700",
     marginRight: 4,
@@ -81,11 +87,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 6,
     borderRadius: 6,
-    backgroundColor: "rgba(255,255,255,0.12)",
+    backgroundColor: BTN_BG,
     alignItems: "center",
   },
   buttonText: {
-    color: "#fff",
+    color: TEXT_COLOR,
     fontSize: 12,
     fontWeight: "600",
   },

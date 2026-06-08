@@ -7,6 +7,7 @@ import type { ProfileProgress } from "../lib/profileProgress";
 
 /** The thin progress track is purely decorative chrome, so its height stays local. */
 const TRACK_HEIGHT = 6;
+const DISMISS_GLYPH = "×";
 
 type Props = {
   progress: ProfileProgress;
@@ -40,7 +41,7 @@ export function ProfileProgressBanner({ progress, onDismiss }: Props) {
           hitSlop={spacing.sm}
           style={styles.dismiss}
         >
-          <AppText style={styles.dismissGlyph}>×</AppText>
+          <AppText style={styles.dismissGlyph}>{DISMISS_GLYPH}</AppText>
         </Pressable>
       </View>
 

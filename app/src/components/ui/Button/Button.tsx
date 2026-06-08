@@ -3,6 +3,8 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import { colors, fontFamily, fontSize, radii, shadows, spacing } from "@/styles/tokens";
 
+const PRESSED_SCALE = 0.98;
+
 type ButtonProps = {
   title: string;
   onPress: () => void;
@@ -11,9 +13,7 @@ type ButtonProps = {
 };
 
 /**
- * The primary call-to-action primitive. Domain-agnostic: it owns its structure and visual
- * states (pressed, disabled) and nothing else — callers pass `onPress`, so navigation and
- * workflow stay with the feature that uses it.
+ * Primary call-to-action button. Owns visual states (pressed, disabled); callers own the action.
  */
 export function Button({ title, onPress, disabled = false, style }: ButtonProps) {
   const handlePress = () => {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     color: colors.onTeal,
   },
   pressed: {
-    transform: [{ scale: 0.98 }],
+    transform: [{ scale: PRESSED_SCALE }],
   },
   disabled: {
     opacity: 0.5,

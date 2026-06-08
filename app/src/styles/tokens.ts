@@ -15,7 +15,6 @@ export const colors = {
   tealPrimary: "#1D9E75",
   tealDeep: "#0F6E56",
   tealSoft: "#E1F5EE",
-  mint: "#9FE1CB",
 
   // Gradient stops for the primary CTA (135°)
   gradientStart: "#1D9E75",
@@ -44,15 +43,16 @@ export const spacing = {
   md: 16,
   lg: 24,
   xl: 32,
-  xxl: 48,
 } as const;
 
 export const radii = {
   input: 10,
   button: 14,
-  card: 16,
-  lg: 24,
   pill: 999,
+} as const;
+
+export const borders = {
+  input: 1.5,
 } as const;
 
 /**
@@ -61,7 +61,6 @@ export const radii = {
  * so weight is selected by picking the right family — not via `fontWeight`.
  */
 export const fontFamily = {
-  regular: "Nunito_400Regular",
   semibold: "Nunito_600SemiBold",
   bold: "Nunito_700Bold",
   extrabold: "Nunito_800ExtraBold",
@@ -89,13 +88,6 @@ export const lineHeight = {
  * Each token bundles both so a single reference renders correctly on every device.
  */
 export const shadows = {
-  card: {
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 24,
-    elevation: 3,
-  },
   buttonTeal: {
     shadowColor: colors.tealPrimary,
     shadowOffset: { width: 0, height: 2 },

@@ -8,6 +8,8 @@ import { Screen } from "@/components/layout";
 import type { OnboardingStackParamList } from "@/navigation/types";
 import { animation } from "@/styles/tokens";
 
+const SPLASH_SCALE_FROM = 0.92;
+
 type Props = NativeStackScreenProps<OnboardingStackParamList, "Splash">;
 
 /**
@@ -34,7 +36,7 @@ export function SplashScreen({ navigation }: Props) {
 
   const scale = progress.interpolate({
     inputRange: [0, 1],
-    outputRange: [0.92, 1],
+    outputRange: [SPLASH_SCALE_FROM, 1],
   });
 
   const animatedStyle = {

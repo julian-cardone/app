@@ -15,6 +15,7 @@ import type { MainTabParamList } from "./types";
 const BAR_HEIGHT = 60;
 const ICON_SIZE = 22;
 const LABEL_SIZE = 10;
+const ICON_LABEL_GAP = 2;
 const FAB_SIZE = 44;
 const FAB_ICON_SIZE = 24;
 
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     height: BAR_HEIGHT,
     alignItems: "center",
     justifyContent: "center",
-    gap: 2,
+    gap: ICON_LABEL_GAP,
   },
   label: {
     fontFamily: fontFamily.semibold,

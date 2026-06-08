@@ -1,6 +1,9 @@
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
-import { colors, fontFamily, fontSize, radii, spacing } from "@/styles/tokens";
+import { borders, colors, fontFamily, fontSize, radii, spacing } from "@/styles/tokens";
+
+const INPUT_PADDING_V = spacing.sm + 1;
+const MAX_PHONE_LENGTH = 16;
 
 type PhoneNumberInputProps = {
   value: string;
@@ -41,7 +44,7 @@ export function PhoneNumberInput({
           autoComplete="tel"
           textContentType="telephoneNumber"
           returnKeyType="done"
-          maxLength={16}
+          maxLength={MAX_PHONE_LENGTH}
         />
       </View>
     </View>
@@ -55,10 +58,10 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   country: {
-    borderWidth: 1.5,
+    borderWidth: borders.input,
     borderColor: colors.border,
     borderRadius: radii.input,
-    paddingVertical: spacing.sm + 1,
+    paddingVertical: INPUT_PADDING_V,
     paddingHorizontal: spacing.md,
     backgroundColor: colors.white,
   },
@@ -71,10 +74,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   input: {
-    borderWidth: 1.5,
+    borderWidth: borders.input,
     borderColor: colors.border,
     borderRadius: radii.input,
-    paddingVertical: spacing.sm + 1,
+    paddingVertical: INPUT_PADDING_V,
     paddingHorizontal: spacing.md,
     backgroundColor: colors.white,
     fontFamily: fontFamily.semibold,

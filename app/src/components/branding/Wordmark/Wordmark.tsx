@@ -2,6 +2,8 @@ import { type StyleProp, StyleSheet, Text, type TextStyle } from "react-native";
 
 import { colors, fontFamily, fontSize } from "@/styles/tokens";
 
+const WORDMARK_LETTER_SPACING = -0.5;
+
 type WordmarkProps = {
   /** `splash` is the large centered brand moment; `compact` sits at the top of a screen. */
   size?: "splash" | "compact";
@@ -21,7 +23,7 @@ const styles = StyleSheet.create({
   base: {
     fontFamily: fontFamily.black,
     color: colors.ink,
-    letterSpacing: -0.5,
+    letterSpacing: WORDMARK_LETTER_SPACING,
   },
   splash: {
     fontSize: fontSize.wordmarkLg,

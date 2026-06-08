@@ -1,6 +1,8 @@
 import { Pressable, type StyleProp, StyleSheet, Text, type ViewStyle } from "react-native";
 
-import { colors, fontFamily, fontSize, radii, spacing } from "@/styles/tokens";
+import { borders, colors, fontFamily, fontSize, radii, spacing } from "@/styles/tokens";
+
+const INPUT_PADDING_V = spacing.sm + 1;
 
 type ChipProps = {
   label: string;
@@ -24,10 +26,10 @@ export function Chip({ label, selected = false, onPress, style }: ChipProps) {
 
 const styles = StyleSheet.create({
   chip: {
-    borderWidth: 1.5,
+    borderWidth: borders.input,
     borderColor: colors.border,
     borderRadius: radii.pill,
-    paddingVertical: spacing.sm + 1,
+    paddingVertical: INPUT_PADDING_V,
     paddingHorizontal: spacing.md,
     backgroundColor: colors.white,
   },
