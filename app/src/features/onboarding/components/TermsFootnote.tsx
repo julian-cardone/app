@@ -1,6 +1,6 @@
 import { Linking, StyleSheet, Text } from "react-native";
 
-import { externalLinks } from "@/constants/links";
+import { externalLinks } from "@/config/links";
 import { colors, fontFamily, fontSize, lineHeight } from "@/styles/tokens";
 
 const handleTermsPress = () => {

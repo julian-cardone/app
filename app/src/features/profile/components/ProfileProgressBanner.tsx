@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   dismissGlyph: {
     fontFamily: fontFamily.bold,
     fontSize: fontSize.h2,
-    lineHeight: fontSize.h2,
+    lineHeight: lineHeight.h2,
     color: colors.muted,
   },
   progressRow: {

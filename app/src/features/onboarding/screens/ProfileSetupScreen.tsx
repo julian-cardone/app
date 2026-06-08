@@ -6,7 +6,8 @@ import type {
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
 
-import { AppText, Button, Screen, TextField } from "@/components/ui";
+import { Screen } from "@/components/layout";
+import { AppText, Button, TextField } from "@/components/ui";
 import type { OnboardingStackParamList, RootStackParamList } from "@/navigation/types";
 import { spacing } from "@/styles/tokens";
 

@@ -3,7 +3,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { AppText, Button, Screen } from "@/components/ui";
+import { Screen } from "@/components/layout";
+import { AppText, Button } from "@/components/ui";
 import type { OnboardingStackParamList } from "@/navigation/types";
 import { colors, fontFamily, fontSize, spacing } from "@/styles/tokens";
 
@@ -42,7 +43,7 @@ export function VerifyScreen({ navigation, route }: Props) {
         </Pressable>
       </View>
 
-      <View style={styles.footer}>
+      <View>
         <Button title="Verify" onPress={handleVerify} disabled={!canVerify} />
       </View>
     </Screen>
@@ -60,8 +61,5 @@ const styles = StyleSheet.create({
     fontSize: fontSize.body,
     color: colors.tealDeep,
     paddingTop: spacing.xs,
-  },
-  footer: {
-    paddingBottom: spacing.lg,
   },
 });

@@ -313,6 +313,72 @@ Avoid `any`. Use `unknown` at unsafe boundaries, then narrow before use.
 
 ---
 
+## Meaningful Literals
+
+Avoid magic numbers and floating strings in implementation code.
+
+A literal should be named when it is:
+
+- Repeated
+- Domain-specific
+- Route/navigation-specific
+- Event/analytics-specific
+- API/service-specific
+- Used to control behavior
+- Not immediately obvious from local context
+
+Prefer:
+
+- Local constants
+- Typed config objects
+- Domain-specific maps
+- Design tokens for visual values
+
+Good:
+
+```tsx
+const TAB_CONFIG = {
+  Messages: { label: "Messages", icon: "message-circle", isFab: false },
+  Explore: { label: "Explore", icon: "compass", isFab: false },
+  Discover: { label: "Discover", icon: "layers", isFab: false },
+  Profile: { label: "Profile", icon: "user", isFab: false },
+  PostPlan: { label: "Post a plan", icon: "plus", isFab: true },
+} satisfies Record<MainTabName, TabConfigItem>;
+```
+
+Avoid:
+
+```tsx
+if (route.name === "PostPlan") {
+  // ...
+}
+```
+
+Prefer:
+
+```tsx
+if (tab.isFab) {
+  // ...
+}
+```
+
+Inline literals are acceptable only when they are:
+
+- Obvious
+- Local
+- Non-reused
+- Not domain-significant
+
+Acceptable:
+
+```tsx
+array[index + 1];
+```
+
+Do not extract constants so aggressively that the constant name is less clear than the value.
+
+---
+
 ## Common Mistakes to Avoid
 
 - A screen/page rendering large content blocks instead of composing feature components.

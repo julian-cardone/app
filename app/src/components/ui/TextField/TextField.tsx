@@ -9,7 +9,7 @@ import {
   type ViewStyle,
 } from "react-native";
 
-import { AppText } from "@/components/ui/AppText";
+import { AppText } from "@/components/ui";
 import { colors, fontFamily, fontSize, radii, spacing } from "@/styles/tokens";
 
 type TextFieldProps = TextInputProps & {

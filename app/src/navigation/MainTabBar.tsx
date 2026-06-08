@@ -1,11 +1,10 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
 
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { AppText } from "@/components/ui";
 import { colors, fontFamily, radii, shadows } from "@/styles/tokens";
 
 import type { MainTabParamList } from "./types";
@@ -92,7 +91,7 @@ export function MainTabBar({ state, navigation }: BottomTabBarProps) {
             style={styles.navBtn}
           >
             <Feather name={tab.icon} size={ICON_SIZE} color={iconColor} />
-            <AppText style={[styles.label, focused && styles.labelActive]}>{tab.label}</AppText>
+            <Text style={[styles.label, focused && styles.labelActive]}>{tab.label}</Text>
           </Pressable>
         );
       })}

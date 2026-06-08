@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 import { createNavigationContainerRef, NavigationContainer } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -10,7 +11,7 @@ const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 export function AppProviders() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
         <NavigationContainer ref={navigationRef}>
           <RootNavigator />
@@ -20,3 +21,9 @@ export function AppProviders() {
     </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+});

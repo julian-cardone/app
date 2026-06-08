@@ -3,7 +3,8 @@ import { Animated, StyleSheet } from "react-native";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { Screen, Wordmark } from "@/components/ui";
+import { Wordmark } from "@/components/branding";
+import { Screen } from "@/components/layout";
 import type { OnboardingStackParamList } from "@/navigation/types";
 import { animation } from "@/styles/tokens";
 

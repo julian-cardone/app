@@ -1,6 +1,7 @@
 import { StyleSheet, View } from "react-native";
 
-import { AppText, Screen } from "@/components/ui";
+import { Screen } from "@/components/layout";
+import { AppText } from "@/components/ui";
 import { spacing } from "@/styles/tokens";
 
 /**

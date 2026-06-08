@@ -72,6 +72,44 @@ value is a missing token.
 Allowed local constants are values that are truly component-specific and not part of the design
 system, such as `CODE_LENGTH = 6`.
 
+Visual literals should be named.
+
+Use design tokens for reusable visual values:
+
+- colors
+- spacing
+- radii
+- typography
+- shadows
+- animation durations
+- z-index/layer values
+
+Use local constants for component-specific visual values that are not part of the design system:
+
+```tsx
+const TAB_BAR_HEIGHT = 60;
+const FAB_SIZE = 44;
+const ICON_SIZE = 22;
+const PRESSED_SCALE = 0.94;
+```
+
+Avoid unexplained inline style values:
+
+```tsx
+height: TAB_BAR_HEIGHT,
+borderRadius: radii.pill,
+transform: [{ scale: PRESSED_SCALE }],
+```
+
+Small arithmetic should be named when it represents a visual decision:
+
+```tsx
+const LABEL_LINE_HEIGHT = LABEL_SIZE + 3;
+```
+
+Use inline numeric values only when they are truly local, obvious, and not meaningful outside the
+immediate expression.
+
 ---
 
 ## Units
