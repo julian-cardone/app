@@ -51,6 +51,7 @@ src/
 
   navigation/
     RootNavigator.tsx
+    routes.ts                     # centralized route name constants
     types.ts                      # route param contract
 
   providers/
@@ -112,6 +113,7 @@ Navigation lives in `src/navigation/`.
 - Navigators do not contain screen content, feature workflows, or dev menu content beyond minimal
   route registration.
 - Use `replace` for splash/auth transitions that should not remain on the back stack.
+- Route names live in `routes.ts` as an `as const` object, not an enum.
 
 Example:
 
@@ -128,6 +130,15 @@ export type RootStackParamList = {
 // navigation/RootNavigator.tsx
 import { PhoneEntryScreen, SplashScreen, VerifyScreen } from "@/features/onboarding";
 ```
+
+---
+
+## Constants and Literal Values
+
+Use `as const` for centralized literal values like routes, storage keys, theme names, and tab names.
+
+Use enums sparingly for domain states that are not just UI strings. Avoid enums for navigation
+routes.
 
 ---
 
@@ -319,3 +330,5 @@ lib/string/
 - Importing from internal implementation paths across boundaries.
 - Creating `shared/` or `utils/` dumping grounds.
 - Extracting local types, constants, helpers, or styles before reuse or readability requires it.
+- Using an enum for route names, tab names, or other UI literal values instead of an `as const`
+  object.

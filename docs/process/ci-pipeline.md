@@ -10,6 +10,7 @@ related:
     "docs/standards/documentation.md",
     "docs/process/pr-format.md",
     "docs/process/done-criteria.md",
+    "docs/process/dependency-management.md",
   ]
 tags: [ci-cd, workflow, tooling, governance]
 ---
@@ -29,10 +30,12 @@ contributor's responsibility, but CI is the final authority.
 ### `ci.yml`
 
 The single entry point for all pull request checks. Triggers on `pull_request` events of type
-`opened`, `synchronize`, `reopened`, and `edited` against `main`. A `guard` job skips all downstream
-jobs for Dependabot pull requests. Remaining jobs are invoked as reusable workflows:
-`markdown-checks.yml`, `validate-docs.yml`, and `pr-title.yml`. In-progress runs for the same branch
-are cancelled when a new commit is pushed.
+`opened`, `synchronize`, `reopened`, and `edited` against `main`. Invokes four reusable workflows:
+`markdown-checks.yml`, `validate-docs.yml`, `pr-title.yml`, and `frontend-checks.yml`.
+Documentation and prose checks (`markdown-checks`, `validate-docs`, `pr-title`) are skipped for
+Dependabot pull requests — they check human-authored content that Dependabot never touches.
+`frontend-checks` runs for all pull requests, including Dependabot's. In-progress runs for the same
+branch are cancelled when a new commit is pushed.
 
 ### `markdown-checks.yml`
 

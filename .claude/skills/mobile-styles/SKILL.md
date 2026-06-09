@@ -52,7 +52,7 @@ Compose with style arrays. Later entries win:
 
 ## Design Tokens
 
-Repeated visual values live in `src/styles/tokens.ts`.
+Repeated visual values live in `src/styles/tokens.ts`. Token objects use `as const` so callers get literal-type inference.
 
 Token categories:
 

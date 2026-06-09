@@ -13,7 +13,7 @@ import {
 void SplashScreen.preventAutoHideAsync();
 
 export function useAppBootstrap(): boolean {
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     Nunito_400Regular,
     Nunito_600SemiBold,
     Nunito_700Bold,
@@ -21,9 +21,11 @@ export function useAppBootstrap(): boolean {
     Nunito_900Black,
   });
 
-  useEffect(() => {
-    if (fontsLoaded) void SplashScreen.hideAsync();
-  }, [fontsLoaded]);
+  const appReady = fontsLoaded || Boolean(fontError);
 
-  return fontsLoaded;
+  useEffect(() => {
+    if (appReady) void SplashScreen.hideAsync();
+  }, [appReady]);
+
+  return appReady;
 }
