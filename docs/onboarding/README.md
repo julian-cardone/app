@@ -69,7 +69,7 @@ Before contributing, read the following documents in order:
 
 ## Local Tooling Setup
 
-Check [package.json](../../package.json) under "engines" for the minimum required Node.js version.
+Node.js 22 LTS is required. Install it via `nvm install 22` or from [nodejs.org](https://nodejs.org).
 
 ```bash
 npm install

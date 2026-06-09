@@ -9,7 +9,7 @@ Monorepo. Application code lives in `app/`. All governance lives in `docs/`.
 | `app/`               | React Native / Expo mobile app (the product)           |
 | `docs/adrs/`         | Architecture decision records                          |
 | `docs/agents/`       | Agent capabilities, constraints, and cost optimization |
-| `docs/process/`      | Git workflow, PR format, CI pipeline, governance       |
+| `docs/process/`      | Git workflow, PR format, CI pipeline, dependency management, governance |
 | `docs/standards/`    | Coding and documentation standards                     |
 | `docs/technologies/` | Approved stack and tooling                             |
 | `.claude/skills/`    | Agent skills for this repo                             |
@@ -40,6 +40,7 @@ Load only when the task requires it.
 | PR title format, body template, issue linking                 | `docs/process/pr-format.md`                  |                                                    |
 | Merge criteria and reviewer checklist                         | `docs/process/done-criteria.md`              |                                                    |
 | Workflow definitions and what each CI job checks              | `docs/process/ci-pipeline.md`                |                                                    |
+| Dependency update policy, Dependabot process, Expo compat     | `docs/process/dependency-management.md`      |                                                    |
 | Approved tools, their purpose, and rationale                  | `docs/technologies/stack.md`                 |                                                    |
 | How tasks are routed across model tiers (cost control)        | `docs/agents/model-cost-optimization.md`     |                                                    |
 | Why decisions were made and what they constrain               | `docs/adrs/` in numerical order              |                                                    |

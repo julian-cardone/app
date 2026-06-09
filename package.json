@@ -6,7 +6,7 @@
     "format:md": "prettier --write \"**/*.md\""
   },
   "engines": {
-    "node": ">=24"
+    "node": "22"
   },
   "devDependencies": {
     "js-yaml": "^4.2.0",
