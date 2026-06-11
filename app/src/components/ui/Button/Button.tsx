@@ -29,14 +29,14 @@ export function Button({ title, onPress, disabled = false, style }: ButtonProps)
       accessibilityState={{ disabled }}
       style={({ pressed }) => [
         styles.pressable,
-        shadows.buttonTeal,
+        shadows.button,
         style,
         disabled && styles.disabled,
         pressed && !disabled && styles.pressed,
       ]}
     >
       <LinearGradient
-        colors={[colors.gradientStart, colors.gradientEnd]}
+        colors={[colors.brand, colors.brandDark]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.gradient}
@@ -49,10 +49,10 @@ export function Button({ title, onPress, disabled = false, style }: ButtonProps)
 
 const styles = StyleSheet.create({
   pressable: {
-    borderRadius: radii.button,
+    borderRadius: radii.md,
   },
   gradient: {
-    borderRadius: radii.button,
+    borderRadius: radii.md,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
     alignItems: "center",
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: fontFamily.extrabold,
     fontSize: fontSize.body,
-    color: colors.onTeal,
+    color: colors.onBrand,
   },
   pressed: {
     transform: [{ scale: PRESSED_SCALE }],

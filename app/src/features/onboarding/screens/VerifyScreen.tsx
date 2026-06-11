@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   resend: {
     fontFamily: fontFamily.bold,
     fontSize: fontSize.body,
-    color: colors.tealDeep,
+    color: colors.brandDark,
     paddingTop: spacing.xs,
   },
 });

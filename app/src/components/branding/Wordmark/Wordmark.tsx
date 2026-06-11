@@ -22,7 +22,7 @@ export function Wordmark({ size = "compact", style }: WordmarkProps) {
 const styles = StyleSheet.create({
   base: {
     fontFamily: fontFamily.black,
-    color: colors.ink,
+    color: colors.textPrimary,
     letterSpacing: WORDMARK_LETTER_SPACING,
   },
   splash: {

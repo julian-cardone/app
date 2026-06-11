@@ -36,11 +36,11 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.semibold,
     fontSize: fontSize.caption,
     lineHeight: lineHeight.caption,
-    color: colors.muted,
+    color: colors.textSecondary,
     textAlign: "center",
   },
   link: {
     fontFamily: fontFamily.bold,
-    color: colors.tealDeep,
+    color: colors.brandDark,
   },
 });

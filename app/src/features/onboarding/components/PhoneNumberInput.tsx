@@ -40,7 +40,7 @@ export function PhoneNumberInput({
           onChangeText={onChangeText}
           keyboardType="phone-pad"
           placeholder="Phone number"
-          placeholderTextColor={colors.muted}
+          placeholderTextColor={colors.textSecondary}
           autoComplete="tel"
           textContentType="telephoneNumber"
           returnKeyType="done"
@@ -58,9 +58,9 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   country: {
-    borderWidth: borders.input,
+    borderWidth: borders.default,
     borderColor: colors.border,
-    borderRadius: radii.input,
+    borderRadius: radii.sm,
     paddingVertical: INPUT_PADDING_V,
     paddingHorizontal: spacing.md,
     backgroundColor: colors.white,
@@ -68,20 +68,20 @@ const styles = StyleSheet.create({
   countryText: {
     fontFamily: fontFamily.bold,
     fontSize: fontSize.body,
-    color: colors.ink,
+    color: colors.textPrimary,
   },
   field: {
     flex: 1,
   },
   input: {
-    borderWidth: borders.input,
+    borderWidth: borders.default,
     borderColor: colors.border,
-    borderRadius: radii.input,
+    borderRadius: radii.sm,
     paddingVertical: INPUT_PADDING_V,
     paddingHorizontal: spacing.md,
     backgroundColor: colors.white,
     fontFamily: fontFamily.semibold,
     fontSize: fontSize.body,
-    color: colors.ink,
+    color: colors.textPrimary,
   },
 });

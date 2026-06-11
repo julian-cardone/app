@@ -59,7 +59,7 @@ export function TextField({
           Boolean(error) && styles.inputError,
           style,
         ]}
-        placeholderTextColor={colors.muted}
+        placeholderTextColor={colors.textSecondary}
         onFocus={handleFocus}
         onBlur={handleBlur}
       />
@@ -73,18 +73,18 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   input: {
-    borderWidth: borders.input,
+    borderWidth: borders.default,
     borderColor: colors.border,
-    borderRadius: radii.input,
+    borderRadius: radii.sm,
     paddingVertical: INPUT_PADDING_V,
     paddingHorizontal: spacing.md,
     backgroundColor: colors.white,
     fontFamily: fontFamily.semibold,
     fontSize: fontSize.body,
-    color: colors.ink,
+    color: colors.textPrimary,
   },
   inputFocused: {
-    borderColor: colors.tealPrimary,
+    borderColor: colors.brand,
   },
   inputError: {
     borderColor: colors.danger,

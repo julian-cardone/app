@@ -1,7 +1,5 @@
 import type { NavigatorScreenParams } from "@react-navigation/native";
 
-import type { ROOT_ROUTES } from "./routes";
-
 /** The pre-account flow. Discarded from the stack once an account exists. */
 export type OnboardingStackParamList = {
   Splash: undefined;
@@ -25,6 +23,6 @@ export type MainTabParamList = {
 
 /** Top-level split: the onboarding flow versus the signed-in app. */
 export type RootStackParamList = {
-  [ROOT_ROUTES.ONBOARDING]: NavigatorScreenParams<OnboardingStackParamList>;
-  [ROOT_ROUTES.MAIN]: NavigatorScreenParams<MainTabParamList>;
+  Onboarding: NavigatorScreenParams<OnboardingStackParamList>;
+  Main: NavigatorScreenParams<MainTabParamList>;
 };

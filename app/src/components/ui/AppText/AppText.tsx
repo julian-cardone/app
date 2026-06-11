@@ -12,7 +12,7 @@ export function AppText({ variant = "subhead", style, ...props }: AppTextProps) 
 
 const styles = StyleSheet.create({
   base: {
-    color: colors.ink,
+    color: colors.textPrimary,
   },
 
   headline: {
@@ -25,13 +25,13 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.semibold,
     fontSize: fontSize.body,
     lineHeight: lineHeight.body,
-    color: colors.muted,
+    color: colors.textSecondary,
   },
 
   label: {
     fontFamily: fontFamily.bold,
     fontSize: fontSize.body,
     lineHeight: lineHeight.body,
-    color: colors.ink,
+    color: colors.textPrimary,
   },
 });

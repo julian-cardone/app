@@ -1,34 +1,22 @@
 /**
  * Design tokens — the single source of truth for Placecard's visual language.
- *
- * Values are derived from the product prototype: brand teal, navy ink, an off-white
- * surface, generous rounding, and Nunito type. Components reference these tokens rather
- * than hardcoding values, so the brand can evolve in one place as the app grows.
- *
- * This module defines the core brand spine plus what the onboarding flow uses today.
- * Accent families (amber/purple/coral) from the prototype are intentionally deferred
- * until a feature needs them, to keep the palette honest.
  */
 
 export const colors = {
   // Brand teal
-  tealPrimary: "#1D9E75",
-  tealDeep: "#0F6E56",
-  tealSoft: "#E1F5EE",
-
-  // Gradient stops for the primary CTA (135°)
-  gradientStart: "#1D9E75",
-  gradientEnd: "#0F6E56",
+  brand: "#1D9E75",
+  brandDark: "#0F6E56",
+  brandLight: "#E1F5EE",
 
   // Text
-  ink: "#1A3C5E", // primary text / headings
-  muted: "#888888", // secondary text
-  subtle: "#666666", // tertiary / body-on-surface
+  textPrimary: "#1A3C5E", // primary text / headings
+  textSecondary: "#888888", // secondary text
+  textTertiary: "#666666", // tertiary / body-on-surface
 
   // Surfaces
   surface: "#F8FFFE", // app background (off-white with a teal whisper)
   white: "#FFFFFF",
-  onTeal: "#FFFFFF", // text/icon color on top of the teal gradient
+  onBrand: "#FFFFFF", // text/icon color on top of the teal gradient
 
   // Lines
   border: "#E5E5E5",
@@ -46,13 +34,13 @@ export const spacing = {
 } as const;
 
 export const radii = {
-  input: 10,
-  button: 14,
+  sm: 10,
+  md: 14,
   pill: 999,
 } as const;
 
 export const borders = {
-  input: 1.5,
+  default: 1.5,
 } as const;
 
 /**
@@ -88,8 +76,8 @@ export const lineHeight = {
  * Each token bundles both so a single reference renders correctly on every device.
  */
 export const shadows = {
-  buttonTeal: {
-    shadowColor: colors.tealPrimary,
+  button: {
+    shadowColor: colors.brand,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.35,
     shadowRadius: 12,

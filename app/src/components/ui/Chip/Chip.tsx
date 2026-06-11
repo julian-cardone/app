@@ -26,7 +26,7 @@ export function Chip({ label, selected = false, onPress, style }: ChipProps) {
 
 const styles = StyleSheet.create({
   chip: {
-    borderWidth: borders.input,
+    borderWidth: borders.default,
     borderColor: colors.border,
     borderRadius: radii.pill,
     paddingVertical: INPUT_PADDING_V,
@@ -34,16 +34,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   chipSelected: {
-    borderColor: colors.tealPrimary,
-    backgroundColor: colors.tealSoft,
+    borderColor: colors.brand,
+    backgroundColor: colors.brandLight,
   },
   label: {
     fontFamily: fontFamily.semibold,
     fontSize: fontSize.body,
-    color: colors.subtle,
+    color: colors.textTertiary,
   },
   labelSelected: {
     fontFamily: fontFamily.bold,
-    color: colors.tealDeep,
+    color: colors.brandDark,
   },
 });

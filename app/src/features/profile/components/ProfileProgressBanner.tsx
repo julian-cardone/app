@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.bold,
     fontSize: fontSize.h2,
     lineHeight: lineHeight.h2,
-    color: colors.muted,
+    color: colors.textSecondary,
   },
   progressRow: {
     flexDirection: "row",
@@ -104,13 +104,13 @@ const styles = StyleSheet.create({
     flex: 1,
     height: TRACK_HEIGHT,
     borderRadius: radii.pill,
-    backgroundColor: colors.tealSoft,
+    backgroundColor: colors.brandLight,
     overflow: "hidden",
   },
   fill: {
     height: "100%",
     borderRadius: radii.pill,
-    backgroundColor: colors.tealPrimary,
+    backgroundColor: colors.brand,
   },
   count: {
     flexShrink: 0,
