@@ -3,9 +3,10 @@ name: mobile-layout
 description:
   Apply this repository's React Native layout conventions when building or debugging mobile layout –
   screens, flex rows/columns, shrinking, scroll regions, keyboard-aware screens, safe areas,
-  headers, footers, cards, lists, modals, and bottom sheets. Trigger on "make this scroll", "this
-  overflows", "the footer moved", "keyboard covers the input", "safe area", "row", "gap", "why won't
-  it shrink", or layout PR reviews. Applies to React Native mobile. Web layout has separate rules.
+  headers, footers, cards, lists, modals, bottom tabs, and bottom sheets. Trigger on "make this
+  scroll", "this overflows", "the footer moved", "keyboard covers the input", "safe area", "row",
+  "gap", "why won't it shrink", or layout PR reviews. Applies to React Native mobile. Web layout has
+  separate rules.
 ---
 
 # Mobile Layout
@@ -45,6 +46,7 @@ Load-bearing rules:
 | --------------------- | ---------------------------------------------------------------------- |
 | Screen                | Route-level layout, major content arrangement, safe-area participation |
 | Layout container      | Constraints, scroll boundaries, clipping, keyboard-aware behavior      |
+| Bottom tab bar        | Bottom safe-area inset and tab bar height                              |
 | Reusable UI primitive | Internal structure and visual behavior only                            |
 
 Reusable components must not own:
@@ -54,6 +56,9 @@ Reusable components must not own:
 - Screen-level positioning
 - External margins used to place them on a screen
 - Hard-coded viewport assumptions
+
+The root app should provide safe-area data with `SafeAreaProvider`; it should not apply global
+top/bottom padding to the whole app.
 
 ---
 
@@ -66,9 +71,22 @@ Recommended API:
 
 ```tsx
 <Screen>{children}</Screen>
+<Screen insetMode={SCREEN_INSET_MODE.TOP}>{children}</Screen>
 <Screen keyboardAware>{children}</Screen>
-<Screen scroll>{children}</Screen>
 <Screen scroll keyboardAware>{children}</Screen>
+```
+
+Use a typed inset mode constant:
+
+```ts
+export const SCREEN_INSET_MODE = {
+  TOP: "top",
+  BOTTOM: "bottom",
+  BOTH: "both",
+  NONE: "none",
+} as const;
+
+export type ScreenInsetMode = (typeof SCREEN_INSET_MODE)[keyof typeof SCREEN_INSET_MODE];
 ```
 
 `Screen` owns:
@@ -76,22 +94,12 @@ Recommended API:
 - `flex: 1`
 - app background color
 - horizontal screen padding
-- top and bottom safe-area inset padding
+- safe-area inset padding according to `insetMode`
 - optional `KeyboardAvoidingView`
 - optional `ScrollView`
 
-Screens then own only their content layout:
-
-```tsx
-<Screen keyboardAware>
-  <View style={styles.header}>{...}</View>
-  <View style={styles.body}>{...}</View>
-  <View style={styles.footer}>{...}</View>
-</Screen>
-```
-
-Do not wrap every screen manually in `KeyboardAvoidingView` and `useSafeAreaInsets`. Centralize that
-logic in `Screen`.
+Default `insetMode` should be `SCREEN_INSET_MODE.BOTH` because no-tab/full-screen flows need top and
+bottom protection by default.
 
 ---
 
@@ -101,28 +109,50 @@ Every screen must account for notches, status bars, rounded corners, and home in
 
 Safe areas are applied at the screen/layout-container level, not inside reusable UI primitives.
 
-Recommended default: `Screen` applies both top and bottom inset padding so content is always safe.
-Because `Screen` already applies `paddingBottom: insets.bottom`, screen footers should not also add
-a large default bottom padding just to avoid the home indicator.
+Use this contract:
 
-Prefer:
-
-```ts
-footer: {
-  gap: spacing.md,
-}
+```text
+No bottom navigator: Screen owns top and bottom inset.
+With bottom tab bar: Screen owns top inset; TabBar owns bottom inset.
 ```
 
-Only add extra footer padding when it is a deliberate visual choice:
+Examples:
 
-```ts
-footer: {
-  paddingBottom: spacing.sm,
-  gap: spacing.md,
-}
+```tsx
+// Onboarding/no-tab screens
+<Screen />
+
+// Main tab screens
+<Screen insetMode={SCREEN_INSET_MODE.TOP} />
 ```
 
-Avoid stacking `insets.bottom + spacing.lg` accidentally; it pushes footers too high.
+Do not add global safe-area padding around the whole app. It becomes brittle once the app has bottom
+tabs, custom headers, modals, onboarding, and keyboard-aware screens.
+
+---
+
+## Bottom Tab Bar Insets
+
+A custom bottom tab bar owns the bottom safe area:
+
+```tsx
+const tabBarStyle = [
+  styles.bar,
+  {
+    height: BAR_HEIGHT + insets.bottom,
+    paddingBottom: insets.bottom,
+  },
+];
+```
+
+This creates a fixed visual tab area plus home-indicator protection.
+
+Rules:
+
+- The tab bar owns bottom inset padding.
+- Tab screens should not also apply bottom safe-area padding.
+- Keep the tab bar's base height as a named local constant.
+- Use `useSafeAreaInsets` in the tab bar, not in every tab screen, for bottom-tab spacing.
 
 ---
 
@@ -189,6 +219,34 @@ Text truncation requires both:
 ```
 
 Without the shrinking wrapper, text can push siblings off-screen.
+
+---
+
+## Parent/Child Layout Responsibility
+
+Let parents own container size and outer arrangement. Let children own their internal alignment.
+
+Example tab bar split:
+
+```text
+bar    = row, background, border, height
+tab    = flex: 1, icon/label alignment
+button = internal press state and content centering
+```
+
+Avoid redundant parent alignment when children already fill and align themselves:
+
+```ts
+bar: {
+  flexDirection: "row",
+  backgroundColor: colors.white,
+  borderTopWidth: StyleSheet.hairlineWidth,
+  borderTopColor: colors.border,
+}
+```
+
+If each tab item has `flex: 1`, parent `justifyContent: "space-around"` usually does nothing. If
+each tab item centers its own content, parent `alignItems: "center"` is often redundant.
 
 ---
 
@@ -259,6 +317,16 @@ const styles = StyleSheet.create({
 });
 ```
 
+### Tab screen
+
+```tsx
+<Screen insetMode={SCREEN_INSET_MODE.TOP}>
+  {...}
+</Screen>
+```
+
+The bottom tab bar owns bottom inset padding.
+
 ### Scrollable form
 
 ```tsx
@@ -306,7 +374,9 @@ const styles = StyleSheet.create({
 4. Child will not fill width → check `alignItems: "center"` on ancestors.
 5. Footer sits too high → check for stacked bottom padding from `Screen` safe area plus footer
    padding.
-6. Keyboard covers input → use `<Screen keyboardAware>`.
-7. Content under notch/home indicator → use `Screen` or safe-area insets at the screen level.
-8. Two scroll views fight → remove one scroll boundary or use list header/footer props.
-9. `overflow: "hidden"` hides a bug → fix the constraint chain instead.
+6. Content overlaps bottom tab bar → tab screen should use `SCREEN_INSET_MODE.TOP`; tab bar owns
+   bottom inset.
+7. Content under home indicator without tabs → no-tab screen should use default/both inset mode.
+8. Keyboard covers input → use `<Screen keyboardAware>`.
+9. Two scroll views fight → remove one scroll boundary or use list header/footer props.
+10. `overflow: "hidden"` hides a bug → fix the constraint chain instead.
