@@ -1,9 +1,6 @@
 # Dependencies
 node_modules/
 
-# Lock files
-package-lock.json
-
 # React Native / Expo generated
 .expo/
 dist/
@@ -12,6 +9,3 @@ build/
 # Native projects
 ios/
 android/
-
-# Coverage
-coverage/
