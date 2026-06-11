@@ -13,7 +13,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { colors, spacing } from "@/styles/tokens";
 
+import { SCREEN_INSET_MODE, type ScreenInsetMode } from "./types";
+
 type ScreenProps = PropsWithChildren<{
+  insetMode?: ScreenInsetMode;
   keyboardAware?: boolean;
   scroll?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -22,6 +25,7 @@ type ScreenProps = PropsWithChildren<{
 
 export function Screen({
   children,
+  insetMode = SCREEN_INSET_MODE.BOTH,
   keyboardAware = false,
   scroll = false,
   style,
@@ -32,8 +36,14 @@ export function Screen({
   const screenStyle = [
     styles.screen,
     {
-      paddingTop: insets.top,
-      paddingBottom: insets.bottom,
+      paddingTop:
+        insetMode === SCREEN_INSET_MODE.TOP || insetMode === SCREEN_INSET_MODE.BOTH
+          ? insets.top
+          : 0,
+      paddingBottom:
+        insetMode === SCREEN_INSET_MODE.BOTTOM || insetMode === SCREEN_INSET_MODE.BOTH
+          ? insets.bottom
+          : 0,
     },
     style,
   ];

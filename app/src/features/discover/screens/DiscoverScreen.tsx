@@ -1,6 +1,7 @@
 import { StyleSheet, View } from "react-native";
 
 import { Screen } from "@/components/layout";
+import { SCREEN_INSET_MODE } from "@/components/layout/Screen/types";
 import { AppText } from "@/components/ui";
 import { ProfileCompletionBanner } from "@/features/profile";
 import { spacing } from "@/styles/tokens";
@@ -15,7 +16,7 @@ import { spacing } from "@/styles/tokens";
  */
 export function DiscoverScreen() {
   return (
-    <Screen>
+    <Screen insetMode={SCREEN_INSET_MODE.TOP}>
       <ProfileCompletionBanner />
 
       <View style={styles.header}>

@@ -7,11 +7,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { colors, fontFamily, radii, shadows } from "@/styles/tokens";
 
-import type { MainTabParamList } from "./types";
+import { MAIN_TAB_ROUTES } from "./routes";
 
-/**
- * Custom bottom tab bar for the signed-in app.
- */
 const BAR_HEIGHT = 60;
 const ICON_SIZE = 22;
 const LABEL_SIZE = 10;
@@ -19,7 +16,7 @@ const ICON_LABEL_GAP = 2;
 const FAB_SIZE = 44;
 const FAB_ICON_SIZE = 24;
 
-type MainTabName = keyof MainTabParamList;
+type MainTabName = (typeof MAIN_TAB_ROUTES)[keyof typeof MAIN_TAB_ROUTES];
 type FeatherName = React.ComponentProps<typeof Feather>["name"];
 
 type TabConfigItem = {
@@ -29,23 +26,33 @@ type TabConfigItem = {
 };
 
 const TAB_CONFIG: Record<MainTabName, TabConfigItem> = {
-  Messages: { label: "Messages", icon: "message-circle", isFab: false },
-  Explore: { label: "Explore", icon: "compass", isFab: false },
-  Discover: { label: "Discover", icon: "layers", isFab: false },
-  Profile: { label: "Profile", icon: "user", isFab: false },
-  PostPlan: { label: "Post a plan", icon: "plus", isFab: true },
+  [MAIN_TAB_ROUTES.MESSAGES]: { label: "Messages", icon: "message-circle", isFab: false },
+  [MAIN_TAB_ROUTES.EXPLORE]: { label: "Explore", icon: "compass", isFab: false },
+  [MAIN_TAB_ROUTES.DISCOVER]: { label: "Discover", icon: "layers", isFab: false },
+  [MAIN_TAB_ROUTES.PROFILE]: { label: "Profile", icon: "user", isFab: false },
+  [MAIN_TAB_ROUTES.POST_PLAN]: { label: "Post a plan", icon: "plus", isFab: true },
 };
 
 export function MainTabBar({ state, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
 
+  const tabBarStyle = [
+    styles.bar,
+    {
+      height: BAR_HEIGHT + insets.bottom,
+      paddingBottom: insets.bottom,
+    },
+  ];
+
   return (
-    <View
-      style={[styles.bar, { height: BAR_HEIGHT + insets.bottom, paddingBottom: insets.bottom }]}
-    >
+    <View style={tabBarStyle}>
       {state.routes.map((route, index) => {
+        console.log(state, index);
         const focused = state.index === index;
+        // Safe because route names are defined by MainNavigator.
         const tab = TAB_CONFIG[route.name as MainTabName];
+
+        if (!tab) return null;
 
         const onPress = () => {
           const event = navigation.emit({
@@ -65,22 +72,23 @@ export function MainTabBar({ state, navigation }: BottomTabBarProps) {
               key={route.key}
               onPress={onPress}
               accessibilityRole="button"
+              accessibilityState={{ selected: focused }}
               accessibilityLabel={tab.label}
               style={({ pressed }) => [styles.fabWrap, pressed && styles.fabPressed]}
             >
               <LinearGradient
-                colors={[colors.gradientStart, colors.gradientEnd]}
+                colors={[colors.brand, colors.brandDark]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={[styles.fab, shadows.buttonTeal]}
+                style={[styles.fab, shadows.button]}
               >
-                <Feather name={tab.icon} size={FAB_ICON_SIZE} color={colors.onTeal} />
+                <Feather name={tab.icon} size={FAB_ICON_SIZE} color={colors.onBrand} />
               </LinearGradient>
             </Pressable>
           );
         }
 
-        const iconColor = focused ? colors.tealPrimary : colors.muted;
+        const iconColor = focused ? colors.brand : colors.textSecondary;
 
         return (
           <Pressable
@@ -103,15 +111,12 @@ export function MainTabBar({ state, navigation }: BottomTabBarProps) {
 const styles = StyleSheet.create({
   bar: {
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
     backgroundColor: colors.white,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.border,
   },
   navBtn: {
     flex: 1,
-    height: BAR_HEIGHT,
     alignItems: "center",
     justifyContent: "center",
     gap: ICON_LABEL_GAP,
@@ -120,15 +125,14 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.semibold,
     fontSize: LABEL_SIZE,
     lineHeight: LABEL_SIZE + 3,
-    color: colors.muted,
+    color: colors.textSecondary,
   },
   labelActive: {
     fontFamily: fontFamily.extrabold,
-    color: colors.tealPrimary,
+    color: colors.brand,
   },
   fabWrap: {
     flex: 1,
-    height: BAR_HEIGHT,
     alignItems: "center",
     justifyContent: "center",
   },
