@@ -2,9 +2,10 @@
 name: mobile-styles
 description:
   Apply this repository's React Native styling conventions when writing or editing StyleSheet
-  blocks, tokens, typography, variants, shadows, static/dynamic styles, shared primitives, or style
-  props. Trigger on "style this", "add a variant", "fix spacing", "make an AppText", "button style",
-  "wordmark", or style PR reviews. Applies to React Native mobile. Web CSS has separate rules.
+  blocks, tokens, typography, variants, shadows, static/dynamic styles, shared primitives, tab bars,
+  or style props. Trigger on "style this", "add a variant", "fix spacing", "make an AppText",
+  "button style", "wordmark", or style PR reviews. Applies to React Native mobile. Web CSS has
+  separate rules.
 ---
 
 # Mobile Styling Standards
@@ -48,17 +49,25 @@ Compose with style arrays. Later entries win:
 <View style={[styles.card, isSelected && styles.cardSelected, style]} />
 ```
 
+`Pressable` state styles may use callback style arrays:
+
+```tsx
+style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+```
+
 ---
 
 ## Design Tokens
 
-Repeated visual values live in `src/styles/tokens.ts`. Token objects use `as const` so callers get literal-type inference.
+Repeated visual values live in `src/styles/tokens.ts`. Token objects use `as const` so callers get
+literal-type inference.
 
 Token categories:
 
 - `colors`
 - `spacing`
 - `radii`
+- `borders`
 - `fontFamily`
 - `fontSize`
 - `lineHeight`
@@ -69,10 +78,19 @@ Token categories:
 Avoid magic numbers in component styles. A recurring color, spacing, radius, duration, or typography
 value is a missing token.
 
-Allowed local constants are values that are truly component-specific and not part of the design
-system, such as `CODE_LENGTH = 6`.
+Use clear semantic names for text colors and brand colors. Avoid ambiguous pairs where the darker
+color sounds less prominent, such as `muted` being lighter than `subtle`.
 
-Visual literals should be named.
+Expose every loaded font family that components are expected to use. If `Nunito_400Regular` is
+loaded, include a `regular` font token.
+
+Keep token comments short. Tokens are the source of truth, not a prototype history log. Feature-only
+animation tokens may stay in `tokens.ts` while small, but move them feature-local if they grow into
+a specific workflow system.
+
+---
+
+## Local Style Constants
 
 Use design tokens for reusable visual values:
 
@@ -87,7 +105,7 @@ Use design tokens for reusable visual values:
 Use local constants for component-specific visual values that are not part of the design system:
 
 ```tsx
-const TAB_BAR_HEIGHT = 60;
+const BAR_HEIGHT = 60;
 const FAB_SIZE = 44;
 const ICON_SIZE = 22;
 const PRESSED_SCALE = 0.94;
@@ -96,7 +114,7 @@ const PRESSED_SCALE = 0.94;
 Avoid unexplained inline style values:
 
 ```tsx
-height: TAB_BAR_HEIGHT,
+height: BAR_HEIGHT,
 borderRadius: radii.pill,
 transform: [{ scale: PRESSED_SCALE }],
 ```
@@ -219,6 +237,45 @@ const handlePress = () => {
 
 ---
 
+## Custom Tab Bar Styling
+
+A custom tab bar should be config-driven, not route-name-condition driven.
+
+Use a route config for label, icon, and special visual treatment:
+
+```ts
+const TAB_CONFIG: Record<MainTabName, TabConfigItem> = {
+  [MAIN_TAB_ROUTES.MESSAGES]: { label: "Messages", icon: "message-circle", isFab: false },
+  [MAIN_TAB_ROUTES.POST_PLAN]: { label: "Post a plan", icon: "plus", isFab: true },
+};
+```
+
+Responsibility split:
+
+```text
+bar     = row, background, border, height, bottom inset
+navBtn  = equal width, internal icon/label centering
+fabWrap = equal width, internal FAB centering and press transform
+fab     = size, radius, gradient, shadow, icon center
+```
+
+If each button has `flex: 1`, parent `justifyContent: "space-around"` is usually redundant. If each
+button centers its own content, parent `alignItems: "center"` is often redundant.
+
+Special tab/FAB accessibility:
+
+```tsx
+<Pressable
+  accessibilityRole="button"
+  accessibilityState={{ selected: focused }}
+  accessibilityLabel={tab.label}
+/>
+```
+
+The FAB is still a tab. It should expose selected state just like normal tabs.
+
+---
+
 ## Variants
 
 Stable visual modes are variants. Do not create variants speculatively.
@@ -276,8 +333,8 @@ Recommended:
 Handlers should be named, not inlined, when the component owns the interaction. Use `void` or
 `try/catch` for promise-returning native APIs such as `Linking.openURL`.
 
-App-wide legal URLs belong in `config/links.ts`, not in one feature component once multiple screens
-need them.
+App-wide legal URLs belong in `src/config/links.ts`, not in one feature component once multiple
+screens need them.
 
 ---
 
@@ -324,17 +381,20 @@ Define shadow tokens that include iOS and Android properties:
 
 ```ts
 export const shadows = {
-  card: {
-    shadowColor: "#000",
+  button: {
+    shadowColor: colors.brand,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
+    elevation: 4,
   },
 } as const;
 ```
 
 Do not use only `elevation` or only iOS `shadow*` props.
+
+Android note: a view cannot reliably both clip overflow and cast an elevation shadow. Split clipping
+and shadow across nested views when both are needed.
 
 ---
 
@@ -357,7 +417,7 @@ not create separate style files automatically for every component.
 ## Common Mistakes to Avoid
 
 - Inline static style objects.
-- Magic numbers instead of tokens.
+- Magic numbers instead of tokens or local constants.
 - `px`, `rem`, or invented units.
 - A fake single-value variant prop.
 - Disabling font scaling without a documented reason.
@@ -365,3 +425,6 @@ not create separate style files automatically for every component.
 - Feature-specific styles inside shared primitives.
 - Single-platform shadows.
 - Putting layout/safe-area behavior in a UI primitive instead of a layout component.
+- Stacking bottom safe-area padding in both `Screen` and a bottom tab bar.
+- Adding parent `justifyContent`/`alignItems` that has no effect because children already fill and
+  align themselves.
