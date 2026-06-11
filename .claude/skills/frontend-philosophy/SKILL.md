@@ -15,8 +15,8 @@ Frontend code must stay minimal, explicit, predictable, and scalable. Favor narr
 composition, and local reasoning over generic abstraction systems.
 
 This skill owns architecture and component responsibility. It does not own platform-specific folder
-structure, CSS/StyleSheet rules, flex layout, scrolling, or safe areas. Use the platform-specific
-skills for those details.
+structure, StyleSheet rules, flex layout, scrolling, or safe areas. Use the platform-specific skills
+for those details.
 
 ---
 
@@ -55,8 +55,8 @@ They must not own:
 - Feature-specific text or behavior
 - Screen-level layout, scroll boundaries, or safe-area behavior
 
-Examples: `Button`, `AppText`, `Screen`, generic form fields, brand-only components when placed in a
-branding boundary.
+Examples: `Button`, `AppText`, `Screen`, generic form fields, and brand-only components when placed
+in a branding boundary.
 
 ### Feature Components
 
@@ -254,7 +254,7 @@ Comments explain intent, ownership, or constraints. Keep them short enough to su
 
 Good comments preserve reasoning:
 
-- why a splash uses `replace`
+- why onboarding uses `replace` or `reset`
 - why a hidden input drives verification boxes
 - why a form is inert until backend work exists
 - why a native driver is safe for opacity/transform
@@ -262,6 +262,7 @@ Good comments preserve reasoning:
 Avoid comments that:
 
 - Narrate obvious implementation.
+- Promise behavior that the code does not yet enforce.
 - Preserve prototype history.
 - Explain details that are already clear from names and structure.
 - Require frequent updates when nearby code changes.
@@ -296,10 +297,11 @@ Acceptable example:
 
 ```tsx
 const tab = TAB_CONFIG[route.name as MainTabName];
+if (!tab) return null;
 ```
 
-This is reasonable when `route.name` comes from a navigator whose screens are registered from
-`MainTabParamList`, but the library exposes it as `string`.
+This is reasonable when `route.name` comes from a navigator whose screens are registered from known
+route constants, but the library exposes it as `string`.
 
 Avoid assertions for uncertain data:
 
@@ -310,6 +312,37 @@ const user = response as User;
 External data must be validated, mapped, or parsed at the service boundary instead.
 
 Avoid `any`. Use `unknown` at unsafe boundaries, then narrow before use.
+
+---
+
+## Literal Constants, `as const`, and Enums
+
+Use `as const` for centralized literal values whose values are fixed and should be treated as exact
+literals:
+
+- routes and tab names
+- storage keys
+- environment names
+- feature flags
+- screen inset modes
+- stable UI modes
+
+Good:
+
+```ts
+export const MAIN_TAB_ROUTES = {
+  DISCOVER: "Discover",
+  MESSAGES: "Messages",
+  POST_PLAN: "PostPlan",
+} as const;
+
+type MainTabName = (typeof MAIN_TAB_ROUTES)[keyof typeof MAIN_TAB_ROUTES];
+```
+
+Derive types from the source of truth when it is clearer than manually repeating a union.
+
+Use enums sparingly for true domain states. Avoid enums for route names, tab names, storage keys,
+and UI literal values.
 
 ---
 
@@ -337,13 +370,10 @@ Prefer:
 Good:
 
 ```tsx
-const TAB_CONFIG = {
-  Messages: { label: "Messages", icon: "message-circle", isFab: false },
-  Explore: { label: "Explore", icon: "compass", isFab: false },
-  Discover: { label: "Discover", icon: "layers", isFab: false },
-  Profile: { label: "Profile", icon: "user", isFab: false },
-  PostPlan: { label: "Post a plan", icon: "plus", isFab: true },
-} satisfies Record<MainTabName, TabConfigItem>;
+const TAB_CONFIG: Record<MainTabName, TabConfigItem> = {
+  [MAIN_TAB_ROUTES.MESSAGES]: { label: "Messages", icon: "message-circle", isFab: false },
+  [MAIN_TAB_ROUTES.POST_PLAN]: { label: "Post a plan", icon: "plus", isFab: true },
+};
 ```
 
 Avoid:
@@ -362,20 +392,9 @@ if (tab.isFab) {
 }
 ```
 
-Inline literals are acceptable only when they are:
-
-- Obvious
-- Local
-- Non-reused
-- Not domain-significant
-
-Acceptable:
-
-```tsx
-array[index + 1];
-```
-
-Do not extract constants so aggressively that the constant name is less clear than the value.
+Inline literals are acceptable only when they are obvious, local, non-reused, and not domain
+significant. Do not extract constants so aggressively that the constant name is less clear than the
+value.
 
 ---
 
