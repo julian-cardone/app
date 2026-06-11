@@ -1,6 +1,7 @@
 import type { ConfigContext, ExpoConfig } from "expo/config";
 
-import { IS_PROD } from "@/config/env";
+const APP_ENV = process.env.APP_ENV ?? "development";
+const IS_PROD = APP_ENV === "production";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
