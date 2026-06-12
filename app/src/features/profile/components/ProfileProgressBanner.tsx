@@ -15,10 +15,7 @@ type Props = {
 };
 
 /**
- * A warm, non-blocking nudge toward finishing the minimum profile. It matches the app
- * background, sits at the top of the screen, and never gates browsing — the member can
- * dismiss it. Presentational only: it renders the progress it is handed and reports a
- * dismiss; deciding whether to show it and what "done" means lives with the screen.
+ * A warm, non-blocking nudge toward finishing the minimum profile.
  */
 export function ProfileProgressBanner({ progress, onDismiss }: Props) {
   const { ratio, completed, total, nextStep } = progress;
@@ -63,31 +60,24 @@ export function ProfileProgressBanner({ progress, onDismiss }: Props) {
 
 const styles = StyleSheet.create({
   banner: {
-    paddingVertical: spacing.md,
+    paddingBottom: spacing.sm,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.border,
     backgroundColor: colors.surface,
-    gap: spacing.sm,
   },
   row: {
     flexDirection: "row",
-    alignItems: "flex-start",
-    gap: spacing.sm,
   },
   copy: {
     flex: 1,
-    gap: spacing.xs,
   },
   message: {
     fontSize: fontSize.caption,
-    lineHeight: lineHeight.caption,
   },
   dismiss: {
-    flexShrink: 0,
     width: spacing.lg,
     height: spacing.lg,
     alignItems: "center",
-    justifyContent: "center",
   },
   dismissGlyph: {
     fontFamily: fontFamily.bold,
@@ -105,7 +95,6 @@ const styles = StyleSheet.create({
     height: TRACK_HEIGHT,
     borderRadius: radii.pill,
     backgroundColor: colors.brandLight,
-    overflow: "hidden",
   },
   fill: {
     height: "100%",
@@ -113,7 +102,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.brand,
   },
   count: {
-    flexShrink: 0,
     fontSize: fontSize.caption,
     lineHeight: lineHeight.caption,
   },

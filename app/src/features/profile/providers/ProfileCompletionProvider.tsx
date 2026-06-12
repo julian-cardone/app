@@ -8,11 +8,10 @@ import {
 
 // Hardcoded empty until the profile/account service exists. Owned here so completion can later be
 // fed from that service in one place and shared across every main-app screen.
-const INITIAL_COMPLETION: ProfileCompletion = { hasPhoto: false, hasPrompt: false };
+const INITIAL_COMPLETION: ProfileCompletion = { hasPhoto: true, hasPrompt: false };
 
 type ProfileCompletionValue = {
   progress: ProfileProgress;
-  /** Whether the completion banner should show: there's work left and it hasn't been dismissed. */
   isBannerVisible: boolean;
   dismissBanner: () => void;
 };
@@ -20,9 +19,7 @@ type ProfileCompletionValue = {
 const ProfileCompletionContext = createContext<ProfileCompletionValue | null>(null);
 
 /**
- * Owns profile-completion state for the signed-in app. Mounted once around the main navigator so
- * completion and the banner's dismissed state are shared across every screen — a dismiss on one
- * screen sticks as the member moves between screens, rather than resetting per screen.
+ * Owns profile-completion state for the signed-in app.
  */
 export function ProfileCompletionProvider({ children }: PropsWithChildren) {
   const [completion] = useState<ProfileCompletion>(INITIAL_COMPLETION);

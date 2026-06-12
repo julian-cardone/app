@@ -11,12 +11,13 @@ import type { RootStackParamList } from "@/navigation/types";
 const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 export function AppProviders() {
+  const showDevBar = false;
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
         <NavigationContainer ref={navigationRef}>
           <RootNavigator />
-          {__DEV__ && <DevBar navigationRef={navigationRef} />}
+          {showDevBar && __DEV__ && <DevBar navigationRef={navigationRef} />}
         </NavigationContainer>
       </SafeAreaProvider>
     </GestureHandlerRootView>

@@ -1,9 +1,3 @@
-/**
- * The self-serve profile work a new member must finish before they can take action
- * (join a plan, host one, or enter the matching pool). Team approval is also required,
- * but it is a separate wait-state concern the member cannot act on, so it is intentionally
- * not part of this progress model — the completion banner only nudges what the user can do.
- */
 export type ProfileCompletion = {
   hasPhoto: boolean;
   hasPrompt: boolean;
@@ -16,6 +10,7 @@ export type ProfileStep = {
   done: boolean;
 };
 
+// in-order of how we want to encourage members to complete them
 const STEP_NUDGES: { key: keyof ProfileCompletion; nudge: string }[] = [
   { key: "hasPhoto", nudge: "Add a photo to start joining plans." },
   { key: "hasPrompt", nudge: "Answer a prompt so hosts get to know you." },
