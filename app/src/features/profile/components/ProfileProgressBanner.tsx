@@ -73,11 +73,13 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: fontSize.caption,
+    lineHeight: lineHeight.caption,
   },
   dismiss: {
     width: spacing.lg,
     height: spacing.lg,
     alignItems: "center",
+    justifyContent: "center",
   },
   dismissGlyph: {
     fontFamily: fontFamily.bold,
