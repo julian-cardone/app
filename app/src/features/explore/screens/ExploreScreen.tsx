@@ -5,11 +5,6 @@ import { SCREEN_INSET_MODE } from "@/components/layout/Screen/types";
 import { AppText } from "@/components/ui";
 import { spacing } from "@/styles/tokens";
 
-/**
- * Browse plans by neighbourhood, time, and type. The list, filters, and "tonight" sections
- * from the prototype arrive in later issues — for now this is an empty placeholder so the
- * bottom-nav tab has a destination. The screen owns its safe area through `Screen`.
- */
 export function ExploreScreen() {
   return (
     <Screen insetMode={SCREEN_INSET_MODE.TOP}>
@@ -32,7 +27,6 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
   },
   empty: {

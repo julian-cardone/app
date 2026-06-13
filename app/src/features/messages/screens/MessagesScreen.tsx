@@ -5,11 +5,6 @@ import { SCREEN_INSET_MODE } from "@/components/layout/Screen/types";
 import { AppText } from "@/components/ui";
 import { spacing } from "@/styles/tokens";
 
-/**
- * Conversations with people from shared plans. Threads, tabs, and unread state from the
- * prototype arrive once matching and messaging land — for now this is an empty placeholder
- * so the bottom-nav tab has a destination. The screen owns its safe area through `Screen`.
- */
 export function MessagesScreen() {
   return (
     <Screen insetMode={SCREEN_INSET_MODE.TOP}>
@@ -32,7 +27,6 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
   },
   empty: {
