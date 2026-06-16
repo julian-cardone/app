@@ -34,6 +34,24 @@ Optimize for clear ownership and predictable refactoring, not maximum reuse.
 
 ---
 
+## Code Stewardship and Refactoring
+
+Refactoring in the name of reducing tech debt is allowed and expected when it improves ownership,
+removes duplication, or replaces an inconsistent pattern with a clearer one. Do not layer new code
+on top of a pattern that is already proving brittle if a small, scoped refactor would leave the
+codebase healthier.
+
+Refactors should be scoped and behavior-preserving unless the task explicitly asks for behavior
+change. Prefer improving the boundary you are already touching over broad rewrites. When a repeated
+concern becomes a shared primitive, token, pure helper, or domain config, migrate the nearby call
+sites so the old duplicate pattern does not remain as a parallel standard.
+
+Good refactors create a single obvious owner for a stable concern. Bad refactors spread the concern
+across more files, add generic machinery, or make future changes require touching unrelated
+features.
+
+---
+
 ## Component Layers
 
 ### Shared UI Primitives
@@ -70,6 +88,11 @@ product workflow and may own:
 - Composition of multiple primitives
 
 A component used by one feature stays feature-local until reuse is proven.
+
+Domain-specific wrappers should compose shared primitives and add domain behavior rather than
+reimplementing primitive styling or behavior. For example, a DOB field may add masking, and a phone
+field may add phone-specific props and country-code layout, while the shared text/input primitives
+continue to own typography, chrome, focus states, and errors.
 
 ### Pages and Screens
 
@@ -143,6 +166,10 @@ Forms own:
 - Field values
 - Validation state
 - Submission shape
+
+Input components may normalize keystrokes when the shape is part of the field experience, such as
+masking a date or stripping non-code digits. Business validation and submission rules still belong
+to the form, screen, or parent workflow that owns the outcome.
 
 Parents own:
 

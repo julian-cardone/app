@@ -76,6 +76,11 @@ Token categories:
 Avoid magic numbers in component styles. A recurring color, spacing, radius, duration, or typography
 value is a missing token.
 
+When the same visual adjustment appears in multiple components, centralize it at the right level.
+Use a design token for app-wide visual decisions, a shared primitive for primitive-owned chrome, and
+a local constant for one component's shape. Do not let repeated `+ 1` adjustments, input padding, or
+field chrome drift across files.
+
 Use clear semantic names for text colors and brand colors. Avoid ambiguous pairs where the darker
 color sounds less prominent, such as `muted` being lighter than `subtle`.
 
@@ -212,6 +217,11 @@ Feature screens should prefer:
 ```
 
 instead of repeating font family, size, line height, and color across many screens.
+
+Use `AppText` at typography boundaries. Inside an existing text block, nested React Native `<Text>`
+is appropriate for inline emphasis or links when it should inherit the parent's typography and only
+override a small difference such as color or weight. Do not reapply the same `AppText` variant
+inside its own text block unless the child is intentionally establishing a new typography context.
 
 ---
 
@@ -351,6 +361,10 @@ the component.
 
 `contentContainerStyle` is appropriate for layout containers like `Screen`/`ScrollView` wrappers.
 
+A targeted `containerStyle` prop is acceptable when a primitive has an outer wrapper and the parent
+needs to control only parent-owned layout, such as `flex: 1` in a row. It should not become a
+backdoor for restyling the primitive's internal appearance.
+
 ---
 
 ## Text Links and Legal Footnotes
@@ -376,6 +390,10 @@ screens need them.
 ## Inputs
 
 Controlled input components receive `value` and `onChangeText`.
+
+Shared field primitives own common input chrome: border, radius, padding, placeholder treatment,
+typography, focus states, and error presentation. Domain-specific inputs should compose the shared
+field primitive and add domain behavior, not duplicate the field styling.
 
 Phone inputs should use relevant mobile props:
 

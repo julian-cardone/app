@@ -363,6 +363,9 @@ Code stays local until reuse is proven. Promotion to shared requires all three:
 Do not promote a component just because it looks reusable. A phone-code input used only in
 onboarding is still an onboarding component.
 
+When promotion is justified, promote the code fully: choose the new owner, update consumers to use
+that owner, and remove the duplicate local versions that the promotion replaces.
+
 ---
 
 ## Public Surfaces
@@ -436,6 +439,19 @@ There are no CSS files on mobile. No `reset.css`, `globals.css`, `variables.css`
 - Fonts/images live under `assets/` at the project root.
 - App icon and splash configuration live in the Expo config, not in component code.
 - Style co-location and style extraction rules live in `mobile-styles`.
+
+---
+
+## Pure Helpers and Domain Utilities
+
+Pure formatting, masking, parsing, mapping, and validation helpers should live at the smallest owner
+that can reuse them correctly. Feature-only helpers belong in `features/<feature>/lib/`.
+Cross-feature helpers belong in `src/lib/` and should be grouped by responsibility, not placed in a
+generic dumping ground.
+
+When duplicated helper logic appears across files, it is acceptable to refactor it into a single
+owner if the behavior is stable and the new location is clear. Update the duplicated call sites as
+part of the same change so the project does not retain competing standards.
 
 ---
 
