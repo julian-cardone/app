@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   type StyleProp,
   StyleSheet,
-  Text,
   TextInput,
   type TextInputProps,
   View,
@@ -10,13 +9,13 @@ import {
 } from "react-native";
 
 import { AppText } from "@/components/ui";
-import { borders, colors, fontFamily, fontSize, radii, spacing } from "@/styles/tokens";
+import { borders, colors, fontFamily, fontSize, lineHeight, radii, spacing } from "@/styles/tokens";
 
-const INPUT_PADDING_V = spacing.sm + 1;
+const INPUT_VERTICAL_PADDING_ADJUSTMENT = 1;
+const INPUT_PADDING_V = spacing.sm + INPUT_VERTICAL_PADDING_ADJUSTMENT;
 
 type TextFieldProps = TextInputProps & {
   label: string;
-  /** Inline validation message; when present the field reads as errored. */
   error?: string;
   /** Parent-owned placement (margin, width). Internal appearance stays in the primitive. */
   containerStyle?: StyleProp<ViewStyle>;
@@ -25,7 +24,7 @@ type TextFieldProps = TextInputProps & {
 /**
  * The shared labeled text input. Domain-agnostic: it owns its label, focus highlight, and
  * error treatment, and forwards every other `TextInput` prop so callers control keyboard,
- * autofill, and masking. Validation rules and submission live with the caller.
+ * autofill, and masking.
  */
 export function TextField({
   label,
@@ -63,7 +62,7 @@ export function TextField({
         onFocus={handleFocus}
         onBlur={handleBlur}
       />
-      {Boolean(error) && <Text style={styles.error}>{error}</Text>}
+      {Boolean(error) && <AppText style={styles.error}>{error}</AppText>}
     </View>
   );
 }
@@ -81,6 +80,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     fontFamily: fontFamily.semibold,
     fontSize: fontSize.body,
+    lineHeight: lineHeight.body,
     color: colors.textPrimary,
   },
   inputFocused: {
@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
   error: {
     fontFamily: fontFamily.semibold,
     fontSize: fontSize.caption,
+    lineHeight: lineHeight.caption,
     color: colors.danger,
   },
 });
