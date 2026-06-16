@@ -32,6 +32,15 @@ A future engineer or coding agent must be able to answer quickly:
 
 Optimize for clear ownership and predictable refactoring, not maximum reuse.
 
+Optimize for long-term maintainability over short-term convenience.
+
+A small amount of duplication is acceptable when ownership is still emerging, but known sources of
+tech debt should be reduced once a stable pattern is identified. The codebase should become simpler
+over time, not more complex.
+
+When evaluating a design, prefer the option that is easier to understand, maintain, test, and
+refactor in the future.
+
 ---
 
 ## Code Stewardship and Refactoring
@@ -126,6 +135,45 @@ const canSend = digitCount >= MIN_DIGITS;
 ```
 
 Do not copy derived values into separate `useState` variables.
+
+---
+
+## Null vs Undefined
+
+Use `null` and `undefined` intentionally; they represent different concepts.
+
+- Use `null` when the application is explicitly modeling the absence of a domain value.
+- Use `undefined` when a value is optional, omitted, or not provided.
+- Prefer one representation for absence within a given API or domain model.
+
+Examples:
+
+```ts
+const [selectedGender, setSelectedGender] = useState<GenderIdentity | null>(null);
+
+const currentUser: User | null = null;
+```
+
+```ts
+type TextFieldProps = { error?: string; placeholder?: string };
+
+const error = isValid ? undefined : "Invalid value";
+```
+
+Avoid mixing both forms unnecessarily:
+
+```ts
+string | null | undefined;
+```
+
+Unless required by an external API, choose the representation that best matches the meaning of the
+data.
+
+Mental model:
+
+```text
+null = intentional absence undefined = omitted value
+```
 
 ---
 
@@ -272,6 +320,19 @@ tokens or text primitive internally.
 
 ## Abstraction Rules
 
+Refactoring to reduce tech debt is encouraged when it improves ownership, consistency, simplicity,
+or maintainability.
+
+Examples:
+
+- Centralizing repeated visual decisions into tokens
+- Consolidating duplicated logic into a shared helper
+- Moving repeated UI patterns into a shared primitive
+- Simplifying component responsibilities
+- Eliminating drift between multiple implementations of the same concept
+
+Refactoring should reduce complexity, not relocate it.
+
 Before introducing an abstraction, all three must be true:
 
 1. The repeated structure is stable.
@@ -280,6 +341,23 @@ Before introducing an abstraction, all three must be true:
 
 The rule of three applies: two similar implementations are acceptable. At the third occurrence,
 evaluate the pattern against the three-condition test. Do not automatically extract.
+
+Do not preserve duplication for the sake of stability once a clear and stable ownership boundary has
+emerged.
+
+When a repeated pattern has proven stable and ownership is obvious, refactor toward a single source
+of truth. Reducing tech debt through simplification, consolidation, and clearer ownership is
+encouraged when it makes the codebase easier to maintain.
+
+Examples include:
+
+- Centralizing repeated visual decisions into design tokens
+- Consolidating duplicated logic into shared helpers
+- Composing feature inputs from shared field primitives
+- Eliminating multiple implementations of the same behavior
+- Moving stable cross-feature concerns behind a shared abstraction
+
+Refactoring should reduce complexity, not relocate it.
 
 Appropriate abstractions:
 
