@@ -1,61 +1,93 @@
 /**
- * Date-of-birth input helpers. Kept as pure functions so masking and the age gate can be
- * unit-reasoned in isolation and reused if DOB is collected elsewhere later.
+ * Pure DOB helpers for masking and age validation.
  */
 
-/** Minimum age to create an account (dating product → 18+). */
+/** Minimum age required to create an account. */
 export const MIN_AGE = 18;
 
+const NON_DIGIT_PATTERN = /\D/g;
+const DOB_DIGIT_LENGTH = 8;
+const MONTH_END_INDEX = 2;
+const DAY_END_INDEX = 4;
+
 /**
- * Formats raw keystrokes into `MM/DD/YYYY`. Slashes are derived from the digit count, so the
- * caller can feed back the masked value on every change without fighting the separators. We
- * insert a slash only after a segment is complete (`>` not `>=`) to keep backspace working.
+ * Formats raw input as MM/DD/YYYY while preserving backspace behavior.
  */
 export function maskDob(input: string): string {
-  const digits = input.replace(/\D/g, "").slice(0, 8);
-  let result = digits.slice(0, 2);
-  if (digits.length > 2) result += `/${digits.slice(2, 4)}`;
-  if (digits.length > 4) result += `/${digits.slice(4, 8)}`;
+  const digits = input.replace(NON_DIGIT_PATTERN, "").slice(0, DOB_DIGIT_LENGTH);
+
+  let result = digits.slice(0, MONTH_END_INDEX);
+
+  if (digits.length > MONTH_END_INDEX) {
+    result += `/${digits.slice(MONTH_END_INDEX, DAY_END_INDEX)}`;
+  }
+
+  if (digits.length > DAY_END_INDEX) {
+    result += `/${digits.slice(DAY_END_INDEX, DOB_DIGIT_LENGTH)}`;
+  }
+
   return result;
 }
 
 export type DobValidity = {
-  /** All eight digits have been entered. */
+  /** All DOB digits have been entered. */
   isComplete: boolean;
-  /** A real calendar date and old enough to sign up. */
+  /** Valid calendar date and meets minimum age requirement. */
   isValid: boolean;
   age: number | null;
 };
 
-/** Validates a masked DOB string: real calendar date and at least `MIN_AGE` years old. */
+/**
+ * Validates a DOB string and calculates age.
+ */
 export function validateDob(value: string): DobValidity {
-  const digits = value.replace(/\D/g, "");
-  if (digits.length < 8) {
-    return { isComplete: false, isValid: false, age: null };
+  const digits = value.replace(NON_DIGIT_PATTERN, "");
+
+  if (digits.length < DOB_DIGIT_LENGTH) {
+    return {
+      isComplete: false,
+      isValid: false,
+      age: null,
+    };
   }
 
-  const month = Number(digits.slice(0, 2));
-  const day = Number(digits.slice(2, 4));
-  const year = Number(digits.slice(4, 8));
+  const month = Number(digits.slice(0, MONTH_END_INDEX));
+  const day = Number(digits.slice(MONTH_END_INDEX, DAY_END_INDEX));
+  const year = Number(digits.slice(DAY_END_INDEX, DOB_DIGIT_LENGTH));
+
   const date = new Date(year, month - 1, day);
 
-  // Date rolls invalid components over (e.g. Feb 30 → Mar 2), so round-trip to reject them.
+  // JavaScript dates roll invalid values forward (e.g. Feb 30 → Mar 2).
   const isRealDate =
     date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+
   if (!isRealDate) {
-    return { isComplete: true, isValid: false, age: null };
+    return {
+      isComplete: true,
+      isValid: false,
+      age: null,
+    };
   }
 
   const age = getAge(date);
-  return { isComplete: true, isValid: age >= MIN_AGE, age };
+
+  return {
+    isComplete: true,
+    isValid: age >= MIN_AGE,
+    age,
+  };
 }
 
-function getAge(birthDate: Date): number {
-  const now = new Date();
+function getAge(birthDate: Date, now = new Date()): number {
   let age = now.getFullYear() - birthDate.getFullYear();
+
   const hasHadBirthdayThisYear =
     now.getMonth() > birthDate.getMonth() ||
     (now.getMonth() === birthDate.getMonth() && now.getDate() >= birthDate.getDate());
-  if (!hasHadBirthdayThisYear) age -= 1;
+
+  if (!hasHadBirthdayThisYear) {
+    age -= 1;
+  }
+
   return age;
 }
