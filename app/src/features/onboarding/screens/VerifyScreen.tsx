@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
@@ -7,7 +7,7 @@ import { Screen } from "@/components/layout";
 import { AppText, Button } from "@/components/ui";
 import { ONBOARDING_ROUTES } from "@/navigation/routes";
 import type { OnboardingStackParamList } from "@/navigation/types";
-import { colors, fontFamily, fontSize, spacing } from "@/styles/tokens";
+import { colors, spacing } from "@/styles/tokens";
 
 import { CodeInput } from "../components/CodeInput";
 
@@ -39,7 +39,9 @@ export function VerifyScreen({ navigation, route }: Props) {
         </AppText>
         <CodeInput value={code} onChangeText={setCode} length={CODE_LENGTH} />
         <Pressable accessibilityRole="button" hitSlop={spacing.sm} onPress={handleResendCode}>
-          <Text style={styles.resend}>Resend code</Text>
+          <AppText variant="label" style={styles.resend}>
+            Resend code
+          </AppText>
         </Pressable>
       </View>
 
@@ -60,8 +62,6 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   resend: {
-    fontFamily: fontFamily.bold,
-    fontSize: fontSize.body,
     color: colors.brandDark,
     paddingTop: spacing.xs,
   },
