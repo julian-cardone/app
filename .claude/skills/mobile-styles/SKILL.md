@@ -64,15 +64,13 @@ literal-type inference.
 
 Token categories:
 
-- `colors`
-- `spacing`
-- `radii`
-- `borders`
-- `fontFamily`
-- `fontSize`
-- `lineHeight`
-- `shadows`
-- `animation`
+- `colors` for semantic color decisions
+- `spacing` for padding, margin, gap, size, and hit slop values
+- `radii` for rounded corners
+- `borders` for reusable border widths or treatments
+- `fontFamily`, `fontSize`, and `lineHeight` for typography
+- `shadows` for cross-platform elevation/shadow treatments
+- `animation` for durations and timing decisions
 - z-index/layers when needed
 
 Avoid magic numbers in component styles. A recurring color, spacing, radius, duration, or typography
@@ -130,6 +128,30 @@ immediate expression.
 
 ---
 
+## Defensive Style Retention
+
+Do not remove styles solely because they do not change the current screenshot. Keep styles that
+protect behavior, touch targets, text rendering, clipping, or narrow-screen resilience.
+
+Examples:
+
+```tsx
+dismiss: {
+  alignItems: "center",
+  justifyContent: "center",
+}
+
+message: {
+  fontSize: fontSize.caption,
+  lineHeight: lineHeight.caption,
+}
+```
+
+Remove redundant styles when the parent/child contract proves they are not load-bearing. Keep small
+defensive styles when they make the component more durable without obscuring intent.
+
+---
+
 ## Units
 
 Use unitless numbers for density-independent pixels:
@@ -169,6 +191,19 @@ Recommended variants come from real repeated usage:
 - optionally `label`
 
 Avoid building a typography prop matrix before it is needed.
+
+When a style defines `fontSize`, generally define the matching `lineHeight` token too:
+
+```tsx
+message: {
+  fontSize: fontSize.caption,
+  lineHeight: lineHeight.caption,
+}
+```
+
+This keeps text rendering predictable across fonts, platforms, and accessibility settings. Omit the
+explicit pair only when the text primitive's variant already provides both values or there is a
+clear local reason.
 
 Feature screens should prefer:
 
@@ -418,6 +453,7 @@ not create separate style files automatically for every component.
 
 - Inline static style objects.
 - Magic numbers instead of tokens or local constants.
+- Text styles that override `fontSize` without the matching `lineHeight` token.
 - `px`, `rem`, or invented units.
 - A fake single-value variant prop.
 - Disabling font scaling without a documented reason.
@@ -428,3 +464,5 @@ not create separate style files automatically for every component.
 - Stacking bottom safe-area padding in both `Screen` and a bottom tab bar.
 - Adding parent `justifyContent`/`alignItems` that has no effect because children already fill and
   align themselves.
+- Removing defensive centering, typography, or shrink styles just because the current screen still
+  looks correct.

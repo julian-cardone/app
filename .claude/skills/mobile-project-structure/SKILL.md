@@ -254,17 +254,25 @@ Use route constants in navigators and navigation actions:
 navigation.navigate(MAIN_TAB_ROUTES.PROFILE);
 ```
 
-Keep navigation type definitions simple with literal route names:
+Use route constants as the source of truth for navigator names, navigation actions, param-list keys,
+and screen prop route names.
 
 ```ts
+export const ROOT_ROUTES = {
+  ONBOARDING: "Onboarding",
+  MAIN: "Main",
+} as const;
+
 export type RootStackParamList = {
-  Onboarding: NavigatorScreenParams<OnboardingStackParamList>;
-  Main: NavigatorScreenParams<MainTabParamList>;
+  [ROOT_ROUTES.ONBOARDING]: NavigatorScreenParams<OnboardingStackParamList>;
+  [ROOT_ROUTES.MAIN]: NavigatorScreenParams<MainTabParamList>;
 };
+
+type Props = NativeStackScreenProps<OnboardingStackParamList, typeof ONBOARDING_ROUTES.PHONE_ENTRY>;
 ```
 
-Do not make param-list types depend on route constant objects. This small duplication is clearer
-than clever type coupling.
+Do not repeat raw route strings in param-list keys, screen prop types, navigators, or navigation
+actions once a route constant exists.
 
 When real onboarding/auth state exists, root navigation should be gated by app access state and
 should render only the allowed branch. Early prototypes may use `initialRouteName`, but persisted
@@ -377,6 +385,10 @@ import { Screen } from "@/components/layout";
 import { Wordmark } from "@/components/branding";
 import { VerifyScreen } from "@/features/onboarding";
 ```
+
+Treat a feature-level `index.ts` as that feature's public API. Export only the screens, providers,
+hooks, components, or models intentionally used outside the feature. Do not export implementation
+details just because they exist.
 
 Within a feature, relative imports between sibling internal files are acceptable. Cross-feature
 imports into another feature's internals are prohibited.
@@ -510,14 +522,16 @@ lib/string/
 - Putting initialization or provider composition in `App.tsx`.
 - Importing from `src/` inside `app.config.ts`.
 - Defining shared route param contracts inline in a navigator file.
-- Coupling navigation param-list types to route constant objects.
+- Repeating raw route strings in param lists, screen prop types, navigators, or navigation actions
+  instead of using route constants.
 - Putting screen content inside a navigator.
 - Creating a mobile `router.tsx` route table.
 - Creating CSS files or `.module.css` files.
 - Putting `Wordmark` in `ui/` when a `branding/` boundary exists.
 - Moving `PhoneNumberInput` or `CodeInput` to shared before reuse is proven.
 - Keeping app-wide legal URLs inside one feature once multiple screens use them.
-- Importing from internal implementation paths across boundaries.
+- Importing from internal implementation paths across boundaries instead of public `index.ts`
+  surfaces.
 - Creating `shared/` or `utils/` dumping grounds.
 - Extracting local types, constants, helpers, or styles before reuse or readability requires it.
 - Using an enum for route names, tab names, or other UI literal values instead of an `as const`

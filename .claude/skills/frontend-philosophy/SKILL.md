@@ -106,6 +106,36 @@ Do not copy derived values into separate `useState` variables.
 
 ---
 
+## Context Access
+
+Keep contexts private when they are intended for normal application consumption. Export a focused
+custom hook next to the provider instead of exporting the raw context.
+
+Good:
+
+```tsx
+const ProfileCompletionContext = createContext<ProfileCompletionValue | null>(null);
+
+export function useProfileCompletion(): ProfileCompletionValue {
+  const value = useContext(ProfileCompletionContext);
+  if (!value) {
+    throw new Error("useProfileCompletion must be used within a ProfileCompletionProvider");
+  }
+  return value;
+}
+```
+
+Why:
+
+- consumers avoid repeated null checks
+- missing providers fail with useful errors
+- implementation details stay behind the feature/provider boundary
+- future provider internals can change without touching callers
+
+Avoid exporting raw contexts unless there is a specific framework or testing need.
+
+---
+
 ## Forms
 
 Forms own:
@@ -150,6 +180,25 @@ useEffect(() => {
   return () => clearTimeout(timer);
 }, [delayMs]);
 ```
+
+---
+
+## Control Flow
+
+Prefer guard clauses for invalid, blocked, or no-op states. Keep the successful path shallow and
+easy to scan.
+
+Good:
+
+```tsx
+const handleSubmit = () => {
+  if (!canSubmit) return;
+  submit();
+};
+```
+
+Avoid nesting the main path under conditionals when an early return expresses the same intent more
+clearly.
 
 ---
 
@@ -251,6 +300,7 @@ A `snake_case` field in component code usually means the mapper is missing or mi
 ## Comments
 
 Comments explain intent, ownership, or constraints. Keep them short enough to survive refactors.
+Prefer explaining why code exists over narrating what the next line mechanically does.
 
 Good comments preserve reasoning:
 
@@ -409,6 +459,8 @@ value.
 - A component accumulating boolean flags instead of being split.
 - A form navigating or calling APIs directly when those consequences belong to the parent.
 - Context used for short-distance prop passing.
+- Raw contexts exported for normal app consumption instead of focused provider hooks.
 - Comments that explain obvious behavior instead of constraints or intent.
+- Deeply nested control flow where a guard clause would make the main path clearer.
 - `as` used to silence uncertain external data instead of validating or mapping it.
 - `any` used where `unknown`, a generic, or a narrow domain type would preserve safety.

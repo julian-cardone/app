@@ -101,6 +101,19 @@ export type ScreenInsetMode = (typeof SCREEN_INSET_MODE)[keyof typeof SCREEN_INS
 Default `insetMode` should be `SCREEN_INSET_MODE.BOTH` because no-tab/full-screen flows need top and
 bottom protection by default.
 
+`Screen` should keep a stable two-layer mental model:
+
+```text
+style                 = outer screen viewport
+contentContainerStyle = inner content layout
+```
+
+Use `style` for screen-level concerns such as background, horizontal padding, or outer sizing. Use
+`contentContainerStyle` for child layout such as `gap`, `justifyContent`, `alignItems`,
+`paddingVertical`, or scroll content growth. Do not change these meanings between scroll and
+non-scroll implementations. A small wrapper view is acceptable when it keeps this contract
+predictable.
+
 ---
 
 ## Safe Areas
@@ -271,6 +284,24 @@ becomes noisy across multiple screens/components.
 
 ---
 
+## Bottom-Aligned Content
+
+Use direct flex intent for fixed-bottom content in a vertical screen. `marginTop: "auto"` is
+appropriate when a footer should consume the remaining space above itself and sit at the bottom of a
+flex column.
+
+```ts
+footer: {
+  marginTop: "auto",
+}
+```
+
+Prefer this over adding fake spacer views solely to push content down. Only introduce an explicit
+spacer when it carries a real layout responsibility that cannot be expressed on the content being
+positioned.
+
+---
+
 ## `alignItems` and Cross-Axis Sizing
 
 `alignItems: "center"` makes children intrinsically sized on the cross axis. Use it only when that
@@ -380,3 +411,7 @@ const styles = StyleSheet.create({
 8. Keyboard covers input → use `<Screen keyboardAware>`.
 9. Two scroll views fight → remove one scroll boundary or use list header/footer props.
 10. `overflow: "hidden"` hides a bug → fix the constraint chain instead.
+11. `style` and `contentContainerStyle` mean different things per screen mode → restore the stable
+    outer/inner Screen contract.
+12. A fake spacer view only pushes a footer down → use direct flex intent such as
+    `marginTop: "auto"`.
