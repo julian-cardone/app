@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, type StyleProp, StyleSheet, type ViewStyle } from "react-native";
 
 import { AppText } from "@/components/ui/AppText";
 import { borders, colors, fontFamily, fontSize, lineHeight, radii, spacing } from "@/styles/tokens";
@@ -10,15 +10,16 @@ type ChipProps = {
   label: string;
   selected?: boolean;
   onPress: () => void;
+  style?: StyleProp<ViewStyle>;
 };
 
-export function Chip({ label, selected = false, onPress }: ChipProps) {
+export function Chip({ label, selected = false, onPress, style }: ChipProps) {
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
       accessibilityState={{ selected }}
-      style={[styles.chip, selected && styles.chipSelected]}
+      style={[styles.chip, selected && styles.chipSelected, style]}
     >
       <AppText style={[styles.label, selected && styles.labelSelected]}>{label}</AppText>
     </Pressable>

@@ -1,9 +1,14 @@
-import { Pressable, type StyleProp, StyleSheet, Text, type ViewStyle } from "react-native";
+import { Pressable, type StyleProp, StyleSheet, type ViewStyle } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-import { colors, fontFamily, fontSize, radii, shadows, spacing } from "@/styles/tokens";
+import { colors, fontFamily, fontSize, lineHeight, radii, shadows, spacing } from "@/styles/tokens";
+
+import { AppText } from "../AppText";
 
 const PRESSED_SCALE = 0.98;
+const GRADIENT_START = { x: 0, y: 0 };
+const GRADIENT_END = { x: 1, y: 1 };
+const BUTTON_GRADIENT_COLORS = [colors.brand, colors.brandDark] as const;
 
 type ButtonProps = {
   title: string;
@@ -16,32 +21,27 @@ type ButtonProps = {
  * Primary call-to-action button. Owns visual states (pressed, disabled); callers own the action.
  */
 export function Button({ title, onPress, disabled = false, style }: ButtonProps) {
-  const handlePress = () => {
-    if (disabled) return;
-    onPress();
-  };
-
   return (
     <Pressable
-      onPress={handlePress}
+      onPress={onPress}
       disabled={disabled}
       accessibilityRole="button"
       accessibilityState={{ disabled }}
       style={({ pressed }) => [
         styles.pressable,
-        shadows.button,
+        !disabled && shadows.button,
         style,
-        disabled && styles.disabled,
         pressed && !disabled && styles.pressed,
+        disabled && styles.disabled,
       ]}
     >
       <LinearGradient
-        colors={[colors.brand, colors.brandDark]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
+        colors={BUTTON_GRADIENT_COLORS}
+        start={GRADIENT_START}
+        end={GRADIENT_END}
         style={styles.gradient}
       >
-        <Text style={styles.label}>{title}</Text>
+        <AppText style={styles.label}>{title}</AppText>
       </LinearGradient>
     </Pressable>
   );
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: fontFamily.extrabold,
     fontSize: fontSize.body,
+    lineHeight: lineHeight.body,
     color: colors.onBrand,
   },
   pressed: {
