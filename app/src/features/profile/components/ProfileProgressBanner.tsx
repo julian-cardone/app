@@ -25,8 +25,10 @@ export function ProfileProgressBanner({ progress, onDismiss }: Props) {
     <View style={styles.banner}>
       <View style={styles.row}>
         <View style={styles.copy}>
-          <AppText variant="label">Complete your profile</AppText>
-          <AppText variant="subhead" style={styles.message}>
+          <AppText variant="label" style={styles.title}>
+            Complete your profile
+          </AppText>
+          <AppText variant="body" style={styles.message}>
             {message}
           </AppText>
         </View>
@@ -50,7 +52,7 @@ export function ProfileProgressBanner({ progress, onDismiss }: Props) {
         >
           <View style={[styles.fill, { width: `${Math.round(ratio * 100)}%` }]} />
         </View>
-        <AppText variant="subhead" style={styles.count}>
+        <AppText variant="body" style={styles.count}>
           {completed} of {total}
         </AppText>
       </View>
@@ -71,9 +73,13 @@ const styles = StyleSheet.create({
   copy: {
     flex: 1,
   },
+  title: {
+    color: colors.textPrimary,
+  },
   message: {
     fontSize: fontSize.caption,
     lineHeight: lineHeight.caption,
+    color: colors.textSecondary,
   },
   dismiss: {
     width: spacing.lg,
@@ -106,5 +112,6 @@ const styles = StyleSheet.create({
   count: {
     fontSize: fontSize.caption,
     lineHeight: lineHeight.caption,
+    color: colors.textSecondary,
   },
 });

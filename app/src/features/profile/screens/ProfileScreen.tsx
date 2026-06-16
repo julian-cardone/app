@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { Screen } from "@/components/layout";
 import { SCREEN_INSET_MODE } from "@/components/layout/Screen/types";
 import { AppText } from "@/components/ui";
-import { spacing } from "@/styles/tokens";
+import { colors, spacing } from "@/styles/tokens";
 
 /**
  * The member's own profile.
@@ -16,7 +16,7 @@ export function ProfileScreen() {
       </View>
 
       <View style={styles.body}>
-        <AppText variant="subhead" style={styles.empty}>
+        <AppText variant="body" style={styles.empty}>
           Your profile will live here soon.
         </AppText>
       </View>
@@ -34,5 +34,6 @@ const styles = StyleSheet.create({
   },
   empty: {
     textAlign: "center",
+    color: colors.textSecondary,
   },
 });

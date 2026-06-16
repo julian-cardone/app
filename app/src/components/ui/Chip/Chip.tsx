@@ -1,7 +1,7 @@
 import { Pressable, type StyleProp, StyleSheet, type ViewStyle } from "react-native";
 
 import { AppText } from "@/components/ui/AppText";
-import { borders, colors, fontFamily, fontSize, lineHeight, radii, spacing } from "@/styles/tokens";
+import { borders, colors, fontFamily, radii, spacing } from "@/styles/tokens";
 
 const INPUT_VERTICAL_PADDING_ADJUSTMENT = 1;
 const INPUT_PADDING_V = spacing.sm + INPUT_VERTICAL_PADDING_ADJUSTMENT;
@@ -21,7 +21,9 @@ export function Chip({ label, selected = false, onPress, style }: ChipProps) {
       accessibilityState={{ selected }}
       style={[styles.chip, selected && styles.chipSelected, style]}
     >
-      <AppText style={[styles.label, selected && styles.labelSelected]}>{label}</AppText>
+      <AppText variant="body" style={[styles.label, selected && styles.labelSelected]}>
+        {label}
+      </AppText>
     </Pressable>
   );
 }
@@ -40,9 +42,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.brandLight,
   },
   label: {
-    fontFamily: fontFamily.semibold,
-    fontSize: fontSize.body,
-    lineHeight: lineHeight.body,
     color: colors.textTertiary,
   },
   labelSelected: {

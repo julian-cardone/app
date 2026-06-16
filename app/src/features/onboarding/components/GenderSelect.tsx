@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 
 import { AppText, Chip } from "@/components/ui";
-import { spacing } from "@/styles/tokens";
+import { colors, spacing } from "@/styles/tokens";
 
 const GENDER_OPTIONS = ["Woman", "Man", "Nonbinary", "Other"] as const;
 
@@ -15,7 +15,9 @@ type GenderSelectProps = {
 export function GenderSelect({ value, onSelect }: GenderSelectProps) {
   return (
     <View style={styles.container}>
-      <AppText variant="label">Gender identity</AppText>
+      <AppText variant="label" style={styles.label}>
+        Gender identity
+      </AppText>
       <View style={styles.options}>
         {GENDER_OPTIONS.map((option) => (
           <Chip
@@ -33,6 +35,9 @@ export function GenderSelect({ value, onSelect }: GenderSelectProps) {
 const styles = StyleSheet.create({
   container: {
     gap: spacing.sm,
+  },
+  label: {
+    color: colors.textPrimary,
   },
   options: {
     flexDirection: "row",

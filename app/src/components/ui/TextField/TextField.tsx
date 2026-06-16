@@ -49,7 +49,9 @@ export function TextField({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <AppText variant="label">{label}</AppText>
+      <AppText variant="label" style={styles.label}>
+        {label}
+      </AppText>
       <TextInput
         {...inputProps}
         style={[
@@ -62,7 +64,11 @@ export function TextField({
         onFocus={handleFocus}
         onBlur={handleBlur}
       />
-      {Boolean(error) && <AppText style={styles.error}>{error}</AppText>}
+      {Boolean(error) && (
+        <AppText variant="caption" style={styles.error}>
+          {error}
+        </AppText>
+      )}
     </View>
   );
 }
@@ -70,6 +76,9 @@ export function TextField({
 const styles = StyleSheet.create({
   container: {
     gap: spacing.sm,
+  },
+  label: {
+    color: colors.textPrimary,
   },
   input: {
     borderWidth: borders.default,
@@ -90,9 +99,6 @@ const styles = StyleSheet.create({
     borderColor: colors.danger,
   },
   error: {
-    fontFamily: fontFamily.semibold,
-    fontSize: fontSize.caption,
-    lineHeight: lineHeight.caption,
     color: colors.danger,
   },
 });

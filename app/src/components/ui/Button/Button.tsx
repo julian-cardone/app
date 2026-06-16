@@ -1,7 +1,7 @@
 import { Pressable, type StyleProp, StyleSheet, type ViewStyle } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-import { colors, fontFamily, fontSize, lineHeight, radii, shadows, spacing } from "@/styles/tokens";
+import { colors, radii, shadows, spacing } from "@/styles/tokens";
 
 import { AppText } from "../AppText";
 
@@ -41,7 +41,9 @@ export function Button({ title, onPress, disabled = false, style }: ButtonProps)
         end={GRADIENT_END}
         style={styles.gradient}
       >
-        <AppText style={styles.label}>{title}</AppText>
+        <AppText variant="button" style={styles.label}>
+          {title}
+        </AppText>
       </LinearGradient>
     </Pressable>
   );
@@ -59,9 +61,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   label: {
-    fontFamily: fontFamily.extrabold,
-    fontSize: fontSize.body,
-    lineHeight: lineHeight.body,
     color: colors.onBrand,
   },
   pressed: {

@@ -7,7 +7,7 @@ import { Screen } from "@/components/layout";
 import { AppText, Button } from "@/components/ui";
 import { ONBOARDING_ROUTES } from "@/navigation/routes";
 import type { OnboardingStackParamList } from "@/navigation/types";
-import { spacing } from "@/styles/tokens";
+import { colors, spacing } from "@/styles/tokens";
 
 import { PhoneNumberInput } from "../components/PhoneNumberInput";
 import { TermsFootnote } from "../components/TermsFootnote";
@@ -41,7 +41,9 @@ export function PhoneEntryScreen({ navigation }: Props) {
 
       <View style={styles.body}>
         <AppText variant="headline">Your next great night starts here</AppText>
-        <AppText variant="subhead">Enter your number and we&apos;ll text you a code.</AppText>
+        <AppText variant="body" style={styles.description}>
+          Enter your number and we&apos;ll text you a code.
+        </AppText>
         <PhoneNumberInput
           value={phoneNumber}
           onChangeText={setPhoneNumber}
@@ -60,6 +62,9 @@ export function PhoneEntryScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   header: {
     paddingTop: spacing.xl,
+  },
+  description: {
+    color: colors.textSecondary,
   },
   body: {
     flex: 1,

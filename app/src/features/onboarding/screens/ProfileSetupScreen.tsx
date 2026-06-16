@@ -10,7 +10,7 @@ import { Screen } from "@/components/layout";
 import { AppText, Button, TextField } from "@/components/ui";
 import { MAIN_TAB_ROUTES, type ONBOARDING_ROUTES, ROOT_ROUTES } from "@/navigation/routes";
 import type { OnboardingStackParamList, RootStackParamList } from "@/navigation/types";
-import { spacing } from "@/styles/tokens";
+import { colors, spacing } from "@/styles/tokens";
 
 import { DateOfBirthField } from "../components/DateOfBirthField";
 import { type GenderIdentity, GenderSelect } from "../components/GenderSelect";
@@ -52,7 +52,9 @@ export function ProfileSetupScreen({ navigation }: Props) {
     <Screen keyboardAware scroll>
       <View style={styles.header}>
         <AppText variant="headline">Tell us about you</AppText>
-        <AppText variant="subhead">Just the basics — you can finish your profile later.</AppText>
+        <AppText variant="body" style={styles.description}>
+          Just the basics — you can finish your profile later.
+        </AppText>
       </View>
 
       <View style={styles.form}>
@@ -82,6 +84,9 @@ const styles = StyleSheet.create({
   header: {
     gap: spacing.sm,
     paddingTop: spacing.xl,
+  },
+  description: {
+    color: colors.textSecondary,
   },
   form: {
     gap: spacing.lg,

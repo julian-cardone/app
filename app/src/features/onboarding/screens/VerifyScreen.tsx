@@ -34,7 +34,9 @@ export function VerifyScreen({ navigation, route }: Props) {
     <Screen keyboardAware>
       <View style={styles.body}>
         <AppText variant="headline">Enter your code</AppText>
-        <AppText variant="subhead">We sent a 6-digit code to {phoneNumber}</AppText>
+        <AppText variant="body" style={styles.description}>
+          We sent a 6-digit code to {phoneNumber}
+        </AppText>
         <CodeInput value={code} onChangeText={setCode} length={CODE_LENGTH} />
         <Pressable accessibilityRole="button" hitSlop={spacing.sm} onPress={handleResendCode}>
           <Text style={styles.resend}>Resend code</Text>
@@ -53,6 +55,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     gap: spacing.md,
+  },
+  description: {
+    color: colors.textSecondary,
   },
   resend: {
     fontFamily: fontFamily.bold,

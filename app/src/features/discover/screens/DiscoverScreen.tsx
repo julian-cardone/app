@@ -4,7 +4,7 @@ import { Screen } from "@/components/layout";
 import { SCREEN_INSET_MODE } from "@/components/layout/Screen/types";
 import { AppText } from "@/components/ui";
 import { ProfileCompletionBanner } from "@/features/profile";
-import { spacing } from "@/styles/tokens";
+import { colors, spacing } from "@/styles/tokens";
 
 export function DiscoverScreen() {
   return (
@@ -16,7 +16,7 @@ export function DiscoverScreen() {
       </View>
 
       <View style={styles.body}>
-        <AppText variant="subhead" style={styles.empty}>
+        <AppText variant="body" style={styles.empty}>
           Plans near you will show up here soon.
         </AppText>
       </View>
@@ -34,5 +34,6 @@ const styles = StyleSheet.create({
   },
   empty: {
     textAlign: "center",
+    color: colors.textSecondary,
   },
 });
