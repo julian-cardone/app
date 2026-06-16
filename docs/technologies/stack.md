@@ -3,15 +3,16 @@ title: Technology Stack
 doc_type: technology
 status: accepted
 owners: ["@julian-cardone"]
-last_reviewed: 2026-04-27
+last_reviewed: 2026-06-16
 related:
   [
     "docs/adrs/0003-ai-assisted-development.md",
     "docs/adrs/0004-repository-tooling-stack.md",
+    "docs/adrs/0005-frontend-technologies.md",
     "docs/process/ci-pipeline.md",
     "docs/agents/capabilities.md",
   ]
-tags: [tooling, ai-agent, ci-cd]
+tags: [tooling, ai-agent, ci-cd, mobile, react-native, frontend, typescript]
 ---
 
 # Technology Stack
@@ -55,6 +56,76 @@ Use `@workspace` when the goal is understanding, not making changes.
 
 ---
 
+## Mobile Application
+
+### React Native
+
+React Native is the UI framework for the Placecard mobile app. It renders to native iOS and Android
+components using React's component model. React JS knowledge — components, hooks, props, and state —
+transfers directly; the learning surface is limited to React Native's rendering primitives and
+layout model.
+
+The decision to use React Native is documented in
+[ADR-0005: Frontend Framework, Dev Toolchain, and Navigation](../adrs/0005-frontend-technologies.md).
+
+### Expo
+
+Expo is the development toolchain for the current phase (managed workflow). Expo Go — a companion
+app installed on a physical device — serves as the primary live preview environment, enabling
+instant hot-reload via QR code with no Xcode or Android Studio required.
+
+Expo ecosystem packages in use:
+
+- **expo-font** — loads custom fonts at app startup.
+- **expo-splash-screen** — controls the native splash screen during bootstrap.
+- **expo-linear-gradient** — gradient backgrounds used in onboarding screens.
+- **@expo/vector-icons** — wraps icon sets (Ionicons, FontAwesome, etc.) as React Native components.
+- **@expo-google-fonts/nunito** — the Nunito font family, the app's primary typeface.
+
+Babel is configured via `babel-preset-expo` with the `module-resolver` plugin, which provides the
+`@/` path alias rooted at `src/`.
+
+When App Store and Play Store distribution is needed, the path forward is Expo's EAS Build service
+or ejecting to a bare React Native workflow. That decision is deferred to a future ADR.
+
+### React Navigation
+
+React Navigation is the navigation library. It manages the five-tab bottom navigation (Discover,
+Explore, Add a Plan, Messages, Profile), stack navigators for screen-level transitions, and modal
+presentation.
+
+Packages in use: `@react-navigation/native` (core), `@react-navigation/native-stack` (stack
+navigator), `@react-navigation/bottom-tabs` (tab bar). Peer dependencies `react-native-screens` and
+`react-native-gesture-handler` are installed alongside.
+
+---
+
+## Language
+
+### TypeScript
+
+TypeScript is the language for all mobile application source code. Strict mode is enabled. Path
+alias `@/*` maps to `src/*`, consistent with the Babel module-resolver configuration.
+
+---
+
+## Code Quality
+
+### ESLint
+
+ESLint is the linter for all JavaScript and TypeScript source files in `app/`. The configuration
+uses the flat config format (`eslint.config.mjs`) with the following plugins:
+
+- **typescript-eslint** — TypeScript-aware lint rules, including enforced type-only imports
+  (`@typescript-eslint/consistent-type-imports`).
+- **eslint-plugin-react** and **eslint-plugin-react-hooks** — React and hooks best-practice rules.
+- **eslint-plugin-simple-import-sort** — enforces a consistent, grouped import order across all
+  files.
+
+ESLint runs locally via `npm run lint` and in CI.
+
+---
+
 ## Version Control and Project Management
 
 ### GitHub
@@ -95,9 +166,13 @@ Prettier is the general-purpose formatter for this repository. It handles automa
 the following file types:
 
 - Markdown.
+- TypeScript and TSX (mobile application source files).
+- JavaScript and JSX.
+- JSON.
 
 Prettier is configured to run on save in VS Code via `.vscode/settings.json`. Configuration lives in
-`.prettierrc.json`. Files excluded from formatting are listed in `.prettierignore`.
+`.prettierrc.json`. Files excluded from formatting are listed in `.prettierignore`. In `app/`,
+formatting runs via `npm run format`.
 
 ---
 
