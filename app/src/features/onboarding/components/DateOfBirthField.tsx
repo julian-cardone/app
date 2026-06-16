@@ -9,9 +9,8 @@ type DateOfBirthFieldProps = {
 };
 
 /**
- * Onboarding DOB entry. A masked text field beats a date picker for speed here: typing a
- * birth year is far faster than scrolling decades. The screen owns validation; this component
- * only enforces the `MM/DD/YYYY` shape as the user types.
+ * Formats DOB input as MM/DD/YYYY.
+ * Validation is handled by the parent screen.
  */
 export function DateOfBirthField({ value, onChangeText, error }: DateOfBirthFieldProps) {
   const handleChange = (raw: string) => onChangeText(maskDob(raw));

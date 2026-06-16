@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
-import { borders, colors, fontFamily, fontSize, radii, spacing } from "@/styles/tokens";
+import { borders, colors, fontFamily, fontSize, lineHeight, radii, spacing } from "@/styles/tokens";
 
 const BOX_MAX_SIZE = 52;
 
@@ -13,8 +13,6 @@ type CodeInputProps = {
 
 /**
  * Controlled verification-code entry: one hidden input drives a row of styled segment boxes.
- * A single input keeps OS autofill, paste, and the keyboard working correctly while the
- * boxes are purely presentational.
  */
 export function CodeInput({ value, onChangeText, length }: CodeInputProps) {
   const inputRef = useRef<TextInput>(null);
@@ -89,6 +87,7 @@ const styles = StyleSheet.create({
   digit: {
     fontFamily: fontFamily.extrabold,
     fontSize: fontSize.h1,
+    lineHeight: lineHeight.h1,
     color: colors.textPrimary,
   },
   hiddenInput: {

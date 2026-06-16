@@ -69,6 +69,8 @@ export const lineHeight = {
   body: 22,
   h2: 26,
   h1: 32,
+  wordmark: 34,
+  wordmarkLg: 48,
 } as const;
 
 /**
@@ -89,3 +91,6 @@ export const animation = {
   splashMinMs: 1000,
   splashEnterMs: 600,
 } as const;
+
+// spacing sm is too small and spacing md is too big
+export const inputPaddingVertical = spacing.sm + 1;

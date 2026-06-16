@@ -1,8 +1,17 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
-import { borders, colors, fontFamily, fontSize, radii, spacing } from "@/styles/tokens";
+import { AppText } from "@/components/ui/AppText/AppText";
+import {
+  borders,
+  colors,
+  fontFamily,
+  fontSize,
+  inputPaddingVertical,
+  lineHeight,
+  radii,
+  spacing,
+} from "@/styles/tokens";
 
-const INPUT_PADDING_V = spacing.sm + 1;
 const MAX_PHONE_LENGTH = 16;
 
 type PhoneNumberInputProps = {
@@ -30,7 +39,9 @@ export function PhoneNumberInput({
         accessibilityRole={isCountrySelectable ? "button" : undefined}
         accessibilityLabel={isCountrySelectable ? "Select country code" : "Country code"}
       >
-        <Text style={styles.countryText}>{countryCode}</Text>
+        <AppText variant="label" style={styles.countryText}>
+          {countryCode}
+        </AppText>
       </Pressable>
 
       <View style={styles.field}>
@@ -61,13 +72,11 @@ const styles = StyleSheet.create({
     borderWidth: borders.default,
     borderColor: colors.border,
     borderRadius: radii.sm,
-    paddingVertical: INPUT_PADDING_V,
+    paddingVertical: inputPaddingVertical,
     paddingHorizontal: spacing.md,
     backgroundColor: colors.white,
   },
   countryText: {
-    fontFamily: fontFamily.bold,
-    fontSize: fontSize.body,
     color: colors.textPrimary,
   },
   field: {
@@ -77,11 +86,12 @@ const styles = StyleSheet.create({
     borderWidth: borders.default,
     borderColor: colors.border,
     borderRadius: radii.sm,
-    paddingVertical: INPUT_PADDING_V,
+    paddingVertical: inputPaddingVertical,
     paddingHorizontal: spacing.md,
     backgroundColor: colors.white,
     fontFamily: fontFamily.semibold,
     fontSize: fontSize.body,
+    lineHeight: lineHeight.body,
     color: colors.textPrimary,
   },
 });

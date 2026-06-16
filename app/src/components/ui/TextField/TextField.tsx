@@ -9,10 +9,16 @@ import {
 } from "react-native";
 
 import { AppText } from "@/components/ui";
-import { borders, colors, fontFamily, fontSize, lineHeight, radii, spacing } from "@/styles/tokens";
-
-const INPUT_VERTICAL_PADDING_ADJUSTMENT = 1;
-const INPUT_PADDING_V = spacing.sm + INPUT_VERTICAL_PADDING_ADJUSTMENT;
+import {
+  borders,
+  colors,
+  fontFamily,
+  fontSize,
+  inputPaddingVertical,
+  lineHeight,
+  radii,
+  spacing,
+} from "@/styles/tokens";
 
 type TextFieldProps = TextInputProps & {
   label: string;
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
     borderWidth: borders.default,
     borderColor: colors.border,
     borderRadius: radii.sm,
-    paddingVertical: INPUT_PADDING_V,
+    paddingVertical: inputPaddingVertical,
     paddingHorizontal: spacing.md,
     backgroundColor: colors.white,
     fontFamily: fontFamily.semibold,

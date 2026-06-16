@@ -1,10 +1,7 @@
 import { Pressable, type StyleProp, StyleSheet, type ViewStyle } from "react-native";
 
 import { AppText } from "@/components/ui/AppText";
-import { borders, colors, fontFamily, radii, spacing } from "@/styles/tokens";
-
-const INPUT_VERTICAL_PADDING_ADJUSTMENT = 1;
-const INPUT_PADDING_V = spacing.sm + INPUT_VERTICAL_PADDING_ADJUSTMENT;
+import { borders, colors, fontFamily, inputPaddingVertical, radii, spacing } from "@/styles/tokens";
 
 type ChipProps = {
   label: string;
@@ -33,7 +30,7 @@ const styles = StyleSheet.create({
     borderWidth: borders.default,
     borderColor: colors.border,
     borderRadius: radii.pill,
-    paddingVertical: INPUT_PADDING_V,
+    paddingVertical: inputPaddingVertical,
     paddingHorizontal: spacing.md,
     backgroundColor: colors.white,
   },
