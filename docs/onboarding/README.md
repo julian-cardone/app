@@ -20,60 +20,84 @@ This document orients new contributors to the repository. Read it before making 
 
 ---
 
-## What We're Building
-
-Placecard is a friendship-first mobile app that matches people through shared real-world plans.
-Users link a verified plan — a restaurant reservation, concert ticket, or event invite — and the app
-surfaces people who want to join. Every match is tied to something real and dated. The launch is
-scoped to New York City, targeting young professionals and transplants looking to expand their
-social circle through what they're already doing.
-
----
-
 ## Start Here
 
 1. Read the root `README.md` for a project overview.
 2. Read this document in full.
-3. Read the required documents listed in `CLAUDE.md`.
+3. Refer the required documents listed in `CLAUDE.md` as needed.
 
 ---
 
-## Repository Structure
+## Environment Setup
 
-| Directory            | Purpose                                                   |
-| -------------------- | --------------------------------------------------------- |
-| `docs/adrs/`         | Architectural decisions — why things are the way they are |
-| `docs/architecture/` | Current system structure — what exists                    |
-| `docs/standards/`    | Rules all contributors must follow                        |
-| `docs/process/`      | Workflows and operational procedures                      |
-| `docs/agents/`       | AI agent capabilities and constraints                     |
-| `docs/technologies/` | Tools in use and why                                      |
-| `docs/onboarding/`   | This directory                                            |
+### 1. Install NVM
 
----
-
-## Required Reading
-
-Before contributing, read the following documents in order:
-
-1. `docs/agents/capabilities.md` — what AI agents can do
-2. `docs/agents/constraints.md` — what AI agents must not do
-3. `docs/standards/documentation.md` — how all documents must be written
-4. `docs/process/project-management.md` — how work is initiated and tracked
-5. `docs/process/git-workflow.md` — branching and merge conventions
-6. `docs/process/pr-format.md` — pull request structure
-7. `docs/process/done-criteria.md` — merge criteria
-8. `docs/technologies/stack.md` — what tools are in use
-
----
-
-## Local Tooling Setup
-
-Node.js 22 LTS is required. Install it via `nvm install 22` or from [nodejs.org](https://nodejs.org).
+NVM (Node Version Manager) lets you switch Node versions per project.
 
 ```bash
-npm install
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 ```
+
+Then restart your terminal (or run `source ~/.zshrc` / `source ~/.bashrc`) so the `nvm`
+command is available. Full install docs: <https://github.com/nvm-sh/nvm>.
+
+### 2. Set Node 22
+
+This repo requires **Node.js 22 LTS**. An `.nvmrc` file is checked in, so NVM picks the right
+version automatically.
+
+```bash
+nvm install 22        # download Node 22 if not already present
+nvm use 22            # activate it in this shell
+nvm alias default 22  # make it the default for new shells
+node -v               # should print v22.x.x
+```
+
+### 3. Install dependencies
+
+The repo has two separate `package.json` files — one at the root (doc tooling) and one in
+`app/` (the mobile app). Install both:
+
+```bash
+npm install        # root — markdownlint, prettier for docs
+cd app
+npm install        # Expo app and all mobile dependencies
+```
+
+### 4. IDE setup (VS Code)
+
+Recommended extensions are listed in `.vscode/extensions.json`. To install them, open the
+Extensions panel (`Cmd+Shift+X`), search `@recommended`, and click **Install All**.
+
+`.vscode/settings.json` is checked in and pre-configures format-on-save and ESLint auto-fix.
+No manual settings changes are needed.
+
+---
+
+## Running the App
+
+The app uses Expo's managed workflow — no manual native project setup is required.
+
+```bash
+cd app
+npm start         # start the Expo dev server
+npm run ios       # launch iOS simulator
+npm run android   # launch Android emulator
+```
+
+---
+
+## Verify Your Setup
+
+Before opening your first PR, confirm all three checks pass from `app/`:
+
+```bash
+npm run typecheck     # TypeScript — must report zero errors
+npm run lint          # ESLint
+npm run format:check  # Prettier
+```
+
+CI enforces all three on every PR, so catching failures locally saves time.
 
 ---
 
