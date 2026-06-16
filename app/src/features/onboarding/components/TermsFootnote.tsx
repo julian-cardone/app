@@ -1,7 +1,8 @@
 import { Linking, StyleSheet, Text } from "react-native";
 
+import { AppText } from "@/components/ui/AppText/AppText";
 import { externalLinks } from "@/config/links";
-import { colors, fontFamily, fontSize, lineHeight } from "@/styles/tokens";
+import { colors, fontFamily } from "@/styles/tokens";
 
 const handleTermsPress = () => {
   void Linking.openURL(externalLinks.terms);
@@ -12,12 +13,11 @@ const handlePrivacyPress = () => {
 };
 
 /**
- * The fine print beneath the phone-entry CTA. Owns opening the legal links, which is why
- * it is a small feature component rather than inline markup.
+ * The fine print beneath the phone-entry CTA.
  */
 export function TermsFootnote() {
   return (
-    <Text style={styles.text}>
+    <AppText variant="caption" style={styles.text}>
       By continuing you agree to our{" "}
       <Text accessibilityRole="link" style={styles.link} onPress={handleTermsPress}>
         Terms
@@ -27,15 +27,12 @@ export function TermsFootnote() {
         Privacy Policy
       </Text>
       .
-    </Text>
+    </AppText>
   );
 }
 
 const styles = StyleSheet.create({
   text: {
-    fontFamily: fontFamily.semibold,
-    fontSize: fontSize.caption,
-    lineHeight: lineHeight.caption,
     color: colors.textSecondary,
     textAlign: "center",
   },

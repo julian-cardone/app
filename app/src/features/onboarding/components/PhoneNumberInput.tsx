@@ -1,23 +1,15 @@
-import { Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 import { AppText } from "@/components/ui/AppText/AppText";
-import {
-  borders,
-  colors,
-  fontFamily,
-  fontSize,
-  inputPaddingVertical,
-  lineHeight,
-  radii,
-  spacing,
-} from "@/styles/tokens";
+import { TextField } from "@/components/ui/TextField/TextField";
+import { borders, colors, inputPaddingVertical, radii, spacing } from "@/styles/tokens";
 
 const MAX_PHONE_LENGTH = 16;
 
 type PhoneNumberInputProps = {
   value: string;
   onChangeText: (value: string) => void;
-  /** e.g. "🇺🇸 +1" — a full country picker is a later issue; today this is a static default. */
+  /** e.g. "🇺🇸 +1" — a full country picker is a later issue; right now this is a static default. */
   countryCode: string;
   onCountryPress?: () => void;
 };
@@ -44,20 +36,17 @@ export function PhoneNumberInput({
         </AppText>
       </Pressable>
 
-      <View style={styles.field}>
-        <TextInput
-          style={styles.input}
-          value={value}
-          onChangeText={onChangeText}
-          keyboardType="phone-pad"
-          placeholder="Phone number"
-          placeholderTextColor={colors.textSecondary}
-          autoComplete="tel"
-          textContentType="telephoneNumber"
-          returnKeyType="done"
-          maxLength={MAX_PHONE_LENGTH}
-        />
-      </View>
+      <TextField
+        containerStyle={styles.field}
+        value={value}
+        onChangeText={onChangeText}
+        keyboardType="phone-pad"
+        placeholder="Phone number"
+        autoComplete="tel"
+        textContentType="telephoneNumber"
+        returnKeyType="done"
+        maxLength={MAX_PHONE_LENGTH}
+      />
     </View>
   );
 }
@@ -81,17 +70,5 @@ const styles = StyleSheet.create({
   },
   field: {
     flex: 1,
-  },
-  input: {
-    borderWidth: borders.default,
-    borderColor: colors.border,
-    borderRadius: radii.sm,
-    paddingVertical: inputPaddingVertical,
-    paddingHorizontal: spacing.md,
-    backgroundColor: colors.white,
-    fontFamily: fontFamily.semibold,
-    fontSize: fontSize.body,
-    lineHeight: lineHeight.body,
-    color: colors.textPrimary,
   },
 });

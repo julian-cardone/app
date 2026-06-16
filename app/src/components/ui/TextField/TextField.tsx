@@ -21,14 +21,15 @@ import {
 } from "@/styles/tokens";
 
 type TextFieldProps = TextInputProps & {
-  label: string;
+  /** Omit when the placeholder alone is enough context (e.g. inline fields). */
+  label?: string;
   error?: string;
   /** Parent-owned placement (margin, width). Internal appearance stays in the primitive. */
   containerStyle?: StyleProp<ViewStyle>;
 };
 
 /**
- * The shared labeled text input. Domain-agnostic: it owns its label, focus highlight, and
+ * The shared text input. Domain-agnostic: it owns its optional label, focus highlight, and
  * error treatment, and forwards every other `TextInput` prop so callers control keyboard,
  * autofill, and masking.
  */
@@ -55,9 +56,11 @@ export function TextField({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <AppText variant="label" style={styles.label}>
-        {label}
-      </AppText>
+      {Boolean(label) && (
+        <AppText variant="label" style={styles.label}>
+          {label}
+        </AppText>
+      )}
       <TextInput
         {...inputProps}
         style={[
