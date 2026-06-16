@@ -5,16 +5,16 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { Wordmark } from "@/components/branding";
 import { Screen } from "@/components/layout";
+import { ONBOARDING_ROUTES } from "@/navigation/routes";
 import type { OnboardingStackParamList } from "@/navigation/types";
 import { animation } from "@/styles/tokens";
 
 const SPLASH_SCALE_FROM = 0.92;
 
-type Props = NativeStackScreenProps<OnboardingStackParamList, "Splash">;
+type Props = NativeStackScreenProps<OnboardingStackParamList, typeof ONBOARDING_ROUTES.SPLASH>;
 
 /**
- * The brand moment. The wordmark fades and scales in while the app finishes booting, then
- * we move on to phone entry. `replace` keeps the splash off the back stack so the user
+ * The brand moment. `replace` keeps the splash off the back stack so the user
  * cannot navigate back to it.
  */
 export function SplashScreen({ navigation }: Props) {
@@ -28,7 +28,7 @@ export function SplashScreen({ navigation }: Props) {
     }).start();
 
     const timer = setTimeout(() => {
-      navigation.replace("PhoneEntry");
+      navigation.replace(ONBOARDING_ROUTES.PHONE_ENTRY);
     }, animation.splashMinMs);
 
     return () => clearTimeout(timer);
@@ -45,7 +45,7 @@ export function SplashScreen({ navigation }: Props) {
   };
 
   return (
-    <Screen style={styles.screen}>
+    <Screen contentContainerStyle={styles.screen}>
       <Animated.View style={animatedStyle}>
         <Wordmark size="splash" />
       </Animated.View>

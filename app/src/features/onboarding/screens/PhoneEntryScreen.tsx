@@ -3,23 +3,22 @@ import { StyleSheet, View } from "react-native";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { Wordmark } from "@/components/branding";
 import { Screen } from "@/components/layout";
 import { AppText, Button } from "@/components/ui";
+import { ONBOARDING_ROUTES } from "@/navigation/routes";
 import type { OnboardingStackParamList } from "@/navigation/types";
 import { spacing } from "@/styles/tokens";
 
 import { PhoneNumberInput } from "../components/PhoneNumberInput";
 import { TermsFootnote } from "../components/TermsFootnote";
 
-type Props = NativeStackScreenProps<OnboardingStackParamList, "PhoneEntry">;
+type Props = NativeStackScreenProps<OnboardingStackParamList, typeof ONBOARDING_ROUTES.PHONE_ENTRY>;
 
 const DEFAULT_COUNTRY = "🇺🇸 +1";
 const MIN_DIGITS = 7;
 
 /**
- * The single-purpose entry screen: collect a phone number to start onboarding. The screen
- * owns the phone value and the send action; the gradient CTA is a shared primitive.
+ * The single-purpose entry screen: collect a phone number to start onboarding.
  */
 export function PhoneEntryScreen({ navigation }: Props) {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -29,13 +28,15 @@ export function PhoneEntryScreen({ navigation }: Props) {
 
   const handleSendCode = () => {
     if (!canSend) return;
-    navigation.navigate("Verify", { phoneNumber: `${DEFAULT_COUNTRY} ${phoneNumber}`.trim() });
+    navigation.navigate(ONBOARDING_ROUTES.VERIFY, {
+      phoneNumber: `${DEFAULT_COUNTRY} ${phoneNumber}`.trim(),
+    });
   };
 
   return (
     <Screen keyboardAware>
       <View style={styles.header}>
-        <Wordmark size="compact" />
+        <AppText variant="headline">placecard</AppText>
       </View>
 
       <View style={styles.body}>

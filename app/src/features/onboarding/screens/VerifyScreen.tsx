@@ -5,12 +5,13 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { Screen } from "@/components/layout";
 import { AppText, Button } from "@/components/ui";
+import { ONBOARDING_ROUTES } from "@/navigation/routes";
 import type { OnboardingStackParamList } from "@/navigation/types";
 import { colors, fontFamily, fontSize, spacing } from "@/styles/tokens";
 
 import { CodeInput } from "../components/CodeInput";
 
-type Props = NativeStackScreenProps<OnboardingStackParamList, "Verify">;
+type Props = NativeStackScreenProps<OnboardingStackParamList, typeof ONBOARDING_ROUTES.VERIFY>;
 
 const CODE_LENGTH = 6;
 
@@ -22,10 +23,7 @@ export function VerifyScreen({ navigation, route }: Props) {
 
   const handleVerify = () => {
     if (!canVerify) return;
-    // No real check yet: any 6-digit code advances to signup. Backend verification is a
-    // later issue. New numbers go through fast signup; returning users will skip it once
-    // account lookup exists.
-    navigation.navigate("ProfileSetup");
+    navigation.navigate(ONBOARDING_ROUTES.PROFILE_SETUP);
   };
 
   const handleResendCode = () => {

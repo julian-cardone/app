@@ -8,6 +8,7 @@ import type {
 
 import { Screen } from "@/components/layout";
 import { AppText, Button, TextField } from "@/components/ui";
+import { MAIN_TAB_ROUTES, type ONBOARDING_ROUTES, ROOT_ROUTES } from "@/navigation/routes";
 import type { OnboardingStackParamList, RootStackParamList } from "@/navigation/types";
 import { spacing } from "@/styles/tokens";
 
@@ -15,15 +16,17 @@ import { DateOfBirthField } from "../components/DateOfBirthField";
 import { type GenderIdentity, GenderSelect } from "../components/GenderSelect";
 import { MIN_AGE, validateDob } from "../lib/dob";
 
-type Props = NativeStackScreenProps<OnboardingStackParamList, "ProfileSetup">;
+type Props = NativeStackScreenProps<
+  OnboardingStackParamList,
+  typeof ONBOARDING_ROUTES.PROFILE_SETUP
+>;
 
 const MAX_NAME_LENGTH = 50;
 
 /**
  * Fast signup: the smallest set of fields needed to create an account — display name, age,
  * and a soft-filter gender. Everything else (photos, prompts, preferences) is collected later
- * via the profile completion flow. The screen owns its form state and derives validity during
- * render; account creation is the parent's job once the backend exists.
+ * via the profile completion flow.
  */
 export function ProfileSetupScreen({ navigation }: Props) {
   const [firstName, setFirstName] = useState("");
@@ -40,16 +43,13 @@ export function ProfileSetupScreen({ navigation }: Props) {
 
   const handleSubmit = () => {
     if (!canSubmit) return;
-    // TODO: create the account with { firstName, dateOfBirth, gender } plus the verified
-    // phone number once the backend exists. Replacing the root Onboarding route with Main
-    // discards the whole onboarding stack so the member can't swipe back into signup.
     navigation
       .getParent<NativeStackNavigationProp<RootStackParamList>>()
-      ?.replace("Main", { screen: "Discover" });
+      ?.replace(ROOT_ROUTES.MAIN, { screen: MAIN_TAB_ROUTES.DISCOVER });
   };
 
   return (
-    <Screen scroll keyboardAware contentContainerStyle={styles.content}>
+    <Screen keyboardAware scroll>
       <View style={styles.header}>
         <AppText variant="headline">Tell us about you</AppText>
         <AppText variant="subhead">Just the basics — you can finish your profile later.</AppText>
@@ -65,7 +65,7 @@ export function ProfileSetupScreen({ navigation }: Props) {
           autoComplete="given-name"
           textContentType="givenName"
           maxLength={MAX_NAME_LENGTH}
-          returnKeyType="next"
+          returnKeyType="done"
         />
         <DateOfBirthField value={dateOfBirth} onChangeText={setDateOfBirth} error={dobError} />
         <GenderSelect value={gender} onSelect={setGender} />
@@ -79,14 +79,9 @@ export function ProfileSetupScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  content: {
-    flexGrow: 1,
-    paddingTop: spacing.xl,
-    paddingBottom: spacing.lg,
-    gap: spacing.xl,
-  },
   header: {
     gap: spacing.sm,
+    paddingTop: spacing.xl,
   },
   form: {
     gap: spacing.lg,

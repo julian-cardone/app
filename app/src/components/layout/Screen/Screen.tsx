@@ -33,21 +33,17 @@ export function Screen({
 }: ScreenProps) {
   const insets = useSafeAreaInsets();
 
-  const screenStyle = [
-    styles.screen,
-    {
-      paddingTop:
-        insetMode === SCREEN_INSET_MODE.TOP || insetMode === SCREEN_INSET_MODE.BOTH
-          ? insets.top
-          : 0,
-      paddingBottom:
-        insetMode === SCREEN_INSET_MODE.BOTTOM || insetMode === SCREEN_INSET_MODE.BOTH
-          ? insets.bottom
-          : 0,
-    },
-    style,
-  ];
+  const shouldInsetTop =
+    insetMode === SCREEN_INSET_MODE.TOP || insetMode === SCREEN_INSET_MODE.BOTH;
+  const shouldInsetBottom =
+    insetMode === SCREEN_INSET_MODE.BOTTOM || insetMode === SCREEN_INSET_MODE.BOTH;
 
+  const safeAreaStyle = {
+    paddingTop: shouldInsetTop ? insets.top : 0,
+    paddingBottom: shouldInsetBottom ? insets.bottom : 0,
+  };
+
+  const screenStyle = [styles.screen, safeAreaStyle, style];
   const contentStyle = [styles.content, contentContainerStyle];
 
   const content = scroll ? (
@@ -59,7 +55,9 @@ export function Screen({
       {children}
     </ScrollView>
   ) : (
-    <View style={[screenStyle, contentStyle]}>{children}</View>
+    <View style={screenStyle}>
+      <View style={contentStyle}>{children}</View>
+    </View>
   );
 
   if (!keyboardAware) {

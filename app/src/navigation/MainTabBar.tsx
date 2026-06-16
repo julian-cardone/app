@@ -47,7 +47,6 @@ export function MainTabBar({ state, navigation }: BottomTabBarProps) {
   return (
     <View style={tabBarStyle}>
       {state.routes.map((route, index) => {
-        console.log(state, index);
         const focused = state.index === index;
         // Safe because route names are defined by MainNavigator.
         const tab = TAB_CONFIG[route.name as MainTabName];
