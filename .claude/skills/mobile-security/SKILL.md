@@ -1,18 +1,18 @@
 ---
-name: vibe-sec
+name: mobile-security
 description:
-  This skill helps Claude write secure web applications. Use this when working on any web
-  application or when a user requests a scan or audit to ensure security best practices are
-  followed.
+  Apply secure coding practices when building or reviewing React Native mobile apps and their
+  supporting APIs. Use this when working on authentication, authorization, API calls, sensitive
+  data, file uploads, document handling, backend endpoints, or security reviews.
 ---
 
-# Secure Coding Guide for Web Applications
+# Secure Coding Guide for Mobile Applications
 
 ## Overview
 
-This guide provides comprehensive secure coding practices for web applications. As an AI assistant,
-your role is to approach code from a **bug hunter's perspective** and make applications **as secure
-as possible** without breaking functionality.
+This guide provides secure coding practices for mobile applications and their supporting APIs. As an
+AI assistant, your role is to approach code from a **bug hunter's perspective** and make
+applications **as secure as possible** without breaking functionality.
 
 **Key Principles:**
 
@@ -85,13 +85,12 @@ function getResource(resourceId, currentUser):
 
 ---
 
-## Client-Side Bugs
+## Client-Side Rendering Bugs
 
-### Cross-Site Scripting (XSS)
+Every input controllable by the user—whether directly or indirectly—must be sanitized when rendered
+into HTML, rich text, Markdown, documents, previews, or embedded web content.
 
-Every input controllable by the user—whether directly or indirectly—must be sanitized against XSS.
-
-#### Input Sources to Protect
+### Input Sources to Protect
 
 **Direct Inputs:**
 
@@ -103,11 +102,8 @@ Every input controllable by the user—whether directly or indirectly—must be 
 **Indirect Inputs:**
 
 - URL parameters and query strings
-- URL fragments (hash values)
-- HTTP headers used in the application (Referer, User-Agent if displayed)
 - Data from third-party APIs displayed to users
 - WebSocket messages
-- postMessage data from iframes
 - LocalStorage/SessionStorage values if rendered
 
 **Often Overlooked:**
@@ -120,7 +116,7 @@ Every input controllable by the user—whether directly or indirectly—must be 
 - SVG file uploads (can contain JavaScript)
 - Markdown rendering (if allowing HTML)
 
-#### Protection Strategies
+### Protection Strategies
 
 1. **Output Encoding** (Context-Specific)
    - HTML context: HTML entity encode (`<` → `&lt;`)
@@ -129,112 +125,18 @@ Every input controllable by the user—whether directly or indirectly—must be 
    - CSS context: CSS escape
    - Use framework's built-in escaping (React's JSX, Vue's {{ }}, etc.)
 
-2. **Content Security Policy (CSP)**
-
-   ```text
-   Content-Security-Policy:
-     default-src 'self';
-     script-src 'self';
-     style-src 'self' 'unsafe-inline';
-     img-src 'self' data: https:;
-     font-src 'self';
-     connect-src 'self' https://api.yourdomain.com;
-     frame-ancestors 'none';
-     base-uri 'self';
-     form-action 'self';
-   ```
-
-   - Avoid `'unsafe-inline'` and `'unsafe-eval'` for scripts
-   - Use nonces or hashes for inline scripts when necessary
-   - Report violations: `report-uri /csp-report`
-
-3. **Input Sanitization**
+2. **Input Sanitization**
    - Use established libraries (DOMPurify for HTML)
    - Whitelist allowed tags/attributes for rich text
    - Strip or encode dangerous patterns
 
-4. **Additional Headers**
-   - `X-Content-Type-Options: nosniff`
-   - `X-Frame-Options: DENY` (or use CSP frame-ancestors)
-
 ---
 
-### Cross-Site Request Forgery (CSRF)
-
-Every state-changing endpoint must be protected against CSRF attacks.
-
-#### Endpoints Requiring CSRF Protection
-
-**Authenticated Actions:**
-
-- All POST, PUT, PATCH, DELETE requests
-- Any GET request that changes state (fix these to use proper HTTP methods)
-- File uploads
-- Settings changes
-- Payment/transaction endpoints
-
-**Pre-Authentication Actions:**
-
-- Login endpoints (prevent login CSRF)
-- Signup endpoints
-- Password reset request endpoints
-- Password change endpoints
-- Email/phone verification endpoints
-- OAuth callback endpoints
-
-#### Protection Mechanisms
-
-1. **CSRF Tokens**
-   - Generate cryptographically random tokens
-   - Tie token to user session
-   - Validate on every state-changing request
-   - Regenerate after login (prevent session fixation combo)
-
-2. **SameSite Cookies**
-
-   ```http
-   Set-Cookie: session=abc123; SameSite=Strict; Secure; HttpOnly
-   ```
-
-   - `Strict`: Cookie never sent cross-site (best security)
-   - `Lax`: Cookie sent on top-level navigations (good balance)
-   - Always combine with CSRF tokens for defense in depth
-
-3. **Double Submit Cookie Pattern**
-   - Send CSRF token in both cookie and request body/header
-   - Server validates they match
-
-#### Edge Cases and Common Mistakes
-
-- **Token presence check**: CSRF validation must NOT depend on whether the token is present, always
-  require it
-- **Token per form**: Consider unique tokens per form for sensitive operations
-- **JSON APIs**: Don't assume JSON content-type prevents CSRF; validate Origin/Referer headers AND
-  use tokens
-- **CORS misconfiguration**: Overly permissive CORS can bypass SameSite cookies
-- **Subdomains**: CSRF tokens should be scoped because subdomain takeover can lead to CSRF
-- **Flash/PDF uploads**: Legacy browser plugins could bypass SameSite
-- **GET requests with side effects**: Never perform state changes on GET
-- **Token leakage**: Don't include CSRF tokens in URLs
-- **Token in URL vs Header**: Prefer custom headers (X-CSRF-Token) over URL parameters
-
-#### Verification Checklist
-
-- [ ] Token is cryptographically random (use secure random generator)
-- [ ] Token is tied to user session
-- [ ] Token is validated server-side on all state-changing requests
-- [ ] Missing token = rejected request
-- [ ] Token regenerated on authentication state change
-- [ ] SameSite cookie attribute is set
-- [ ] Secure and HttpOnly flags on session cookies
-
----
-
-### Secret Keys and Sensitive Data Exposure
+## Secret Keys and Sensitive Data Exposure
 
 No secrets or sensitive information should be accessible to client-side code.
 
-#### Never Expose in Client-Side Code
+### Never Expose in Client-Side Code
 
 **API Keys and Secrets:**
 
@@ -262,66 +164,18 @@ No secrets or sensitive information should be accessible to client-side code.
 - Stack traces in production
 - Server software versions
 
-#### Where Secrets Hide (Check These!)
+### Where Secrets Hide (Check These!)
 
 - JavaScript bundles (including source maps)
-- HTML comments
 - Hidden form fields
-- Data attributes
 - LocalStorage/SessionStorage
 - Initial state/hydration data in SSR apps
 - Environment variables exposed via build tools (NEXT*PUBLIC*_, REACT*APP*_)
 
-#### Best Practices
+### Best Practices
 
 1. **Environment Variables**: Store secrets in `.env` files
 2. **Server-Side Only**: Make API calls requiring secrets from backend only
-
----
-
-## Open Redirect
-
-Any endpoint accepting a URL for redirection must be protected against open redirect attacks.
-
-### Open Redirect Protections
-
-1. **Allowlist Validation**
-
-   ```python
-   allowed_domains = ['yourdomain.com', 'app.yourdomain.com']
-
-   function isValidRedirect(url):
-       parsed = parseUrl(url)
-       return parsed.hostname in allowed_domains
-   ```
-
-2. **Relative URLs Only**
-   - Only accept paths (e.g., `/dashboard`) not full URLs
-   - Validate the path starts with `/` and doesn't contain `//`
-
-3. **Indirect References**
-   - Use a mapping instead of raw URLs: `?redirect=dashboard` → lookup to `/dashboard`
-
-### Bypass Techniques to Block
-
-| Technique             | Example                          | Why It Works                                             |
-| --------------------- | -------------------------------- | -------------------------------------------------------- |
-| @ symbol              | `https://legit.com@evil.com`     | Browser navigates to evil.com with legit.com as username |
-| Subdomain abuse       | `https://legit.com.evil.com`     | evil.com owns the subdomain                              |
-| Protocol tricks       | `javascript:alert(1)`            | XSS via redirect                                         |
-| Double URL encoding   | `%252f%252fevil.com`             | Decodes to `//evil.com` after double decode              |
-| Backslash             | `https://legit.com\@evil.com`    | Some parsers normalize `\` to `/`                        |
-| Null byte             | `https://legit.com%00.evil.com`  | Some parsers truncate at null                            |
-| Tab/newline           | `https://legit.com%09.evil.com`  | Whitespace confusion                                     |
-| Unicode normalization | `https://legіt.com` (Cyrillic і) | IDN homograph attack                                     |
-| Data URLs             | `data:text/html,<script>...`     | Direct payload execution                                 |
-| Protocol-relative     | `//evil.com`                     | Uses current page's protocol                             |
-| Fragment abuse        | `https://legit.com#@evil.com`    | Parsed differently by different libraries                |
-
-### IDN Homograph Attack Protection
-
-- Convert URLs to Punycode before validation
-- Consider blocking non-ASCII domains entirely for sensitive redirects
 
 ---
 
@@ -530,82 +384,6 @@ execute(query, [userId])
 
 ---
 
-### XML External Entity (XXE)
-
-XXE vulnerabilities occur when XML parsers process external entity references in user-supplied XML.
-
-#### Vulnerable Scenarios
-
-**Direct XML Input:**
-
-- SOAP APIs
-- XML-RPC
-- XML file uploads
-- Configuration file parsing
-- RSS/Atom feed processing
-
-**Indirect XML:**
-
-- JSON/other format converted to XML server-side
-- Office documents (DOCX, XLSX, PPTX are ZIP with XML)
-- SVG files (XML-based)
-- SAML assertions
-- PDF with XFA forms
-
-#### Prevention by Language/Parser
-
-**Java:**
-
-```java
-DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-dbf.setExpandEntityReferences(false);
-```
-
-**Python (lxml):**
-
-```python
-from lxml import etree
-parser = etree.XMLParser(resolve_entities=False, no_network=True)
-# Or use defusedxml library
-```
-
-**PHP:**
-
-```php
-libxml_disable_entity_loader(true);
-// Or use XMLReader with proper settings
-```
-
-**Node.js:**
-
-```javascript
-// Use libraries that disable DTD processing by default
-// If using libxmljs, set { noent: false, dtdload: false }
-```
-
-**.NET:**
-
-```csharp
-XmlReaderSettings settings = new XmlReaderSettings();
-settings.DtdProcessing = DtdProcessing.Prohibit;
-settings.XmlResolver = null;
-```
-
-#### XXE Prevention Checklist
-
-- [ ] Disable DTD processing entirely if possible
-- [ ] Disable external entity resolution
-- [ ] Disable external DTD loading
-- [ ] Disable XInclude processing
-- [ ] Use latest patched XML parser versions
-- [ ] Validate/sanitize XML before parsing if DTD needed
-- [ ] Consider using JSON instead of XML where possible
-
----
-
 ### Path Traversal
 
 Path traversal vulnerabilities occur when user input controls file paths, allowing access to files
@@ -663,21 +441,6 @@ def safe_join(base_directory, user_path):
 - [ ] Canonicalize paths and validate against base directory
 - [ ] Restrict file extensions if applicable
 - [ ] Test with various encoding and bypass techniques
-
----
-
-## Security Headers Checklist
-
-Include these headers in all responses:
-
-```http
-Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-Content-Security-Policy: [see XSS section]
-X-Content-Type-Options: nosniff
-X-Frame-Options: DENY
-Referrer-Policy: strict-origin-when-cross-origin
-Cache-Control: no-store (for sensitive pages)
-```
 
 ---
 
@@ -761,22 +524,6 @@ User.update(updates);
 ```
 
 This applies to any ORM/framework — always explicitly define which fields a request can modify.
-
-### GraphQL
-
-| Vulnerability               | Prevention                                                   |
-| :-------------------------- | :----------------------------------------------------------- |
-| Introspection in production | Disable introspection in production environments.            |
-| Query depth attack          | Implement query depth limiting (e.g., maximum of 10 levels). |
-| Query complexity attack     | Calculate and enforce strict query cost limits.              |
-| Batching attack             | Limit the number of operations allowed per single request.   |
-
-```javascript
-const server = new ApolloServer({
-  introspection: process.env.NODE_ENV !== "production",
-  validationRules: [depthLimit(10), costAnalysis({ maximumCost: 1000 })],
-});
-```
 
 ---
 
