@@ -3,7 +3,7 @@ name: mobile-styles
 description:
   Apply this repository's React Native styling conventions when writing or editing StyleSheet
   blocks, tokens, typography, shadows, static/dynamic styles, units, local style constants, or style
-  file placement. Applies to React Native mobile. Web CSS has separate rules.
+  file placement. Applies to React Native mobile.
 ---
 
 # Mobile Styling Standards

@@ -4,7 +4,7 @@ description:
   Apply this repository's React Native folder and module conventions when creating, moving, or
   reviewing files on mobile. Use when deciding where screens, feature components, shared UI,
   branding components, layout primitives, providers, services, config, assets, hooks, tokens, or
-  module boundaries belong. Applies to Expo/React Native. Web has its own project structure skill.
+  module boundaries belong. Applies to Expo/React Native.
 ---
 
 # Mobile Project Structure

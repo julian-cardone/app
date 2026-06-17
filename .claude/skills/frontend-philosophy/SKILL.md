@@ -105,7 +105,7 @@ continue to own typography, chrome, focus states, and errors.
 
 ### Pages and Screens
 
-Pages on web and screens on mobile are route-level composition shells. They own:
+Screens are route-level composition shells. They own:
 
 1. Route-level layout
 2. Feature composition

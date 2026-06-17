@@ -5,8 +5,7 @@ description:
   screens, flex rows/columns, shrinking, scroll regions, keyboard-aware screens, safe areas,
   headers, footers, cards, lists, modals, bottom tabs, and bottom sheets. Trigger on "make this
   scroll", "this overflows", "the footer moved", "keyboard covers the input", "safe area", "row",
-  "gap", "why won't it shrink", or layout PR reviews. Applies to React Native mobile. Web layout has
-  separate rules.
+  "gap", "why won't it shrink", or layout PR reviews. Applies to React Native mobile.
 ---
 
 # Mobile Layout
